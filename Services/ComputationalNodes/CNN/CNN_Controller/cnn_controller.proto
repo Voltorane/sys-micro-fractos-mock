@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_outer_classname = "CNN_Controller";
+option objc_class_prefix = "CNNCTR";
+
+package cnn_controller;
+
+// The greeting service definition.
+service Predictor {
+  // Sends a greeting
+  rpc Prediction (PredictionRequest) returns (PredictionResponse) {}
+}
+
+message PredictionRequest {
+    string image = 1;
+    int32 img_width = 2;
+    int32 img_height = 3;
+}
+
+message PredictionResponse {
+    string class = 1;
+    int32 label = 2;
+}
