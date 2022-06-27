@@ -4,6 +4,7 @@ protobuf_java_example
 Services/ComputationalNodes/perceptron/__pycache__
 Services/ComputationalNodes/perceptron/.ipynb_checkpoints
 Services/ComputationalNodes/perceptron/checkpoints
+Services/ComputationalNodes/perceptron/models/*
 *.zip
 *.ipynb
 Services/ComputationalNodes/perceptron/TrainingData/*
