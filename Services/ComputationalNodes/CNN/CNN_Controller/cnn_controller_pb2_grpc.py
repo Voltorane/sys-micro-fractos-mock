@@ -20,6 +20,11 @@ class PredictorStub(object):
                 request_serializer=cnn__controller__pb2.PredictionRequest.SerializeToString,
                 response_deserializer=cnn__controller__pb2.PredictionResponse.FromString,
                 )
+        self.Initialization = channel.unary_unary(
+                '/cnn_controller.Predictor/Initialization',
+                request_serializer=cnn__controller__pb2.InitRequest.SerializeToString,
+                response_deserializer=cnn__controller__pb2.InitResponse.FromString,
+                )
 
 
 class PredictorServicer(object):
@@ -33,6 +38,12 @@ class PredictorServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def Initialization(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_PredictorServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -40,6 +51,11 @@ def add_PredictorServicer_to_server(servicer, server):
                     servicer.Prediction,
                     request_deserializer=cnn__controller__pb2.PredictionRequest.FromString,
                     response_serializer=cnn__controller__pb2.PredictionResponse.SerializeToString,
+            ),
+            'Initialization': grpc.unary_unary_rpc_method_handler(
+                    servicer.Initialization,
+                    request_deserializer=cnn__controller__pb2.InitRequest.FromString,
+                    response_serializer=cnn__controller__pb2.InitResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -66,5 +82,22 @@ class Predictor(object):
         return grpc.experimental.unary_unary(request, target, '/cnn_controller.Predictor/Prediction',
             cnn__controller__pb2.PredictionRequest.SerializeToString,
             cnn__controller__pb2.PredictionResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def Initialization(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/cnn_controller.Predictor/Initialization',
+            cnn__controller__pb2.InitRequest.SerializeToString,
+            cnn__controller__pb2.InitResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

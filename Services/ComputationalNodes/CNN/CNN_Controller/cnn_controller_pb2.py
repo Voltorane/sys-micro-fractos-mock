@@ -14,12 +14,14 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14\x63nn_controller.proto\x12\x0e\x63nn_controller\"I\n\x11PredictionRequest\x12\r\n\x05image\x18\x01 \x01(\t\x12\x11\n\timg_width\x18\x02 \x01(\x05\x12\x12\n\nimg_height\x18\x03 \x01(\x05\"2\n\x12PredictionResponse\x12\r\n\x05\x63lass\x18\x01 \x01(\t\x12\r\n\x05label\x18\x02 \x01(\x05\x32\x62\n\tPredictor\x12U\n\nPrediction\x12!.cnn_controller.PredictionRequest\x1a\".cnn_controller.PredictionResponse\"\x00\x42\x1b\x42\x0e\x43NN_ControllerP\x01\xa2\x02\x06\x43NNCTRb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x14\x63nn_controller.proto\x12\x0e\x63nn_controller\"I\n\x11PredictionRequest\x12\r\n\x05image\x18\x01 \x01(\t\x12\x11\n\timg_width\x18\x02 \x01(\x05\x12\x12\n\nimg_height\x18\x03 \x01(\x05\"K\n\x12PredictionResponse\x12\x12\n\ndata_class\x18\x01 \x01(\t\x12\r\n\x05label\x18\x02 \x01(\x05\x12\x12\n\nerror_code\x18\x03 \x01(\x05\"Z\n\x0bInitRequest\x12\x14\n\x0csample_limit\x18\x01 \x01(\x05\x12\x0e\n\x06\x65pochs\x18\x02 \x01(\x05\x12\x11\n\timg_width\x18\x03 \x01(\x05\x12\x12\n\nimg_height\x18\x04 \x01(\x05\"%\n\x0cInitResponse\x12\x15\n\rresponse_code\x18\x01 \x01(\x05\x32\xb1\x01\n\tPredictor\x12U\n\nPrediction\x12!.cnn_controller.PredictionRequest\x1a\".cnn_controller.PredictionResponse\"\x00\x12M\n\x0eInitialization\x12\x1b.cnn_controller.InitRequest\x1a\x1c.cnn_controller.InitResponse\"\x00\x42\x1b\x42\x0e\x43NN_ControllerP\x01\xa2\x02\x06\x43NNCTRb\x06proto3')
 
 
 
 _PREDICTIONREQUEST = DESCRIPTOR.message_types_by_name['PredictionRequest']
 _PREDICTIONRESPONSE = DESCRIPTOR.message_types_by_name['PredictionResponse']
+_INITREQUEST = DESCRIPTOR.message_types_by_name['InitRequest']
+_INITRESPONSE = DESCRIPTOR.message_types_by_name['InitResponse']
 PredictionRequest = _reflection.GeneratedProtocolMessageType('PredictionRequest', (_message.Message,), {
   'DESCRIPTOR' : _PREDICTIONREQUEST,
   '__module__' : 'cnn_controller_pb2'
@@ -34,6 +36,20 @@ PredictionResponse = _reflection.GeneratedProtocolMessageType('PredictionRespons
   })
 _sym_db.RegisterMessage(PredictionResponse)
 
+InitRequest = _reflection.GeneratedProtocolMessageType('InitRequest', (_message.Message,), {
+  'DESCRIPTOR' : _INITREQUEST,
+  '__module__' : 'cnn_controller_pb2'
+  # @@protoc_insertion_point(class_scope:cnn_controller.InitRequest)
+  })
+_sym_db.RegisterMessage(InitRequest)
+
+InitResponse = _reflection.GeneratedProtocolMessageType('InitResponse', (_message.Message,), {
+  'DESCRIPTOR' : _INITRESPONSE,
+  '__module__' : 'cnn_controller_pb2'
+  # @@protoc_insertion_point(class_scope:cnn_controller.InitResponse)
+  })
+_sym_db.RegisterMessage(InitResponse)
+
 _PREDICTOR = DESCRIPTOR.services_by_name['Predictor']
 if _descriptor._USE_C_DESCRIPTORS == False:
 
@@ -42,7 +58,11 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _PREDICTIONREQUEST._serialized_start=40
   _PREDICTIONREQUEST._serialized_end=113
   _PREDICTIONRESPONSE._serialized_start=115
-  _PREDICTIONRESPONSE._serialized_end=165
-  _PREDICTOR._serialized_start=167
-  _PREDICTOR._serialized_end=265
+  _PREDICTIONRESPONSE._serialized_end=190
+  _INITREQUEST._serialized_start=192
+  _INITREQUEST._serialized_end=282
+  _INITRESPONSE._serialized_start=284
+  _INITRESPONSE._serialized_end=321
+  _PREDICTOR._serialized_start=324
+  _PREDICTOR._serialized_end=501
 # @@protoc_insertion_point(module_scope)

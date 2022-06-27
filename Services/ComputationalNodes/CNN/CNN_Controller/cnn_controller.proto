@@ -10,6 +10,7 @@ package cnn_controller;
 service Predictor {
   // Sends a greeting
   rpc Prediction (PredictionRequest) returns (PredictionResponse) {}
+  rpc Initialization (InitRequest) returns (InitResponse) {}
 }
 
 message PredictionRequest {
@@ -19,6 +20,18 @@ message PredictionRequest {
 }
 
 message PredictionResponse {
-    string class = 1;
+    string data_class = 1;
     int32 label = 2;
+    int32 error_code = 3;
+}
+
+message InitRequest {
+    int32 sample_limit = 1;
+    int32 epochs = 2;
+    int32 img_width = 3;
+    int32 img_height = 4;
+}
+
+message InitResponse {
+  int32 response_code = 1;
 }
