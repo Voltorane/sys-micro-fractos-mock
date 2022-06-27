@@ -8,7 +8,9 @@ import storage_service
 
 class OutputCollector(cnn_controller_pb2_grpc.OutputCollectorServicer):
     def StoreOutput(self, request, context):
-        response_code, description = storage_service.store_output("target/output", request.text)
+        output_file = "target/output"
+        response_code, description = storage_service.store_output(output_file, request.text)
+        print("Output was stored in " + output_file)
         return cnn_controller_pb2.OutputSotrageResponse(response_code=response_code, description=description)
 
 def serve():

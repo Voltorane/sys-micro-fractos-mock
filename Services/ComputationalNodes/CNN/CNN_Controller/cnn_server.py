@@ -26,7 +26,10 @@ class Predictor(cnn_controller_pb2_grpc.PredictorServicer):
         response_code, label, data_class = response
         if response_code != 0:
             return cnn_controller_pb2.PredictionResponse(error_code=response_code)
-        self.send_output(data_class)
+        try:
+            self.send_output(data_class)
+        except:
+            print("Sending data to storage was usuccessfull!")
         return cnn_controller_pb2.PredictionResponse(label=int(label), data_class=data_class)
     
     def Initialization(self, request, context):
