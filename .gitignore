@@ -1,0 +1,9 @@
+grpc
+grpc-java
+protobuf_java_example
+Services/ComputationalNodes/perceptron/__pycache__
+Services/ComputationalNodes/perceptron/.ipynb_checkpoints
+Services/ComputationalNodes/perceptron/checkpoints
+*.zip
+*.ipynb
+Services/ComputationalNodes/perceptron/TrainingData/*
