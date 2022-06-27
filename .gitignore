@@ -10,3 +10,4 @@ sys-micro-fractos-mock/Services/ComputationalNodes/CNN/CNN_Controller/models
 *.ipynb
 sys-micro-fractos-mock/Services/ComputationalNodes/CNN/CNN_Controller/TrainingData
 sys-micro-fractos-mock/Services/ComputationalNodes/CNN/Node/models/
+sys-micro-fractos-mock/Services/ComputationalNodes/CNN/CNN_Adaptor/model_for_adaptor
