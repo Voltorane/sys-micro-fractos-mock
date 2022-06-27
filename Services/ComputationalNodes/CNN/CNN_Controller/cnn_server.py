@@ -14,11 +14,19 @@ class Predictor(cnn_controller_pb2_grpc.PredictorServicer):
         super().__init__()
         self.a = Adaptor()
     
+    def send_output(self, text):
+        with grpc.insecure_channel('localhost:50052') as channel:       
+            stub = cnn_controller_pb2_grpc.OutputCollectorStub(channel)
+            # response = stub.Initialization(cnn_controller_pb2.InitRequest(sample_limit=1000, epochs=5, img_width=128, img_height=128))
+            response = stub.StoreOutput(cnn_controller_pb2.OutputStorageRequest(text=text))
+            print("Response from output storage: " + str(response.description))
+    
     def Prediction (self, request, context):
         response = self.a.handle_request("PREDICT", request.image, request.img_width, request.img_height)
         response_code, label, data_class = response
         if response_code != 0:
             return cnn_controller_pb2.PredictionResponse(error_code=response_code)
+        self.send_output(data_class)
         return cnn_controller_pb2.PredictionResponse(label=int(label), data_class=data_class)
     
     def Initialization(self, request, context):

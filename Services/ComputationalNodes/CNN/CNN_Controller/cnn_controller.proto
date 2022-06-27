@@ -6,11 +6,26 @@ option objc_class_prefix = "CNNCTR";
 
 package cnn_controller;
 
-// The greeting service definition.
 service Predictor {
-  // Sends a greeting
+  // Sends a prediction
   rpc Prediction (PredictionRequest) returns (PredictionResponse) {}
+  // initializes the CNN with the given parameters
   rpc Initialization (InitRequest) returns (InitResponse) {}
+}
+
+service OutputCollector {
+  // Send output from computational node to storage node (typically not the sender node)
+  rpc StoreOutput (OutputStorageRequest) returns (OutputSotrageResponse) {}
+}
+
+message OutputStorageRequest {
+    string text = 1;
+    string name = 2;
+}
+
+message OutputSotrageResponse {
+  int32 response_code = 1;
+  string description = 2;
 }
 
 message PredictionRequest {

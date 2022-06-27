@@ -3,14 +3,9 @@ from __future__ import print_function
 import logging
 
 import grpc
-import sys
-sys.path.insert(1, "../ComputationalNodes/CNN/CNN_Controller")
 import cnn_controller_pb2_grpc
 import cnn_controller_pb2
 import base64
-import sys
-
-# sys.path.insert(1, "../../../StorageNode")
 import storage_service
 
 def run():
