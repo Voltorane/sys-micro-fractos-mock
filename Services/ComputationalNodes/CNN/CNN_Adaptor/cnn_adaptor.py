@@ -1,7 +1,6 @@
 import sys
 import base64
 import numpy as np
-from requests import request
 
 sys.path.insert(1, "../Node")
 import perceptron

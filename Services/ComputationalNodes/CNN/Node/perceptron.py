@@ -131,16 +131,13 @@ class Bot:
     def load_model(self, source_dir="models"):
         model_dir = os.listdir(os.path.join(self.dir_path, source_dir))
         if self.has_models(source_dir=source_dir) != 0:
-            print("aaaaaaaaaaaa")
             for dir_ in model_dir:
-                print(dir_)
                 name = dir_
                 try:
                     print(os.path.join(os.path.join(self.dir_path, source_dir), name))
                     model = keras.models.load_model(os.path.join(os.path.join(self.dir_path, source_dir), name))
                 except Exception as e:
                     print(e)
-                    print("bbbbb")
                     user_input = input(f"The model {os.path.join(os.path.join(self.dir_path, source_dir), name)} is not appropriate and could not be loaded. Should it be deleted? [y/n]")
                     if user_input.lower() in {"yes", "y"}:
                         print("Deleting the model...")

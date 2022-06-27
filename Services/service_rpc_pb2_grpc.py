@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import cnn_controller_pb2 as cnn__controller__pb2
+import service_rpc_pb2 as service__rpc__pb2
 
 
 class PredictorStub(object):
@@ -15,14 +15,14 @@ class PredictorStub(object):
             channel: A grpc.Channel.
         """
         self.Prediction = channel.unary_unary(
-                '/cnn_controller.Predictor/Prediction',
-                request_serializer=cnn__controller__pb2.PredictionRequest.SerializeToString,
-                response_deserializer=cnn__controller__pb2.PredictionResponse.FromString,
+                '/service_connector.Predictor/Prediction',
+                request_serializer=service__rpc__pb2.PredictionRequest.SerializeToString,
+                response_deserializer=service__rpc__pb2.PredictionResponse.FromString,
                 )
         self.Initialization = channel.unary_unary(
-                '/cnn_controller.Predictor/Initialization',
-                request_serializer=cnn__controller__pb2.InitRequest.SerializeToString,
-                response_deserializer=cnn__controller__pb2.InitResponse.FromString,
+                '/service_connector.Predictor/Initialization',
+                request_serializer=service__rpc__pb2.InitRequest.SerializeToString,
+                response_deserializer=service__rpc__pb2.InitResponse.FromString,
                 )
 
 
@@ -48,17 +48,17 @@ def add_PredictorServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'Prediction': grpc.unary_unary_rpc_method_handler(
                     servicer.Prediction,
-                    request_deserializer=cnn__controller__pb2.PredictionRequest.FromString,
-                    response_serializer=cnn__controller__pb2.PredictionResponse.SerializeToString,
+                    request_deserializer=service__rpc__pb2.PredictionRequest.FromString,
+                    response_serializer=service__rpc__pb2.PredictionResponse.SerializeToString,
             ),
             'Initialization': grpc.unary_unary_rpc_method_handler(
                     servicer.Initialization,
-                    request_deserializer=cnn__controller__pb2.InitRequest.FromString,
-                    response_serializer=cnn__controller__pb2.InitResponse.SerializeToString,
+                    request_deserializer=service__rpc__pb2.InitRequest.FromString,
+                    response_serializer=service__rpc__pb2.InitResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'cnn_controller.Predictor', rpc_method_handlers)
+            'service_connector.Predictor', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -77,9 +77,9 @@ class Predictor(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/cnn_controller.Predictor/Prediction',
-            cnn__controller__pb2.PredictionRequest.SerializeToString,
-            cnn__controller__pb2.PredictionResponse.FromString,
+        return grpc.experimental.unary_unary(request, target, '/service_connector.Predictor/Prediction',
+            service__rpc__pb2.PredictionRequest.SerializeToString,
+            service__rpc__pb2.PredictionResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -94,9 +94,9 @@ class Predictor(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/cnn_controller.Predictor/Initialization',
-            cnn__controller__pb2.InitRequest.SerializeToString,
-            cnn__controller__pb2.InitResponse.FromString,
+        return grpc.experimental.unary_unary(request, target, '/service_connector.Predictor/Initialization',
+            service__rpc__pb2.InitRequest.SerializeToString,
+            service__rpc__pb2.InitResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -111,9 +111,9 @@ class OutputCollectorStub(object):
             channel: A grpc.Channel.
         """
         self.StoreOutput = channel.unary_unary(
-                '/cnn_controller.OutputCollector/StoreOutput',
-                request_serializer=cnn__controller__pb2.OutputStorageRequest.SerializeToString,
-                response_deserializer=cnn__controller__pb2.OutputSotrageResponse.FromString,
+                '/service_connector.OutputCollector/StoreOutput',
+                request_serializer=service__rpc__pb2.OutputStorageRequest.SerializeToString,
+                response_deserializer=service__rpc__pb2.OutputSotrageResponse.FromString,
                 )
 
 
@@ -132,12 +132,12 @@ def add_OutputCollectorServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'StoreOutput': grpc.unary_unary_rpc_method_handler(
                     servicer.StoreOutput,
-                    request_deserializer=cnn__controller__pb2.OutputStorageRequest.FromString,
-                    response_serializer=cnn__controller__pb2.OutputSotrageResponse.SerializeToString,
+                    request_deserializer=service__rpc__pb2.OutputStorageRequest.FromString,
+                    response_serializer=service__rpc__pb2.OutputSotrageResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'cnn_controller.OutputCollector', rpc_method_handlers)
+            'service_connector.OutputCollector', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -156,8 +156,8 @@ class OutputCollector(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/cnn_controller.OutputCollector/StoreOutput',
-            cnn__controller__pb2.OutputStorageRequest.SerializeToString,
-            cnn__controller__pb2.OutputSotrageResponse.FromString,
+        return grpc.experimental.unary_unary(request, target, '/service_connector.OutputCollector/StoreOutput',
+            service__rpc__pb2.OutputStorageRequest.SerializeToString,
+            service__rpc__pb2.OutputSotrageResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

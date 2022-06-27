@@ -1,10 +1,10 @@
 syntax = "proto3";
 
 option java_multiple_files = true;
-option java_outer_classname = "CNN_Controller";
-option objc_class_prefix = "CNNCTR";
+option java_outer_classname = "Service_Connector";
+option objc_class_prefix = "SERVCONN";
 
-package cnn_controller;
+package service_connector;
 
 service Predictor {
   // Sends a prediction
@@ -19,7 +19,7 @@ service OutputCollector {
 }
 
 message OutputStorageRequest {
-    string text = 1;
+    string data = 1;
     string name = 2;
 }
 

@@ -1,6 +1,7 @@
 from tensorflow.keras.utils import load_img
 import numpy as np
 import os
+import base64
 
 
 def img_to_arr(path, img_width=256, img_height=256):
@@ -10,16 +11,18 @@ def img_to_arr(path, img_width=256, img_height=256):
     img = np.array(image)
     img = img / 255.0
     img = img.reshape(1, img_width, img_height, 3)
-    return img
+    return base64.b64encode(img)
 
-def store_output(path, text):
+def store_output(name, storage_dir, data):
     response_code, description = 0, "OK"
+    if name == "" or name is None:
+        name = "output"
     try:
-        # if not os.path.exists(path):
-            # os.makedirs(path)
-        with open(path, "w+") as f:
-            f.write(text)
+        if not os.path.exists(storage_dir):
+            os.makedirs(storage_dir)
+        with open(os.path.join(storage_dir, name), "w+") as f:
+            f.write(data)
     except Exception as e:
-        return 1, "FAILURE: " + e.__str__
+        return 1, "FAILURE: " + str(e)
     else:
         return response_code, description
