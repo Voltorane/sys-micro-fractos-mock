@@ -1,13 +1,6 @@
 grpc
-grpc-java
-protobuf_java_example
-Services/ComputationalNodes/perceptron/__pycache__
-Services/ComputationalNodes/perceptron/.ipynb_checkpoints
-Services/ComputationalNodes/perceptron/checkpoints
-sys-micro-fractos-mock/Services/ComputationalNodes/CNN/CNN_Controller/checkpoints
-sys-micro-fractos-mock/Services/ComputationalNodes/CNN/CNN_Controller/models
 *.zip
 *.ipynb
-sys-micro-fractos-mock/Services/ComputationalNodes/CNN/CNN_Controller/TrainingData
-sys-micro-fractos-mock/Services/ComputationalNodes/CNN/Node/models/
-sys-micro-fractos-mock/Services/ComputationalNodes/CNN/CNN_Adaptor/model_for_adaptor
+Services/ComputationalNodes/CNN/Node/TrainingData/*
+Services/ComputationalNodes/CNN/Node/models/*
+Services/ComputationalNodes/CNN/Node/checkpoints/*
