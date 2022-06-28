@@ -1,9 +1,9 @@
-from ast import arg
 from concurrent import futures
 import logging
-from platform import node
 
+from datetime import datetime
 import grpc
+import os
 #goto StorageNode
 import sys
 sys.path.insert(1, "../")
@@ -13,13 +13,32 @@ from Storage_Adaptor import storage_adaptor
 sys.path.insert(1, "../..")
 import service_rpc_pb2_grpc
 import service_rpc_pb2
-from node_types import NodeType
-
+import zookeeper_service
+from utils.node_types import NodeType
+from utils import ip_connector
+import kazoo
+from kazoo.client import KazooClient
+storage_controller_ip = "127.0.0.1:2181"
 
 class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
     def __init__(self) -> None:
         super().__init__()
         self.adaptor = storage_adaptor.Adaptor()
+        self.name = "storage_controller"
+        self.dir_path = os.path.dirname(__file__)
+        self.z_ips = ip_connector.extract_ip_list(os.path.join(self.dir_path, "ips.cfg"))
+        # TODO think about giving port config path in the arguments when calling
+        self.z_port = ip_connector.extract_port(self.name, "../../zookeeper_controller_ports.cfg")
+        # try connecting to all the ip's from config utill connection is successfull
+        if self.z_port is not None:
+            for z_ip in self.z_ips:
+                try:
+                    d = datetime.now().strftime("%H:%M:%S")
+                    self.zookeeper = zookeeper_service.ZKeeper(f"{z_ip}:{self.z_port}", f"{self.name}{str(d)}")
+                except kazoo.interfaces.IHandler.timeout_exception as e:
+                    print("Trying to reconnect to different ip...")
+                else:
+                    break
     
     def StoreOutput(self, request, context):
         response_code, description = self.adaptor.handle_request("STORE", request.data, request.name, request.storage_id)
@@ -33,6 +52,23 @@ class ImageSender(service_rpc_pb2_grpc.ImageSenderServicer):
     def __init__(self) -> None:
         super().__init__()
         self.adaptor = storage_adaptor.Adaptor()
+        self.name = "storage_controller"
+        self.dir_path = os.path.dirname(__file__)
+        self.z_ips = ip_connector.extract_ip_list(os.path.join(self.dir_path, "ips.cfg"))
+        # TODO think about giving port config path in the arguments when calling
+        self.z_port = ip_connector.extract_port(self.name, "../../zookeeper_controller_ports.cfg")
+        # try connecting to all the ip's from config utill connection is successfull
+        #TODO delete if move to other file
+        self.name = "image_sender"
+        if self.z_port is not None:
+            for z_ip in self.z_ips:
+                try:
+                    d = datetime.now().strftime("%H:%M:%S")
+                    self.zookeeper = zookeeper_service.ZKeeper(f"{z_ip}:{self.z_port}", f"{self.name}{str(d)}")
+                except kazoo.interfaces.IHandler.timeout_exception as e:
+                    print("Trying to reconnect to different ip...")
+                else:
+                    break
     
     # returns next request method and all the keys
     def parse_next_request(self, request):
@@ -87,7 +123,7 @@ def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     service_rpc_pb2_grpc.add_OutputCollectorServicer_to_server(OutputCollector(), server)
     service_rpc_pb2_grpc.add_ImageSenderServicer_to_server(ImageSender(), server)
-    server.add_insecure_port('127.0.0.1:2181')
+    server.add_insecure_port(storage_controller_ip)
     server.start()
     server.wait_for_termination()
 

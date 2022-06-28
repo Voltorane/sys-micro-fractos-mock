@@ -1,6 +1,11 @@
 grpc
+apache-zookeeper-3.7.1-bin
+# zookeeper
+*.out
 *.zip
 *.ipynb
+*.gz
+*.code-workspace
 Services/ComputationalNodes/CNN/Node/TrainingData/*
 Services/ComputationalNodes/CNN/Node/models/*
 Services/ComputationalNodes/CNN/Node/checkpoints/*
