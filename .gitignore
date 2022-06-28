@@ -6,6 +6,9 @@ apache-zookeeper-3.7.1-bin
 *.ipynb
 *.gz
 *.code-workspace
+*.pid
+**/log.*
+zookeeper/**/version-2
 Services/ComputationalNodes/CNN/Node/TrainingData/*
 Services/ComputationalNodes/CNN/Node/models/*
 Services/ComputationalNodes/CNN/Node/checkpoints/*
