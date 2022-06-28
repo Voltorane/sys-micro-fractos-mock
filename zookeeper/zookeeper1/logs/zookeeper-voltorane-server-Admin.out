@@ -1,0 +1,807 @@
+2022-06-28 12:38:06,361 [myid:] - INFO  [main:QuorumPeerConfig@174] - Reading configuration from: /home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../conf/zoo.cfg
+2022-06-28 12:38:06,365 [myid:] - INFO  [main:QuorumPeerConfig@444] - clientPortAddress is 0.0.0.0:2181
+2022-06-28 12:38:06,365 [myid:] - INFO  [main:QuorumPeerConfig@448] - secureClientPort is not set
+2022-06-28 12:38:06,365 [myid:] - INFO  [main:QuorumPeerConfig@464] - observerMasterPort is not set
+2022-06-28 12:38:06,365 [myid:] - INFO  [main:QuorumPeerConfig@481] - metricsProvider.className is org.apache.zookeeper.metrics.impl.DefaultMetricsProvider
+2022-06-28 12:38:06,370 [myid:1] - INFO  [main:DatadirCleanupManager@78] - autopurge.snapRetainCount set to 3
+2022-06-28 12:38:06,370 [myid:1] - INFO  [main:DatadirCleanupManager@79] - autopurge.purgeInterval set to 0
+2022-06-28 12:38:06,370 [myid:1] - INFO  [main:DatadirCleanupManager@101] - Purge task is not scheduled.
+2022-06-28 12:38:06,371 [myid:1] - INFO  [main:ManagedUtil@46] - Log4j 1.2 jmx support not found; jmx disabled.
+2022-06-28 12:38:06,371 [myid:1] - INFO  [main:QuorumPeerMain@152] - Starting quorum peer, myid=1
+2022-06-28 12:38:06,379 [myid:1] - INFO  [main:ServerMetrics@62] - ServerMetrics initialized with provider org.apache.zookeeper.metrics.impl.DefaultMetricsProvider@525b461a
+2022-06-28 12:38:06,381 [myid:1] - INFO  [main:DigestAuthenticationProvider@47] - ACL digest algorithm is: SHA1
+2022-06-28 12:38:06,382 [myid:1] - INFO  [main:DigestAuthenticationProvider@61] - zookeeper.DigestAuthenticationProvider.enabled = true
+2022-06-28 12:38:06,386 [myid:1] - INFO  [main:ServerCnxnFactory@169] - Using org.apache.zookeeper.server.NIOServerCnxnFactory as server connection factory
+2022-06-28 12:38:06,387 [myid:1] - WARN  [main:ServerCnxnFactory@309] - maxCnxns is not configured, using default value 0.
+2022-06-28 12:38:06,389 [myid:1] - INFO  [main:NIOServerCnxnFactory@652] - Configuring NIO connection handler with 10s sessionless connection timeout, 2 selector thread(s), 16 worker threads, and 64 kB direct buffers.
+2022-06-28 12:38:06,396 [myid:1] - INFO  [main:NIOServerCnxnFactory@660] - binding to port 0.0.0.0/0.0.0.0:2181
+2022-06-28 12:38:06,404 [myid:1] - INFO  [main:QuorumPeer@797] - zookeeper.quorumCnxnTimeoutMs=-1
+2022-06-28 12:38:06,426 [myid:1] - INFO  [main:Log@170] - Logging initialized @455ms to org.eclipse.jetty.util.log.Slf4jLog
+2022-06-28 12:38:06,487 [myid:1] - WARN  [main:ContextHandler@1656] - o.e.j.s.ServletContextHandler@692f203f{/,null,STOPPED} contextPath ends with /*
+2022-06-28 12:38:06,487 [myid:1] - WARN  [main:ContextHandler@1667] - Empty contextPath
+2022-06-28 12:38:06,506 [myid:1] - INFO  [main:X509Util@77] - Setting -D jdk.tls.rejectClientInitiatedRenegotiation=true to disable client-initiated TLS renegotiation
+2022-06-28 12:38:06,508 [myid:1] - INFO  [main:FileTxnSnapLog@124] - zookeeper.snapshot.trust.empty : false
+2022-06-28 12:38:06,511 [myid:1] - INFO  [main:QuorumPeer@1747] - Local sessions disabled
+2022-06-28 12:38:06,512 [myid:1] - INFO  [main:QuorumPeer@1758] - Local session upgrading disabled
+2022-06-28 12:38:06,512 [myid:1] - INFO  [main:QuorumPeer@1725] - tickTime set to 2000
+2022-06-28 12:38:06,512 [myid:1] - INFO  [main:QuorumPeer@1769] - minSessionTimeout set to 4000
+2022-06-28 12:38:06,512 [myid:1] - INFO  [main:QuorumPeer@1780] - maxSessionTimeout set to 40000
+2022-06-28 12:38:06,512 [myid:1] - INFO  [main:QuorumPeer@1805] - initLimit set to 10
+2022-06-28 12:38:06,512 [myid:1] - INFO  [main:QuorumPeer@1992] - syncLimit set to 5
+2022-06-28 12:38:06,512 [myid:1] - INFO  [main:QuorumPeer@2007] - connectToLearnerMasterLimit set to 0
+2022-06-28 12:38:06,522 [myid:1] - INFO  [main:ZookeeperBanner@42] - 
+2022-06-28 12:38:06,523 [myid:1] - INFO  [main:ZookeeperBanner@42] -   ______                  _                                          
+2022-06-28 12:38:06,523 [myid:1] - INFO  [main:ZookeeperBanner@42] -  |___  /                 | |                                         
+2022-06-28 12:38:06,523 [myid:1] - INFO  [main:ZookeeperBanner@42] -     / /    ___     ___   | | __   ___    ___   _ __     ___   _ __   
+2022-06-28 12:38:06,523 [myid:1] - INFO  [main:ZookeeperBanner@42] -    / /    / _ \   / _ \  | |/ /  / _ \  / _ \ | '_ \   / _ \ | '__|
+2022-06-28 12:38:06,523 [myid:1] - INFO  [main:ZookeeperBanner@42] -   / /__  | (_) | | (_) | |   <  |  __/ |  __/ | |_) | |  __/ | |    
+2022-06-28 12:38:06,523 [myid:1] - INFO  [main:ZookeeperBanner@42] -  /_____|  \___/   \___/  |_|\_\  \___|  \___| | .__/   \___| |_|
+2022-06-28 12:38:06,523 [myid:1] - INFO  [main:ZookeeperBanner@42] -                                               | |                     
+2022-06-28 12:38:06,523 [myid:1] - INFO  [main:ZookeeperBanner@42] -                                               |_|                     
+2022-06-28 12:38:06,523 [myid:1] - INFO  [main:ZookeeperBanner@42] - 
+2022-06-28 12:38:06,524 [myid:1] - INFO  [main:Environment@98] - Server environment:zookeeper.version=3.7.1-a2fb57c55f8e59cdd76c34b357ad5181df1258d5, built on 2022-05-07 06:45 UTC
+2022-06-28 12:38:06,525 [myid:1] - INFO  [main:Environment@98] - Server environment:host.name=Admin
+2022-06-28 12:38:06,525 [myid:1] - INFO  [main:Environment@98] - Server environment:java.version=17.0.3
+2022-06-28 12:38:06,525 [myid:1] - INFO  [main:Environment@98] - Server environment:java.vendor=Private Build
+2022-06-28 12:38:06,525 [myid:1] - INFO  [main:Environment@98] - Server environment:java.home=/usr/lib/jvm/java-17-openjdk-amd64
+2022-06-28 12:38:06,525 [myid:1] - INFO  [main:Environment@98] - Server environment:java.class.path=/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../zookeeper-server/target/classes:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../build/classes:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../zookeeper-server/target/lib/*.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../build/lib/*.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/zookeeper-prometheus-metrics-3.7.1.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/zookeeper-jute-3.7.1.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/zookeeper-3.7.1.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/snappy-java-1.1.7.7.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/slf4j-reload4j-1.7.35.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/slf4j-api-1.7.35.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/simpleclient_servlet-0.9.0.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/simpleclient_hotspot-0.9.0.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/simpleclient_common-0.9.0.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/simpleclient-0.9.0.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/reload4j-1.2.19.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/netty-transport-native-unix-common-4.1.76.Final.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/netty-transport-native-epoll-4.1.76.Final.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/netty-transport-classes-epoll-4.1.76.Final.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/netty-transport-4.1.76.Final.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/netty-resolver-4.1.76.Final.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/netty-handler-4.1.76.Final.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/netty-common-4.1.76.Final.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/netty-codec-4.1.76.Final.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/netty-buffer-4.1.76.Final.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/metrics-core-4.1.12.1.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/jline-2.14.6.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/jetty-util-ajax-9.4.43.v20210629.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/jetty-util-9.4.43.v20210629.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/jetty-servlet-9.4.43.v20210629.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/jetty-server-9.4.43.v20210629.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/jetty-security-9.4.43.v20210629.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/jetty-io-9.4.43.v20210629.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/jetty-http-9.4.43.v20210629.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/javax.servlet-api-3.1.0.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/jackson-databind-2.13.2.1.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/jackson-core-2.13.2.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/jackson-annotations-2.13.2.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/commons-cli-1.4.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../lib/audience-annotations-0.12.0.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../zookeeper-*.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../zookeeper-server/src/main/resources/lib/*.jar:/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin/../conf:
+2022-06-28 12:38:06,525 [myid:1] - INFO  [main:Environment@98] - Server environment:java.library.path=/usr/java/packages/lib:/usr/lib/x86_64-linux-gnu/jni:/lib/x86_64-linux-gnu:/usr/lib/x86_64-linux-gnu:/usr/lib/jni:/lib:/usr/lib
+2022-06-28 12:38:06,525 [myid:1] - INFO  [main:Environment@98] - Server environment:java.io.tmpdir=/tmp
+2022-06-28 12:38:06,525 [myid:1] - INFO  [main:Environment@98] - Server environment:java.compiler=<NA>
+2022-06-28 12:38:06,526 [myid:1] - INFO  [main:Environment@98] - Server environment:os.name=Linux
+2022-06-28 12:38:06,526 [myid:1] - INFO  [main:Environment@98] - Server environment:os.arch=amd64
+2022-06-28 12:38:06,526 [myid:1] - INFO  [main:Environment@98] - Server environment:os.version=5.13.0-48-generic
+2022-06-28 12:38:06,526 [myid:1] - INFO  [main:Environment@98] - Server environment:user.name=voltorane
+2022-06-28 12:38:06,526 [myid:1] - INFO  [main:Environment@98] - Server environment:user.home=/home/voltorane
+2022-06-28 12:38:06,526 [myid:1] - INFO  [main:Environment@98] - Server environment:user.dir=/home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/bin
+2022-06-28 12:38:06,526 [myid:1] - INFO  [main:Environment@98] - Server environment:os.memory.free=106MB
+2022-06-28 12:38:06,526 [myid:1] - INFO  [main:Environment@98] - Server environment:os.memory.max=1000MB
+2022-06-28 12:38:06,526 [myid:1] - INFO  [main:Environment@98] - Server environment:os.memory.total=126MB
+2022-06-28 12:38:06,526 [myid:1] - INFO  [main:ZooKeeperServer@138] - zookeeper.enableEagerACLCheck = false
+2022-06-28 12:38:06,526 [myid:1] - INFO  [main:ZooKeeperServer@151] - zookeeper.digest.enabled = true
+2022-06-28 12:38:06,526 [myid:1] - INFO  [main:ZooKeeperServer@155] - zookeeper.closeSessionTxn.enabled = true
+2022-06-28 12:38:06,527 [myid:1] - INFO  [main:ZooKeeperServer@1505] - zookeeper.flushDelay=0
+2022-06-28 12:38:06,527 [myid:1] - INFO  [main:ZooKeeperServer@1514] - zookeeper.maxWriteQueuePollTime=0
+2022-06-28 12:38:06,527 [myid:1] - INFO  [main:ZooKeeperServer@1523] - zookeeper.maxBatchSize=1000
+2022-06-28 12:38:06,527 [myid:1] - INFO  [main:ZooKeeperServer@260] - zookeeper.intBufferStartingSizeBytes = 1024
+2022-06-28 12:38:06,531 [myid:1] - INFO  [main:WatchManagerFactory@42] - Using org.apache.zookeeper.server.watch.WatchManager as watch manager
+2022-06-28 12:38:06,531 [myid:1] - INFO  [main:WatchManagerFactory@42] - Using org.apache.zookeeper.server.watch.WatchManager as watch manager
+2022-06-28 12:38:06,531 [myid:1] - INFO  [main:ZKDatabase@133] - zookeeper.snapshotSizeFactor = 0.33
+2022-06-28 12:38:06,531 [myid:1] - INFO  [main:ZKDatabase@153] - zookeeper.commitLogCount=500
+2022-06-28 12:38:06,538 [myid:1] - INFO  [main:QuorumPeer@2071] - Using insecure (non-TLS) quorum communication
+2022-06-28 12:38:06,538 [myid:1] - INFO  [main:QuorumPeer@2077] - Port unification disabled
+2022-06-28 12:38:06,538 [myid:1] - INFO  [main:QuorumPeer@180] - multiAddress.enabled set to false
+2022-06-28 12:38:06,538 [myid:1] - INFO  [main:QuorumPeer@205] - multiAddress.reachabilityCheckEnabled set to true
+2022-06-28 12:38:06,538 [myid:1] - INFO  [main:QuorumPeer@192] - multiAddress.reachabilityCheckTimeoutMs set to 1000
+2022-06-28 12:38:06,538 [myid:1] - INFO  [main:QuorumPeer@2532] - QuorumPeer communication is not secured! (SASL auth disabled)
+2022-06-28 12:38:06,538 [myid:1] - INFO  [main:QuorumPeer@2557] - quorum.cnxn.threads.size set to 20
+2022-06-28 12:38:06,544 [myid:1] - INFO  [main:SnapStream@61] - zookeeper.snapshot.compression.method = CHECKED
+2022-06-28 12:38:06,545 [myid:1] - INFO  [main:FileTxnSnapLog@479] - Snapshotting: 0x0 to /home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/data1/version-2/snapshot.0
+2022-06-28 12:38:06,548 [myid:1] - INFO  [main:ZKDatabase@290] - Snapshot loaded in 10 ms, highest zxid is 0x0, digest is 1371985504
+2022-06-28 12:38:06,549 [myid:1] - INFO  [main:QuorumPeer@1157] - currentEpoch not found! Creating with a reasonable default of 0. This should only happen when you are upgrading your installation
+2022-06-28 12:38:06,553 [myid:1] - INFO  [main:QuorumPeer@1185] - acceptedEpoch not found! Creating with a reasonable default of 0. This should only happen when you are upgrading your installation
+2022-06-28 12:38:06,559 [myid:1] - INFO  [main:Server@375] - jetty-9.4.43.v20210629; built: 2021-06-30T11:07:22.254Z; git: 526006ecfa3af7f1a27ef3a288e2bef7ea9dd7e8; jvm 17.0.3+7-Ubuntu-0ubuntu0.20.04.1
+2022-06-28 12:38:06,580 [myid:1] - INFO  [main:DefaultSessionIdManager@334] - DefaultSessionIdManager workerName=node0
+2022-06-28 12:38:06,580 [myid:1] - INFO  [main:DefaultSessionIdManager@339] - No SessionScavenger set, using defaults
+2022-06-28 12:38:06,587 [myid:1] - INFO  [main:HouseKeeper@132] - node0 Scavenging every 600000ms
+2022-06-28 12:38:06,592 [myid:1] - WARN  [main:ConstraintSecurityHandler@759] - ServletContext@o.e.j.s.ServletContextHandler@692f203f{/,null,STARTING} has uncovered http methods for path: /*
+2022-06-28 12:38:06,602 [myid:1] - INFO  [main:ContextHandler@915] - Started o.e.j.s.ServletContextHandler@692f203f{/,null,AVAILABLE}
+2022-06-28 12:38:06,609 [myid:1] - INFO  [main:AbstractConnector@331] - Started ServerConnector@498d318c{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
+2022-06-28 12:38:06,609 [myid:1] - INFO  [main:Server@415] - Started @638ms
+2022-06-28 12:38:06,609 [myid:1] - INFO  [main:JettyAdminServer@190] - Started AdminServer on address 0.0.0.0, port 8080 and command URL /commands
+2022-06-28 12:38:06,610 [myid:1] - INFO  [main:QuorumPeer@2574] - Using 10000ms as the quorum cnxn socket timeout
+2022-06-28 12:38:06,616 [myid:1] - INFO  [main:QuorumCnxManager$Listener@924] - Election port bind maximum retries is 3
+2022-06-28 12:38:06,617 [myid:1] - INFO  [main:FastLeaderElection@89] - zookeeper.fastleader.minNotificationInterval=200
+2022-06-28 12:38:06,617 [myid:1] - INFO  [main:FastLeaderElection@91] - zookeeper.fastleader.maxNotificationInterval=60000
+2022-06-28 12:38:06,618 [myid:1] - INFO  [ListenerHandler-localhost/127.0.0.1:3888:QuorumCnxManager$Listener$ListenerHandler@1071] - 1 is accepting connections now, my election bind port: localhost/127.0.0.1:3888
+2022-06-28 12:38:06,619 [myid:1] - INFO  [main:ZKAuditProvider@42] - ZooKeeper audit is disabled.
+2022-06-28 12:38:06,623 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):QuorumPeer@1438] - LOOKING
+2022-06-28 12:38:06,624 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):FastLeaderElection@945] - New election. My id = 1, proposed zxid=0x0
+2022-06-28 12:38:06,628 [myid:1] - INFO  [WorkerReceiver[myid=1]:FastLeaderElection$Messenger$WorkerReceiver@390] - Notification: my state:LOOKING; n.sid:1, n.state:LOOKING, n.leader:1, n.round:0x1, n.peerEpoch:0x0, n.zxid:0x0, message format version:0x2, n.config version:0x0
+2022-06-28 12:38:06,631 [myid:1] - WARN  [QuorumConnectionThread-[myid=1]-1:QuorumCnxManager@401] - Cannot open channel to 2 at election address localhost/127.0.0.1:3889
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(QuorumCnxManager.java:384)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager$QuorumConnectionReqThread.run(QuorumCnxManager.java:458)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:06,631 [myid:1] - WARN  [QuorumConnectionThread-[myid=1]-2:QuorumCnxManager@401] - Cannot open channel to 3 at election address localhost/127.0.0.1:3890
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(QuorumCnxManager.java:384)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager$QuorumConnectionReqThread.run(QuorumCnxManager.java:458)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:06,830 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):FastLeaderElection@980] - Notification time out: 400
+2022-06-28 12:38:06,830 [myid:1] - WARN  [QuorumConnectionThread-[myid=1]-3:QuorumCnxManager@401] - Cannot open channel to 2 at election address localhost/127.0.0.1:3889
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(QuorumCnxManager.java:384)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager$QuorumConnectionReqThread.run(QuorumCnxManager.java:458)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:06,830 [myid:1] - WARN  [QuorumConnectionThread-[myid=1]-2:QuorumCnxManager@401] - Cannot open channel to 3 at election address localhost/127.0.0.1:3890
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(QuorumCnxManager.java:384)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager$QuorumConnectionReqThread.run(QuorumCnxManager.java:458)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:07,231 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):FastLeaderElection@980] - Notification time out: 800
+2022-06-28 12:38:07,231 [myid:1] - WARN  [QuorumConnectionThread-[myid=1]-2:QuorumCnxManager@401] - Cannot open channel to 2 at election address localhost/127.0.0.1:3889
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(QuorumCnxManager.java:384)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager$QuorumConnectionReqThread.run(QuorumCnxManager.java:458)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:07,231 [myid:1] - WARN  [QuorumConnectionThread-[myid=1]-3:QuorumCnxManager@401] - Cannot open channel to 3 at election address localhost/127.0.0.1:3890
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(QuorumCnxManager.java:384)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager$QuorumConnectionReqThread.run(QuorumCnxManager.java:458)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:08,032 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):FastLeaderElection@980] - Notification time out: 1600
+2022-06-28 12:38:08,032 [myid:1] - WARN  [QuorumConnectionThread-[myid=1]-3:QuorumCnxManager@401] - Cannot open channel to 2 at election address localhost/127.0.0.1:3889
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(QuorumCnxManager.java:384)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager$QuorumConnectionReqThread.run(QuorumCnxManager.java:458)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:08,032 [myid:1] - WARN  [QuorumConnectionThread-[myid=1]-2:QuorumCnxManager@401] - Cannot open channel to 3 at election address localhost/127.0.0.1:3890
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(QuorumCnxManager.java:384)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager$QuorumConnectionReqThread.run(QuorumCnxManager.java:458)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:09,634 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):FastLeaderElection@980] - Notification time out: 3200
+2022-06-28 12:38:09,634 [myid:1] - WARN  [QuorumConnectionThread-[myid=1]-2:QuorumCnxManager@401] - Cannot open channel to 2 at election address localhost/127.0.0.1:3889
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(QuorumCnxManager.java:384)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager$QuorumConnectionReqThread.run(QuorumCnxManager.java:458)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:09,635 [myid:1] - WARN  [QuorumConnectionThread-[myid=1]-3:QuorumCnxManager@401] - Cannot open channel to 3 at election address localhost/127.0.0.1:3890
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(QuorumCnxManager.java:384)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager$QuorumConnectionReqThread.run(QuorumCnxManager.java:458)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:12,837 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):FastLeaderElection@980] - Notification time out: 6400
+2022-06-28 12:38:12,837 [myid:1] - WARN  [QuorumConnectionThread-[myid=1]-3:QuorumCnxManager@401] - Cannot open channel to 2 at election address localhost/127.0.0.1:3889
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(QuorumCnxManager.java:384)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager$QuorumConnectionReqThread.run(QuorumCnxManager.java:458)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:12,838 [myid:1] - WARN  [QuorumConnectionThread-[myid=1]-2:QuorumCnxManager@401] - Cannot open channel to 3 at election address localhost/127.0.0.1:3890
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(QuorumCnxManager.java:384)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager$QuorumConnectionReqThread.run(QuorumCnxManager.java:458)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:19,239 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):FastLeaderElection@980] - Notification time out: 12800
+2022-06-28 12:38:19,240 [myid:1] - WARN  [QuorumConnectionThread-[myid=1]-2:QuorumCnxManager@401] - Cannot open channel to 2 at election address localhost/127.0.0.1:3889
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(QuorumCnxManager.java:384)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager$QuorumConnectionReqThread.run(QuorumCnxManager.java:458)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:19,240 [myid:1] - WARN  [QuorumConnectionThread-[myid=1]-3:QuorumCnxManager@401] - Cannot open channel to 3 at election address localhost/127.0.0.1:3890
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(QuorumCnxManager.java:384)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager$QuorumConnectionReqThread.run(QuorumCnxManager.java:458)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:30,392 [myid:1] - WARN  [NIOWorkerThread-1:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:31,636 [myid:1] - WARN  [NIOWorkerThread-2:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:32,041 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):FastLeaderElection@980] - Notification time out: 25600
+2022-06-28 12:38:32,041 [myid:1] - WARN  [QuorumConnectionThread-[myid=1]-3:QuorumCnxManager@401] - Cannot open channel to 2 at election address localhost/127.0.0.1:3889
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(QuorumCnxManager.java:384)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager$QuorumConnectionReqThread.run(QuorumCnxManager.java:458)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:32,041 [myid:1] - WARN  [QuorumConnectionThread-[myid=1]-2:QuorumCnxManager@401] - Cannot open channel to 3 at election address localhost/127.0.0.1:3890
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(QuorumCnxManager.java:384)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager$QuorumConnectionReqThread.run(QuorumCnxManager.java:458)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:33,604 [myid:1] - WARN  [NIOWorkerThread-3:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:34,722 [myid:1] - WARN  [NIOWorkerThread-4:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:36,228 [myid:1] - WARN  [NIOWorkerThread-5:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:38,021 [myid:1] - WARN  [NIOWorkerThread-6:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:39,669 [myid:1] - WARN  [NIOWorkerThread-7:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:41,000 [myid:1] - WARN  [NIOWorkerThread-8:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:42,225 [myid:1] - WARN  [NIOWorkerThread-9:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:43,798 [myid:1] - WARN  [NIOWorkerThread-10:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:45,288 [myid:1] - WARN  [NIOWorkerThread-11:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:46,964 [myid:1] - WARN  [NIOWorkerThread-12:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:48,344 [myid:1] - WARN  [NIOWorkerThread-13:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:50,366 [myid:1] - WARN  [NIOWorkerThread-14:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:52,375 [myid:1] - WARN  [NIOWorkerThread-15:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:54,193 [myid:1] - WARN  [NIOWorkerThread-16:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:55,334 [myid:1] - WARN  [NIOWorkerThread-1:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:56,775 [myid:1] - WARN  [NIOWorkerThread-2:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:57,642 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):FastLeaderElection@980] - Notification time out: 51200
+2022-06-28 12:38:57,642 [myid:1] - WARN  [QuorumConnectionThread-[myid=1]-2:QuorumCnxManager@401] - Cannot open channel to 2 at election address localhost/127.0.0.1:3889
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(QuorumCnxManager.java:384)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager$QuorumConnectionReqThread.run(QuorumCnxManager.java:458)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:57,642 [myid:1] - WARN  [QuorumConnectionThread-[myid=1]-3:QuorumCnxManager@401] - Cannot open channel to 3 at election address localhost/127.0.0.1:3890
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(QuorumCnxManager.java:384)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager$QuorumConnectionReqThread.run(QuorumCnxManager.java:458)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:38:58,865 [myid:1] - WARN  [NIOWorkerThread-3:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:00,760 [myid:1] - WARN  [NIOWorkerThread-4:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:02,189 [myid:1] - WARN  [NIOWorkerThread-5:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:04,282 [myid:1] - WARN  [NIOWorkerThread-6:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:06,291 [myid:1] - WARN  [NIOWorkerThread-7:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:07,477 [myid:1] - WARN  [NIOWorkerThread-8:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:09,426 [myid:1] - WARN  [NIOWorkerThread-9:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:11,072 [myid:1] - WARN  [NIOWorkerThread-10:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:12,761 [myid:1] - WARN  [NIOWorkerThread-11:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:14,545 [myid:1] - WARN  [NIOWorkerThread-12:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:16,552 [myid:1] - WARN  [NIOWorkerThread-13:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:18,069 [myid:1] - WARN  [NIOWorkerThread-14:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:19,986 [myid:1] - WARN  [NIOWorkerThread-15:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:21,275 [myid:1] - WARN  [NIOWorkerThread-16:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:22,924 [myid:1] - WARN  [NIOWorkerThread-1:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:24,205 [myid:1] - WARN  [NIOWorkerThread-2:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:25,566 [myid:1] - WARN  [NIOWorkerThread-3:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:27,514 [myid:1] - WARN  [NIOWorkerThread-4:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:28,805 [myid:1] - WARN  [NIOWorkerThread-5:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:30,187 [myid:1] - WARN  [NIOWorkerThread-6:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:31,740 [myid:1] - WARN  [NIOWorkerThread-7:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:33,206 [myid:1] - WARN  [NIOWorkerThread-8:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:35,118 [myid:1] - WARN  [NIOWorkerThread-9:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:36,731 [myid:1] - WARN  [NIOWorkerThread-10:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:38,626 [myid:1] - WARN  [NIOWorkerThread-11:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:40,599 [myid:1] - WARN  [NIOWorkerThread-12:NIOServerCnxn@380] - Close of session 0x0
+java.io.IOException: ZooKeeperServer not running
+	at org.apache.zookeeper.server.NIOServerCnxn.readLength(NIOServerCnxn.java:554)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:339)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:40,680 [myid:1] - INFO  [ListenerHandler-localhost/127.0.0.1:3888:QuorumCnxManager$Listener$ListenerHandler@1076] - Received connection request from /127.0.0.1:56408
+2022-06-28 12:39:40,687 [myid:1] - INFO  [WorkerReceiver[myid=1]:FastLeaderElection$Messenger$WorkerReceiver@390] - Notification: my state:LOOKING; n.sid:2, n.state:LOOKING, n.leader:2, n.round:0x1, n.peerEpoch:0x0, n.zxid:0x0, message format version:0x2, n.config version:0x0
+2022-06-28 12:39:40,688 [myid:1] - INFO  [WorkerReceiver[myid=1]:FastLeaderElection$Messenger$WorkerReceiver@390] - Notification: my state:LOOKING; n.sid:1, n.state:LOOKING, n.leader:2, n.round:0x1, n.peerEpoch:0x0, n.zxid:0x0, message format version:0x2, n.config version:0x0
+2022-06-28 12:39:40,689 [myid:1] - WARN  [QuorumConnectionThread-[myid=1]-4:QuorumCnxManager@401] - Cannot open channel to 3 at election address localhost/127.0.0.1:3890
+java.net.ConnectException: Connection refused
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method)
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672)
+	at java.base/sun.nio.ch.NioSocketImpl.timedFinishConnect(NioSocketImpl.java:542)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:597)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:633)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager.initiateConnection(QuorumCnxManager.java:384)
+	at org.apache.zookeeper.server.quorum.QuorumCnxManager$QuorumConnectionReqThread.run(QuorumCnxManager.java:458)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-06-28 12:39:40,888 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):QuorumPeer@902] - Peer state changed: following
+2022-06-28 12:39:40,889 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):QuorumPeer@1520] - FOLLOWING
+2022-06-28 12:39:40,893 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):Learner@130] - leaderConnectDelayDuringRetryMs: 100
+2022-06-28 12:39:40,893 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):Learner@131] - TCP NoDelay set to: true
+2022-06-28 12:39:40,893 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):Learner@132] - zookeeper.learner.asyncSending = false
+2022-06-28 12:39:40,893 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):Learner@133] - zookeeper.learner.closeSocketAsync = false
+2022-06-28 12:39:40,895 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):BlueThrottle@141] - Weighed connection throttling is disabled
+2022-06-28 12:39:40,896 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):ZooKeeperServer@1306] - minSessionTimeout set to 4000
+2022-06-28 12:39:40,896 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):ZooKeeperServer@1315] - maxSessionTimeout set to 40000
+2022-06-28 12:39:40,898 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):ResponseCache@45] - getData response cache size is initialized with value 400.
+2022-06-28 12:39:40,898 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):ResponseCache@45] - getChildren response cache size is initialized with value 400.
+2022-06-28 12:39:40,899 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):RequestPathMetricsCollector@109] - zookeeper.pathStats.slotCapacity = 60
+2022-06-28 12:39:40,899 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):RequestPathMetricsCollector@110] - zookeeper.pathStats.slotDuration = 15
+2022-06-28 12:39:40,900 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):RequestPathMetricsCollector@111] - zookeeper.pathStats.maxDepth = 6
+2022-06-28 12:39:40,900 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):RequestPathMetricsCollector@112] - zookeeper.pathStats.initialDelay = 5
+2022-06-28 12:39:40,900 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):RequestPathMetricsCollector@113] - zookeeper.pathStats.delay = 5
+2022-06-28 12:39:40,900 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):RequestPathMetricsCollector@114] - zookeeper.pathStats.enabled = false
+2022-06-28 12:39:40,902 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):ZooKeeperServer@1542] - The max bytes for all large requests are set to 104857600
+2022-06-28 12:39:40,902 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):ZooKeeperServer@1556] - The large request threshold is set to -1
+2022-06-28 12:39:40,903 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):AuthenticationHelper@66] - zookeeper.enforce.auth.enabled = false
+2022-06-28 12:39:40,903 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):AuthenticationHelper@67] - zookeeper.enforce.auth.schemes = []
+2022-06-28 12:39:40,903 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):ZooKeeperServer@361] - Created server with tickTime 2000 minSessionTimeout 4000 maxSessionTimeout 40000 clientPortListenBacklog -1 datadir /home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/data1/version-2 snapdir /home/voltorane/Documents/University/Seminar/sys-micro-fractos-mock/zookeeper/zookeeper1/data1/version-2
+2022-06-28 12:39:40,904 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):Follower@77] - FOLLOWING - LEADER ELECTION TOOK - 94281 MS
+2022-06-28 12:39:40,907 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):QuorumPeer@916] - Peer state changed: following - discovery
+2022-06-28 12:39:40,910 [myid:1] - INFO  [LeaderConnector-localhost/127.0.0.1:2889:Learner$LeaderConnector@384] - Successfully connected to leader, using address: localhost/127.0.0.1:2889
+2022-06-28 12:39:40,926 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):QuorumPeer@916] - Peer state changed: following - synchronization
+2022-06-28 12:39:40,928 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):Learner@565] - Getting a diff from the leader 0x0
+2022-06-28 12:39:40,928 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):QuorumPeer@921] - Peer state changed: following - synchronization - diff
+2022-06-28 12:39:40,931 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):Learner@737] - Learner received NEWLEADER message
+2022-06-28 12:39:40,931 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):QuorumPeer@1875] - Dynamic reconfig is disabled, we don't store the last seen config.
+2022-06-28 12:39:40,934 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):QuorumPeer@921] - Peer state changed: following - synchronization
+2022-06-28 12:39:40,938 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):CommitProcessor@491] - Configuring CommitProcessor with readBatchSize -1 commitBatchSize 1
+2022-06-28 12:39:40,938 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):CommitProcessor@452] - Configuring CommitProcessor with 8 worker threads.
+2022-06-28 12:39:40,938 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):FollowerRequestProcessor@59] - Initialized FollowerRequestProcessor with zookeeper.follower.skipLearnerRequestToNextProcessor as false
+2022-06-28 12:39:40,940 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):RequestThrottler@75] - zookeeper.request_throttler.shutdownTimeout = 10000
+2022-06-28 12:39:40,985 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):Learner@721] - Learner received UPTODATE message
+2022-06-28 12:39:40,985 [myid:1] - INFO  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):QuorumPeer@916] - Peer state changed: following - broadcast
+2022-06-28 12:39:42,329 [myid:1] - WARN  [QuorumPeer[myid=1](plain=[0:0:0:0:0:0:0:0]:2181)(secure=disabled):Follower@169] - Got zxid 0x100000001 expected 0x1
+2022-06-28 12:39:42,329 [myid:1] - INFO  [SyncThread:1:FileTxnLog@284] - Creating new log file: log.100000001
+2022-06-28 12:39:42,335 [myid:1] - INFO  [CommitProcessor:1:LearnerSessionTracker@116] - Committing global session 0x100198d30db0000
+2022-06-28 12:40:11,184 [myid:1] - INFO  [CommitProcessor:1:LearnerSessionTracker@116] - Committing global session 0x200198d30f40000
+2022-06-28 12:40:50,524 [myid:1] - INFO  [ListenerHandler-localhost/127.0.0.1:3888:QuorumCnxManager$Listener$ListenerHandler@1076] - Received connection request from /127.0.0.1:56410
+2022-06-28 12:40:50,527 [myid:1] - INFO  [WorkerReceiver[myid=1]:FastLeaderElection$Messenger$WorkerReceiver@390] - Notification: my state:FOLLOWING; n.sid:3, n.state:LOOKING, n.leader:3, n.round:0x1, n.peerEpoch:0x0, n.zxid:0x0, message format version:0x2, n.config version:0x0
+2022-06-28 12:41:09,741 [myid:1] - INFO  [CommitProcessor:1:LearnerSessionTracker@116] - Committing global session 0x300198e40d00000
+2022-06-28 12:46:06,757 [myid:1] - WARN  [NIOWorkerThread-11:NIOServerCnxn@371] - Unexpected exception
+EndOfStreamException: Unable to read additional data from client, it probably closed the socket: address = /127.0.0.1:50924, session = 0x100198d30db0000
+	at org.apache.zookeeper.server.NIOServerCnxn.handleFailedRead(NIOServerCnxn.java:170)
+	at org.apache.zookeeper.server.NIOServerCnxn.doIO(NIOServerCnxn.java:333)
+	at org.apache.zookeeper.server.NIOServerCnxnFactory$IOWorkRequest.doWork(NIOServerCnxnFactory.java:508)
+	at org.apache.zookeeper.server.WorkerService$ScheduledWorkRequest.run(WorkerService.java:154)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:833)

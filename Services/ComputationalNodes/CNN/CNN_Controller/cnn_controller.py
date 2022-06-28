@@ -73,7 +73,7 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     service_rpc_pb2_grpc.add_PredictorServicer_to_server(Predictor(), server)
-    server.add_insecure_port('127.0.0.1:50051')
+    server.add_insecure_port('127.0.0.1:2182')
     server.start()
     server.wait_for_termination()
 

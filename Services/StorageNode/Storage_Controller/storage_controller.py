@@ -40,7 +40,6 @@ class ImageSender(service_rpc_pb2_grpc.ImageSenderServicer):
         node_type = request[0]
         ip = request[1]
         request = request[2:]
-        # print(NodeType[NodeType.PredictorNode], node_type)
         if node_type == NodeType.PredictorNode.value:
             img_width, img_height, client_id = None, None, ""
             for argument in request:
@@ -88,7 +87,7 @@ def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     service_rpc_pb2_grpc.add_OutputCollectorServicer_to_server(OutputCollector(), server)
     service_rpc_pb2_grpc.add_ImageSenderServicer_to_server(ImageSender(), server)
-    server.add_insecure_port('[::]:50052')
+    server.add_insecure_port('127.0.0.1:2181')
     server.start()
     server.wait_for_termination()
 
