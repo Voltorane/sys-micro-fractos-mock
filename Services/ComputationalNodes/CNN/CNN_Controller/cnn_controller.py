@@ -3,19 +3,22 @@ import logging
 
 import grpc
 import sys
+import os
+from datetime import datetime
 
 sys.path.insert(1, "../CNN_Adaptor")
 from cnn_adaptor import Adaptor
 
 sys.path.insert(1, "../../../")
 import zookeeper_service
+import kazoo
 
 #goto Services
 sys.path.insert(1, "../../..")
 import service_rpc_pb2
 import service_rpc_pb2_grpc
 from utils.node_types import NodeType
-
+from utils import ip_connector
 
 cnn_controller_ip = "127.0.0.1:2182"
 
@@ -23,7 +26,21 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
     def __init__(self) -> None:
         super().__init__()
         self.a = Adaptor()
-        self.zookeeper = zookeeper_service.ZKeeper("127.0.0.1:2184", "test_cnn")
+        self.name = "cnn_controller"
+        self.dir_path = os.path.dirname(__file__)
+        self.z_ips = ip_connector.extract_ip_list(os.path.join(self.dir_path, "ips.cfg"))
+        # TODO think about giving port config path in the arguments when calling
+        self.z_port = ip_connector.extract_port(self.name, "../../../zookeeper_controller_ports.cfg")
+        # try connecting to all the ip's from config utill connection is successfull
+        if self.z_port is not None:
+            for z_ip in self.z_ips:
+                try:
+                    d = datetime.now().strftime("%H:%M:%S")
+                    self.zookeeper = zookeeper_service.ZKeeper(f"{z_ip}:{self.z_port}", f"{self.name}{str(d)}")
+                except kazoo.interfaces.IHandler.timeout_exception as e:
+                    print("Trying to reconnect to different ip...")
+                else:
+                    break
 
     # returns next request method and all the keys
     def parse_next_request(self, request):
