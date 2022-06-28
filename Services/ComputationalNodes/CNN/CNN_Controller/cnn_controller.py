@@ -17,10 +17,10 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
         super().__init__()
         self.a = Adaptor()
     
-    def send_output(self, data):
+    def send_output(self, data, storage_id=""):
         with grpc.insecure_channel('localhost:50052') as channel:       
             stub = service_rpc_pb2_grpc.OutputCollectorStub(channel)
-            response = stub.StoreOutput(service_rpc_pb2.OutputStorageRequest(data=data, name="output.txt"))
+            response = stub.StoreOutput(service_rpc_pb2.OutputStorageRequest(data=data, name="output.txt", storage_id=storage_id))
             print("Response from output storage: " + str(response.description))
     
     def Prediction (self, request, context):
@@ -28,6 +28,7 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
         response_code, label, data_class = response
         if response_code != 0:
             return service_rpc_pb2.PredictionResponse(error_code=response_code)
+        # TODO RETRIEVE STORAGE ID
         # send output to other storage node
         try:
             self.send_output(data_class)
