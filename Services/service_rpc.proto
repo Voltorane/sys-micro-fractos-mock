@@ -13,44 +13,12 @@ service Predictor {
   rpc Initialization (InitRequest) returns (InitResponse) {}
 }
 
-service OutputCollector {
-  // Send output from computational node to storage node (typically not the sender node)
-  rpc StoreOutput (OutputStorageRequest) returns (OutputSotrageResponse) {}
-}
-
-service ImageSender {
-    rpc SendImage (ImageSendRequest) returns (ImageSendResponse) {}
-}
-
-message ImageSendRequest {
-    string name = 1;
-    int32 img_width = 2;
-    int32 img_height = 3;
-    string client_id = 4;
-    string next_node = 5;
-}
-
-message ImageSendResponse {
-    int32 response_code = 1;
-    string description = 2;
-}
-
-message OutputStorageRequest {
-    string data = 1;
-    string name = 2;
-    string storage_id = 3;
-}
-
-message OutputSotrageResponse {
-  int32 response_code = 1;
-  string description = 2;
-}
-
 message PredictionRequest {
     string image = 1;
     int32 img_width = 2;
     int32 img_height = 3;
     string client_id = 4;
+    repeated string next_request = 6;
 }
 
 message PredictionResponse {
@@ -64,8 +32,46 @@ message InitRequest {
     int32 epochs = 2;
     int32 img_width = 3;
     int32 img_height = 4;
+    repeated string next_request = 6;
 }
 
 message InitResponse {
-  int32 response_code = 1;
+    int32 response_code = 1;
+    string description = 2;
+}
+
+service OutputCollector {
+  // Send output from computational node to storage node (typically not the sender node)
+  rpc StoreOutput (OutputStorageRequest) returns (OutputSotrageResponse) {}
+}
+
+service ImageSender {
+    rpc SendImage (ImageSendRequest) returns (ImageSendResponse) {}
+}
+
+
+message OutputStorageRequest {
+    string data = 1;
+    string name = 2;
+    string storage_id = 3;
+    repeated string next_request = 6;
+}
+
+message OutputSotrageResponse {
+    int32 response_code = 1;
+    string description = 2;
+}
+
+message ImageSendRequest {
+    string name = 1;
+    int32 img_width = 2;
+    int32 img_height = 3;
+    string client_id = 4;
+    string next_node = 5;
+    repeated string next_request = 6;
+}
+
+message ImageSendResponse {
+    int32 response_code = 1;
+    string description = 2;
 }

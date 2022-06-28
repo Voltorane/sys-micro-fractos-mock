@@ -14,7 +14,10 @@ def run():
         img_width = 128
         img_height = 128
         next_node = "PREDICTOR"
-        response = stub.SendImage(service_rpc_pb2.ImageSendRequest(name=name, img_width=img_width, img_height=img_height, client_id=client_id, next_node=next_node))
+        output_name = "test_name"
+        next_request = [f"PREDICTOR,127.0.0.1:50051,img_width:{img_width},img_height:{img_height},client_id:{client_id}",
+                        f"STORAGE,127.0.0.1:50052,name:{output_name},storage_id:{client_id}"]
+        response = stub.SendImage(service_rpc_pb2.ImageSendRequest(name=name, img_width=img_width, img_height=img_height, client_id=client_id, next_node=next_node, next_request=next_request))
         # encoded_arr = storage_service.img_to_arr('storage/0.jpg', 128, 128)
         # response = stub.Initialization(service_rpc_pb2.InitRequest(sample_limit=1000, epochs=5, img_width=128, img_height=128))
         # response = stub.Prediction(service_rpc_pb2.PredictionRequest(image=encoded_arr, img_width=128, img_height=128))
