@@ -14,12 +14,22 @@ sys.path.insert(1, "../..")
 import service_rpc_pb2_grpc
 import service_rpc_pb2
 from node_types import NodeType
-
+from kazoo.client import KazooClient
+storage_controller_ip = "127.0.0.1:2181"
 
 class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
     def __init__(self) -> None:
         super().__init__()
         self.adaptor = storage_adaptor.Adaptor()
+        try:
+            zookeeper = KazooClient(["127.0.0.1:2186","127.0.0.2:2186","127.0.0.3:2186"])
+            # connect
+            zookeeper.start()
+            # register zk
+            zookeeper.create("{0}/{1}_".format('/nodes', 'output_controller'),
+                                    ephemeral=True, sequence=True, makepath=True)
+        except:
+            pass
     
     def StoreOutput(self, request, context):
         response_code, description = self.adaptor.handle_request("STORE", request.data, request.name, request.storage_id)
@@ -33,6 +43,12 @@ class ImageSender(service_rpc_pb2_grpc.ImageSenderServicer):
     def __init__(self) -> None:
         super().__init__()
         self.adaptor = storage_adaptor.Adaptor()
+        zookeeper = KazooClient(["127.0.0.1:2186","127.0.0.2:2186","127.0.0.3:2186"])
+        # connect
+        zookeeper.start()
+        # register zk
+        zookeeper.create("{0}/{1}_".format('/nodes', 'image_sender'),
+                                ephemeral=True, sequence=True, makepath=True)
     
     # returns next request method and all the keys
     def parse_next_request(self, request):
