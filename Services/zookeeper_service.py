@@ -11,6 +11,11 @@ class ZKeeper():
             print(f"Initializing zookeeper for {server_name}...")
             self.zookeeper = KazooClient(ip)
             self.server_name = server_name
+            try:
+                self.server_dict = {"node" : server_name.split("_")[0], "sequence" : server_name.split("_")[1]}
+            except:
+                self.server_dict = {"node" : server_name, "sequence" : ""}
+            print("Server name: ", server_name)
             self.path_nodes = "/node_storage"
             self.path_data = "/data"
             print(f"Connecting to {ip}...")
@@ -42,9 +47,10 @@ class ZKeeper():
         current_leader = min(application_nodes, key=lambda x: x["sequence"])
         # print("ababa",application_nodes)
         print(f"Current leader: {current_leader['node']}_{current_leader['sequence']}")
+        
 
         self.display_server_information(application_nodes, current_leader)
-        if current_leader == self.server_name:
+        if current_leader['node'] == self.server_dict['node'] and current_leader['sequence'] == self.server_dict['sequence']:
             self.update_shared_data()
 
     def check_application_data(self, data, stat):
@@ -65,7 +71,7 @@ class ZKeeper():
         print("Nodes:")
         for i in application_nodes:
             print("  - {0} with sequence {1}".format(i["node"], i["sequence"]))
-        print("Role: {0}".format("leader" if current_leader == self.server_name else "follower"))
+        print("Role: {0}".format("leader" if current_leader['node'] == self.server_dict['node'] and current_leader['sequence'] == self.server_dict['sequence'] else "follower"))
         print()
 
     def __del__(self):
