@@ -11,7 +11,7 @@ class ZKeeper():
             print(f"Initializing zookeeper for {server_name}...")
             self.zookeeper = KazooClient(ip)
             self.server_name = server_name
-            self.path_nodes = "/nodes"
+            self.path_nodes = "/node_storage"
             self.path_data = "/data"
             print(f"Connecting to {ip}...")
             self.connect()
@@ -39,7 +39,9 @@ class ZKeeper():
 
     def check_application_nodes(self, children):
         application_nodes = [{"node": i[0], "sequence": i[1]} for i in (i.split("_") for i in children)]
-        current_leader = min(application_nodes, key=lambda x: x["sequence"])["node"]
+        current_leader = min(application_nodes, key=lambda x: x["sequence"])
+        # print("ababa",application_nodes)
+        print(f"Current leader: {current_leader['node']}_{current_leader['sequence']}")
 
         self.display_server_information(application_nodes, current_leader)
         if current_leader == self.server_name:
