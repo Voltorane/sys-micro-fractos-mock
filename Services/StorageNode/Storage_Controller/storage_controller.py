@@ -1,7 +1,6 @@
-from ast import arg
 from concurrent import futures
 import logging
-from platform import node
+
 
 import grpc
 #goto StorageNode
@@ -13,7 +12,8 @@ from Storage_Adaptor import storage_adaptor
 sys.path.insert(1, "../..")
 import service_rpc_pb2_grpc
 import service_rpc_pb2
-from node_types import NodeType
+import zookeeper_service
+from utils.node_types import NodeType
 from kazoo.client import KazooClient
 storage_controller_ip = "127.0.0.1:2181"
 
@@ -21,15 +21,7 @@ class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
     def __init__(self) -> None:
         super().__init__()
         self.adaptor = storage_adaptor.Adaptor()
-        try:
-            zookeeper = KazooClient(["127.0.0.1:2186","127.0.0.2:2186","127.0.0.3:2186"])
-            # connect
-            zookeeper.start()
-            # register zk
-            zookeeper.create("{0}/{1}_".format('/nodes', 'output_controller'),
-                                    ephemeral=True, sequence=True, makepath=True)
-        except:
-            pass
+        self.zookeeper = zookeeper_service.ZKeeper("127.0.0.1:2185", "test_storage")
     
     def StoreOutput(self, request, context):
         response_code, description = self.adaptor.handle_request("STORE", request.data, request.name, request.storage_id)
@@ -103,7 +95,7 @@ def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     service_rpc_pb2_grpc.add_OutputCollectorServicer_to_server(OutputCollector(), server)
     service_rpc_pb2_grpc.add_ImageSenderServicer_to_server(ImageSender(), server)
-    server.add_insecure_port('127.0.0.1:2181')
+    server.add_insecure_port(storage_controller_ip)
     server.start()
     server.wait_for_termination()
 
