@@ -16,7 +16,7 @@ class ZKeeper():
                 self.server_dict = {"node" : self.server_name.split("_")[0], "sequence" : self.server_name.split("_")[1]}
             except:
                 self.server_dict = {"node" : self.server_name, "sequence" : ""}
-            self.logger.info("Server name: ", server_name)
+            self.logger.info("Server name: " + server_name)
             self.path_nodes = "/node_storage"
             self.path_data = "/data"
             self.logger.info(f"Connecting to {ip}...")
@@ -56,7 +56,7 @@ class ZKeeper():
     def check_application_data(self, data, stat):
         self.logger.info(
             "Data change detected on {0}:\nData: {1}\nStat: {2}".format((datetime.now()).strftime("%B %d, %Y %H:%M:%S"),
-                                                                        data, stat), "\n")
+                                                                        data, stat))
 
     def update_shared_data(self):
         if not self.zookeeper.exists(self.path_data):
@@ -70,7 +70,7 @@ class ZKeeper():
         self.logger.info("Server name: {0}".format(self.server_name))
         for i in application_nodes:
             self.logger.info("  - {0} with sequence {1}".format(i["node"], i["sequence"]))
-        self.logger.info("Role: {0}".format("leader" if current_leader['node'] == self.server_dict['node'] and current_leader['sequence'] == self.server_dict['sequence'] else "follower"), "\n")
+        self.logger.info("Role: {0}".format("leader" if current_leader['node'] == self.server_dict['node'] and current_leader['sequence'] == self.server_dict['sequence'] else "follower"))
 
     def __del__(self):
         self.logger.warning("Closing connection...")

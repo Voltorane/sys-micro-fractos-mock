@@ -92,7 +92,7 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
         with grpc.insecure_channel(ip) as channel:       
             self.logger.info(f"Sending request to {ip}!")
             stub = service_rpc_pb2_grpc.OutputCollectorStub(channel)
-            response = stub.StoreOutput(service_rpc_pb2.OutputStorageRequest(data=data, name=name, storage_id=storage_id, next_request=next_request))
+            response = stub.StorePrediction(service_rpc_pb2.PredictionStorageRequest(data=data, name=name, storage_id=storage_id, next_request=next_request))
             if response.response_code != 0:
                 self.logger.error(f"ERROR response from {ip}: {response.response_code} - {response.description}")
             else:

@@ -6,6 +6,11 @@ option objc_class_prefix = "SERVCONN";
 
 package service_connector;
 
+message Response {
+    int32 response_code = 1;
+    string description = 2;
+}
+
 service Predictor {
   // Sends a prediction
   rpc Prediction (PredictionRequest) returns (Response) {}
@@ -31,14 +36,14 @@ message InitRequest {
 
 service OutputCollector {
   // Send output from computational node to storage node (typically not the sender node)
-  rpc StoreOutput (OutputStorageRequest) returns (Response) {}
+  rpc StorePrediction (PredictionStorageRequest) returns (Response) {}
 }
 
-service ImageSender {
+service DataSender {
     rpc SendImage (ImageSendRequest) returns (Response) {}
 }
 
-message OutputStorageRequest {
+message PredictionStorageRequest {
     string data = 1;
     string name = 2;
     string storage_id = 3;
@@ -63,7 +68,16 @@ message ApplicationInitRequest {
     repeated string request = 1;
 }
 
-message Response {
-    int32 response_code = 1;
-    string description = 2;
+service MathComputer {
+    rpc ComputeFact (ComputeFactRequest) returns (Response) {}
+    rpc ComputeBinom (ComputeBinomRequest) returns (Response) {}
+}
+
+message ComputeFactRequest {
+    int32 n = 1;
+}
+
+message ComputeBinomRequest {
+    int32 n = 1;
+    int32 k = 2;
 }

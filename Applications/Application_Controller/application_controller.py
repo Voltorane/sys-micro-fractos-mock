@@ -70,7 +70,7 @@ class ApplicationStarter(service_rpc_pb2_grpc.ApplicationStarterServicer):
         node_type = request[0]
         ip = request[1]
         request = request[2:]
-        if node_type == NodeType.ImageSenderNode.value:
+        if node_type == NodeType.DataSenderNode.value:
             img_width, img_height, client_id, name = None, None, "", ""
             for argument in request:
                 print(argument)
@@ -84,12 +84,12 @@ class ApplicationStarter(service_rpc_pb2_grpc.ApplicationStarterServicer):
                         client_id = value
                 elif key == "name":
                         name = value
-            return [NodeType.ImageSenderNode, ip, name, img_width, img_height, client_id]
+            return [NodeType.DataSenderNode, ip, name, img_width, img_height, client_id]
     
     def send_request_to_image_sender(self, name, img_width, img_height, client_id, next_request, ip):
         with grpc.insecure_channel(ip) as channel:
             self.logger.info(f"Sending request to {ip}!")
-            stub = service_rpc_pb2_grpc.ImageSenderStub(channel)
+            stub = service_rpc_pb2_grpc.DataSenderStub(channel)
             response = stub.SendImage(service_rpc_pb2.ImageSendRequest(name=name, img_width=img_width, img_height=img_height, client_id=client_id, next_request=next_request))
             if response.response_code != 0:
                 self.logger.error(f"ERROR response from {ip}: {response.response_code} - {response.description}")
@@ -105,7 +105,7 @@ class ApplicationStarter(service_rpc_pb2_grpc.ApplicationStarterServicer):
             req = request.request
             if next_request is not None:
                 node_type, ip, args = next_request[0], next_request[1], next_request[2:]
-                if node_type == NodeType.ImageSenderNode:
+                if node_type == NodeType.DataSenderNode:
                     name, img_width, img_height, client_id = args[0], args[1], args[2], args[3]
                     self.send_request_to_image_sender(name, img_width, img_height, client_id, req, ip)
             else:

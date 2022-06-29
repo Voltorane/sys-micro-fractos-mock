@@ -32,7 +32,7 @@ def run():
         img_width = 128
         img_height = 128
         output_name = name.replace(".jpg", "_")+"class.txt"
-        request = [f"IMAGE_SENDER,{storage_controller_ip},name:{name},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
+        request = [f"DATA_SENDER,{storage_controller_ip},name:{name},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
                         f"PREDICTOR,{cnn_controller_ip},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
                         f"STORAGE,{storage_controller_ip},name:{output_name},storage_id:{client_id}"]
         response = stub.SendInitialRequest(service_rpc_pb2.ApplicationInitRequest(request=request))
@@ -44,7 +44,7 @@ def run():
         img_width = 128
         img_height = 128
         output_name = name.replace(".jpg", "_")+"class.txt"
-        request = [f"IMAGE_SENDER,{storage_controller_ip},name:{name},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
+        request = [f"DATA_SENDER,{storage_controller_ip},name:{name},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
                         f"PREDICTOR,{cnn_controller_ip},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
                         f"STORAGE,{storage_controller_ip},name:{output_name},storage_id:{client_id}"]
         response = stub.SendInitialRequest(service_rpc_pb2.ApplicationInitRequest(request=request))

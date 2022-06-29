@@ -76,7 +76,7 @@ class Math_Calculator(service_rpc_pb2_grpc.PredictorServicer):
     def send_output(self, data, name, ip, next_request, storage_id=""):
         with grpc.insecure_channel(ip) as channel:       
             stub = service_rpc_pb2_grpc.OutputCollectorStub(channel)
-            response = stub.StoreOutput(service_rpc_pb2.OutputStorageRequest(data=data, name=name, storage_id=storage_id, next_request=next_request))
+            response = stub.StorePrediction(service_rpc_pb2.ImageStorageRequest(data=data, name=name, storage_id=storage_id, next_request=next_request))
             print("Response from output storage: " + str(response.description))
     
     def Calculate (self, request, context):

@@ -68,7 +68,7 @@ class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
             self.logger.info(f"Controller {self.name} is being run without zookeeper!")
 
     
-    def StoreOutput(self, request, context):
+    def StorePrediction(self, request, context):
         request_name = "STORE"
         self.logger.info(f"Received the following request: {request_name}")
         response_code, description = self.adaptor.handle_request(request_name, request.data, request.name, request.storage_id)
@@ -79,7 +79,7 @@ class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
             self.logger.warning("Something went wrong: {description}")
         return service_rpc_pb2.Response(response_code=response_code, description=description)
 
-class ImageSender(service_rpc_pb2_grpc.ImageSenderServicer):
+class DataSender(service_rpc_pb2_grpc.DataSenderServicer):
     def __init__(self, run_with_zookeeper=False, verbose=False) -> None:
         super().__init__()
         self.adaptor = storage_adaptor.Adaptor()
@@ -141,7 +141,7 @@ class ImageSender(service_rpc_pb2_grpc.ImageSenderServicer):
         # elif node_type == NodeType.OutputCollectorNode:
         #     for argument in request:
         #         pass
-        # elif node_type == NodeType.ImageSenderNode:
+        # elif node_type == NodeType.DataSenderNode:
         #     for argument in request:
         #         pass
     
@@ -177,7 +177,7 @@ class ImageSender(service_rpc_pb2_grpc.ImageSenderServicer):
 def serve(run_with_zookeeper=False,verbose=False):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     service_rpc_pb2_grpc.add_OutputCollectorServicer_to_server(OutputCollector(run_with_zookeeper, verbose), server)
-    service_rpc_pb2_grpc.add_ImageSenderServicer_to_server(ImageSender(run_with_zookeeper, verbose), server)
+    service_rpc_pb2_grpc.add_DataSenderServicer_to_server(DataSender(run_with_zookeeper, verbose), server)
     server.add_insecure_port(storage_controller_ip)
     server.start()
     server.wait_for_termination()
