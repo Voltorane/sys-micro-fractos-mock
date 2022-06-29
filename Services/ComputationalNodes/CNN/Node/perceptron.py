@@ -201,7 +201,8 @@ class Bot:
                     return model   
         return None
     
-    def train_model(self, train_dataframe, test_dataframe=None, img_width=128, img_height=128, sample_limit=5000, epochs=10, batch_size=32, name=None, save=True, target_dir="models"):
+    def train_model(self, train_dataframe, test_dataframe=None, img_width=128, img_height=128
+                    , sample_limit=5000, epochs=10, batch_size=32, name=None, save=True, target_dir="models"):
         """
         train_model -> training model design and some parameters taken from https://www.geeksforgeeks.org/python-image-classification-using-keras/?ref=lbp.
 

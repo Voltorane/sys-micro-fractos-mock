@@ -1,27 +1,20 @@
-from concurrent import futures
 import logging
-import argparse
 import getopt
-
-from datetime import datetime
 import grpc
 import os
-#goto StorageNode
 import sys
-
+from datetime import datetime
+from concurrent import futures
 from sqlalchemy import desc
 sys.path.insert(1, "../")
 from Storage_Adaptor import storage_adaptor
-
-#goto Services
+# goto Services
 sys.path.insert(1, "../..")
 import service_rpc_pb2_grpc
 import service_rpc_pb2
 import zookeeper_service
 from utils.node_types import NodeType
 from utils import ip_connector
-import kazoo
-from kazoo.client import KazooClient
 
 log_filemode = "a"
 log_format = "%(levelname)s %(asctime)s - %(message)s"
@@ -30,8 +23,10 @@ log_file_image_sender = "logfile_storage_controller_image_sender.log"
 
 config_dir = "../../config"
 grpc_ip = ip_connector.get_grpc_ip(os.path.join(config_dir, "grpc_ip.cfg"))
-storage_controller_port = ip_connector.extract_port("storage_controller", os.path.join(config_dir, "controller_ports.cfg"))
+storage_controller_port = ip_connector.extract_port("storage_controller"
+                            , os.path.join(config_dir, "controller_ports.cfg"))
 storage_controller_ip = f"{grpc_ip}:{storage_controller_port}"
+
 
 class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
     def __init__(self, run_with_zookeeper=False, verbose=False) -> None:
@@ -42,7 +37,7 @@ class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
         self.verbose = verbose
         self.run_with_zookeeper = run_with_zookeeper
 
-        logging.basicConfig(filename=log_file_output_collector,filemode=log_filemode, format=log_format, force=True)
+        logging.basicConfig(filename=log_file_output_collector, filemode=log_filemode, format=log_format, force=True)
         self.logger = logging.getLogger()
         # print to console
         if self.verbose:
@@ -67,7 +62,6 @@ class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
         else:
             self.logger.info(f"Controller {self.name} is being run without zookeeper!")
 
-    
     def StoreOutput(self, request, context):
         request_name = "STORE"
         self.logger.info(f"Received the following request: {request_name}")
@@ -79,6 +73,7 @@ class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
             self.logger.warning("Something went wrong: {description}")
         return service_rpc_pb2.Response(response_code=response_code, description=description)
 
+
 class ImageSender(service_rpc_pb2_grpc.ImageSenderServicer):
     def __init__(self, run_with_zookeeper=False, verbose=False) -> None:
         super().__init__()
@@ -88,8 +83,7 @@ class ImageSender(service_rpc_pb2_grpc.ImageSenderServicer):
         self.verbose = verbose
         self.run_with_zookeeper = run_with_zookeeper
 
-
-        logging.basicConfig(filename=log_file_image_sender,filemode=log_filemode, format=log_format, force=True)
+        logging.basicConfig(filename=log_file_image_sender, filemode=log_filemode, format=log_format, force=True)
         self.logger = logging.getLogger()
         # prints to console
         if self.verbose:
@@ -101,7 +95,7 @@ class ImageSender(service_rpc_pb2_grpc.ImageSenderServicer):
         # TODO think about giving port config path in the arguments when calling
         self.z_port = ip_connector.extract_port(self.name, os.path.join(config_dir, "zookeeper_controller_ports.cfg"))
         # try connecting to all the ip's from config utill connection is successfull
-        #TODO delete if move to other file
+        # TODO delete if move to other file
         if self.run_with_zookeeper:
             self.logger.info(f"Controller {self.name} is being run with zookeeper!")
             if self.z_port is not None:
@@ -114,7 +108,7 @@ class ImageSender(service_rpc_pb2_grpc.ImageSenderServicer):
                         break
         else:
             self.logger.info(f"Controller {self.name} is being run without zookeeper!")
-    
+
     # returns next request method and all the keys
     def parse_next_request(self, request):
         self.logger.info(f"Parsing the request: {request}")
@@ -135,8 +129,7 @@ class ImageSender(service_rpc_pb2_grpc.ImageSenderServicer):
                 elif key == "client_id":
                         client_id = value
             return [NodeType.PredictorNode, ip, img_width, img_height, client_id]
-        
-        #last call - no further requests
+        # last call - no further requests
         return None
         # elif node_type == NodeType.OutputCollectorNode:
         #     for argument in request:
@@ -144,23 +137,26 @@ class ImageSender(service_rpc_pb2_grpc.ImageSenderServicer):
         # elif node_type == NodeType.ImageSenderNode:
         #     for argument in request:
         #         pass
-    
+
     def send_to_predictor(self, encoded_arr, img_width, img_height, client_id, next_request, ip):
-        with grpc.insecure_channel(ip) as channel:     
-            self.logger.info(f"Sending request to {ip}!")  
+        with grpc.insecure_channel(ip) as channel:
+            self.logger.info(f"Sending request to {ip}!")
             stub = service_rpc_pb2_grpc.PredictorStub(channel)
-            response = stub.Initialization(service_rpc_pb2.InitRequest(sample_limit=1000, epochs=5, img_width=img_width, img_height=img_height, next_request=next_request))
-            response = stub.Prediction(service_rpc_pb2.PredictionRequest(image=encoded_arr, img_width=img_width, img_height=img_height, client_id=client_id, next_request=next_request))
+            response = stub.Initialization(service_rpc_pb2.InitRequest(sample_limit=1000, epochs=5
+                        , img_width=img_width, img_height=img_height, next_request=next_request))
+            response = stub.Prediction(service_rpc_pb2.PredictionRequest(image=encoded_arr
+                        , img_width=img_width, img_height=img_height, client_id=client_id, next_request=next_request))
             if response.response_code != 0:
                 self.logger.error(f"ERROR response from {ip}: {response.response_code} - {response.description}")
             else:
                 self.logger.info(f"Received response from {ip}: {response.response_code} - {response.description}")
             return response
-    
+
     def SendImage(self, request, context):
         request_name = "SEND"
         self.logger.info(f"Received the following request: {request_name}")
-        response_code, encoded_arr, description = self.adaptor.handle_request(request_name, request.name, request.img_width, request.img_height, request.client_id)
+        response_code, encoded_arr, description = self.adaptor.handle_request(request_name, request.name
+                                                    , request.img_width, request.img_height, request.client_id)
 
         if response_code != 0:
             self.logger.error("ERROR something went wrong: {description}")
@@ -174,13 +170,15 @@ class ImageSender(service_rpc_pb2_grpc.ImageSenderServicer):
                 img_width, img_height, client_id = args[0], args[1], args[2]
                 return self.send_to_predictor(encoded_arr, img_width, img_height, client_id, req, ip)
 
-def serve(run_with_zookeeper=False,verbose=False):
+
+def serve(run_with_zookeeper=False, verbose=False):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     service_rpc_pb2_grpc.add_OutputCollectorServicer_to_server(OutputCollector(run_with_zookeeper, verbose), server)
     service_rpc_pb2_grpc.add_ImageSenderServicer_to_server(ImageSender(run_with_zookeeper, verbose), server)
     server.add_insecure_port(storage_controller_ip)
     server.start()
     server.wait_for_termination()
+
 
 def main(argv):
     try:

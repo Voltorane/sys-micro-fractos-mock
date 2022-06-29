@@ -27,7 +27,7 @@ class ZKeeper():
             self.watch_application_data()
         except Exception as e:
             self.logger.error(f"ERROR {str(e)} occured, while loading zookeeper for: {server_name} on {ip}")
-    
+
     def connect(self):
         self.zookeeper.start()
 
@@ -47,7 +47,6 @@ class ZKeeper():
         application_nodes = [{"node": i[0], "sequence": i[1]} for i in (i.split("_") for i in children)]
         current_leader = min(application_nodes, key=lambda x: x["sequence"])
         self.logger.info(f"Current leader: {current_leader['node']}_{current_leader['sequence']}")
-        
 
         self.display_server_information(application_nodes, current_leader)
         if current_leader['node'] == self.server_dict['node'] and current_leader['sequence'] == self.server_dict['sequence']:
