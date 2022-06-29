@@ -76,8 +76,8 @@ class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
         if response_code == 0:
             self.logger.info("Output storage was successfull!")
         else:
-            self.logger.error("ERROR something went wrong: {description}")
-        return service_rpc_pb2.OutputSotrageResponse(response_code=response_code, description=description)
+            self.logger.warning("Something went wrong: {description}")
+        return service_rpc_pb2.Response(response_code=response_code, description=description)
 
 class ImageSender(service_rpc_pb2_grpc.ImageSenderServicer):
     def __init__(self, run_with_zookeeper=False, verbose=False) -> None:
@@ -147,15 +147,14 @@ class ImageSender(service_rpc_pb2_grpc.ImageSenderServicer):
     
     def send_to_predictor(self, encoded_arr, img_width, img_height, client_id, next_request, ip):
         with grpc.insecure_channel(ip) as channel:     
-            self.logger.info(f"Requesting response from {ip}!")  
+            self.logger.info(f"Sending request to {ip}!")  
             stub = service_rpc_pb2_grpc.PredictorStub(channel)
             response = stub.Initialization(service_rpc_pb2.InitRequest(sample_limit=1000, epochs=5, img_width=img_width, img_height=img_height, next_request=next_request))
             response = stub.Prediction(service_rpc_pb2.PredictionRequest(image=encoded_arr, img_width=img_width, img_height=img_height, client_id=client_id, next_request=next_request))
-            # TODO: if response.response_code != 0:
-                # logger.error(f"ERROR response from {ip}: {response.response_code} - {response.description}")
-            # else:
-                # logger.info(f"Received response from {ip}: {response.response_code} - {response.description}")
-            self.logger.info(f"Received response from {ip}")
+            if response.response_code != 0:
+                self.logger.error(f"ERROR response from {ip}: {response.response_code} - {response.description}")
+            else:
+                self.logger.info(f"Received response from {ip}: {response.response_code} - {response.description}")
             return response
     
     def SendImage(self, request, context):

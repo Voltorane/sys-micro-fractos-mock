@@ -102,7 +102,12 @@ class Predictor(object):
 
 
 class OutputCollectorStub(object):
-    """Missing associated documentation comment in .proto file."""
+    """message InitResponse {
+    int32 response_code = 1;
+    string description = 2;
+    }
+
+    """
 
     def __init__(self, channel):
         """Constructor.
@@ -113,12 +118,17 @@ class OutputCollectorStub(object):
         self.StoreOutput = channel.unary_unary(
                 '/service_connector.OutputCollector/StoreOutput',
                 request_serializer=service__rpc__pb2.OutputStorageRequest.SerializeToString,
-                response_deserializer=service__rpc__pb2.OutputSotrageResponse.FromString,
+                response_deserializer=service__rpc__pb2.Response.FromString,
                 )
 
 
 class OutputCollectorServicer(object):
-    """Missing associated documentation comment in .proto file."""
+    """message InitResponse {
+    int32 response_code = 1;
+    string description = 2;
+    }
+
+    """
 
     def StoreOutput(self, request, context):
         """Send output from computational node to storage node (typically not the sender node)
@@ -133,7 +143,7 @@ def add_OutputCollectorServicer_to_server(servicer, server):
             'StoreOutput': grpc.unary_unary_rpc_method_handler(
                     servicer.StoreOutput,
                     request_deserializer=service__rpc__pb2.OutputStorageRequest.FromString,
-                    response_serializer=service__rpc__pb2.OutputSotrageResponse.SerializeToString,
+                    response_serializer=service__rpc__pb2.Response.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -143,7 +153,12 @@ def add_OutputCollectorServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class OutputCollector(object):
-    """Missing associated documentation comment in .proto file."""
+    """message InitResponse {
+    int32 response_code = 1;
+    string description = 2;
+    }
+
+    """
 
     @staticmethod
     def StoreOutput(request,
@@ -158,7 +173,7 @@ class OutputCollector(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/service_connector.OutputCollector/StoreOutput',
             service__rpc__pb2.OutputStorageRequest.SerializeToString,
-            service__rpc__pb2.OutputSotrageResponse.FromString,
+            service__rpc__pb2.Response.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -175,7 +190,7 @@ class ImageSenderStub(object):
         self.SendImage = channel.unary_unary(
                 '/service_connector.ImageSender/SendImage',
                 request_serializer=service__rpc__pb2.ImageSendRequest.SerializeToString,
-                response_deserializer=service__rpc__pb2.ImageSendResponse.FromString,
+                response_deserializer=service__rpc__pb2.Response.FromString,
                 )
 
 
@@ -194,7 +209,7 @@ def add_ImageSenderServicer_to_server(servicer, server):
             'SendImage': grpc.unary_unary_rpc_method_handler(
                     servicer.SendImage,
                     request_deserializer=service__rpc__pb2.ImageSendRequest.FromString,
-                    response_serializer=service__rpc__pb2.ImageSendResponse.SerializeToString,
+                    response_serializer=service__rpc__pb2.Response.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -219,13 +234,18 @@ class ImageSender(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/service_connector.ImageSender/SendImage',
             service__rpc__pb2.ImageSendRequest.SerializeToString,
-            service__rpc__pb2.ImageSendResponse.FromString,
+            service__rpc__pb2.Response.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
 
 class ApplicationStarterStub(object):
-    """Missing associated documentation comment in .proto file."""
+    """message ImageSendResponse {
+    int32 response_code = 1;
+    string description = 2;
+    }
+
+    """
 
     def __init__(self, channel):
         """Constructor.
@@ -236,12 +256,17 @@ class ApplicationStarterStub(object):
         self.SendInitialRequest = channel.unary_unary(
                 '/service_connector.ApplicationStarter/SendInitialRequest',
                 request_serializer=service__rpc__pb2.ApplicationInitRequest.SerializeToString,
-                response_deserializer=service__rpc__pb2.ApplicationInitResponse.FromString,
+                response_deserializer=service__rpc__pb2.Response.FromString,
                 )
 
 
 class ApplicationStarterServicer(object):
-    """Missing associated documentation comment in .proto file."""
+    """message ImageSendResponse {
+    int32 response_code = 1;
+    string description = 2;
+    }
+
+    """
 
     def SendInitialRequest(self, request, context):
         """starts application
@@ -256,7 +281,7 @@ def add_ApplicationStarterServicer_to_server(servicer, server):
             'SendInitialRequest': grpc.unary_unary_rpc_method_handler(
                     servicer.SendInitialRequest,
                     request_deserializer=service__rpc__pb2.ApplicationInitRequest.FromString,
-                    response_serializer=service__rpc__pb2.ApplicationInitResponse.SerializeToString,
+                    response_serializer=service__rpc__pb2.Response.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -266,7 +291,12 @@ def add_ApplicationStarterServicer_to_server(servicer, server):
 
  # This class is part of an EXPERIMENTAL API.
 class ApplicationStarter(object):
-    """Missing associated documentation comment in .proto file."""
+    """message ImageSendResponse {
+    int32 response_code = 1;
+    string description = 2;
+    }
+
+    """
 
     @staticmethod
     def SendInitialRequest(request,
@@ -281,6 +311,6 @@ class ApplicationStarter(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/service_connector.ApplicationStarter/SendInitialRequest',
             service__rpc__pb2.ApplicationInitRequest.SerializeToString,
-            service__rpc__pb2.ApplicationInitResponse.FromString,
+            service__rpc__pb2.Response.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
