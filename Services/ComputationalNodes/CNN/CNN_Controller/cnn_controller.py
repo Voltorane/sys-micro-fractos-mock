@@ -35,6 +35,7 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
     def __init__(self, run_with_zookeeper=False) -> None:
         super().__init__()
         self.adaptor = Adaptor()
+        # Test
 
         logging.basicConfig(filename=log_file,filemode=log_filemode, format=log_format)
         self.logger = logging.getLogger()
