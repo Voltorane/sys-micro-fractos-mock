@@ -32,21 +32,22 @@ cnn_controller_port = ip_connector.extract_port("cnn_controller", os.path.join(c
 cnn_controller_ip = f"{grpc_ip}:{cnn_controller_port}"
 
 class Predictor(service_rpc_pb2_grpc.PredictorServicer):
-    def __init__(self, run_with_zookeeper=False) -> None:
+    def __init__(self, run_with_zookeeper=False, verbose=False) -> None:
         super().__init__()
         self.adaptor = Adaptor()
-        # Test
+        self.name = "cnn_controller"
+        self.dir_path = os.path.dirname(__file__)
+        self.verbose = verbose
+        self.run_with_zookeeper = run_with_zookeeper
 
         logging.basicConfig(filename=log_file,filemode=log_filemode, format=log_format)
         self.logger = logging.getLogger()
-        consoleHandler = logging.StreamHandler()
-        self.logger.addHandler(consoleHandler)
+        # prints to console
+        if self.verbose:
+            consoleHandler = logging.StreamHandler()
+            self.logger.addHandler(consoleHandler)
         self.logger.setLevel(logging.INFO)
         
-        self.name = "cnn_controller"
-        self.dir_path = os.path.dirname(__file__)
-        
-        self.run_with_zookeeper = run_with_zookeeper
         if self.run_with_zookeeper:
             self.logger.info(f"Controller {self.name} is being run with zookeeper!")
             self.z_ips = ip_connector.extract_ip_list(os.path.join(self.dir_path, "ips.cfg"))
@@ -56,7 +57,7 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
             if self.z_port is not None:
                 for z_ip in self.z_ips:
                     try:
-                        self.zookeeper = zookeeper_service.ZKeeper(f"{z_ip}:{self.z_port}", f"{self.name}")
+                        self.zookeeper = zookeeper_service.ZKeeper(f"{z_ip}:{self.z_port}", f"{self.name}", self.logger)
                     except Exception as e:
                         self.logger.warning("Trying to reconnect to different ip...")
                     else:
@@ -124,24 +125,26 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
         response_code, description = self.adaptor.handle_request("INIT", request.sample_limit, request.epochs, request.img_width, request.img_height)
         return service_rpc_pb2.Response(response_code=response_code, description=description)
 
-def serve(run_with_zookeeper=False):
+def serve(run_with_zookeeper=False, verbose=False):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    service_rpc_pb2_grpc.add_PredictorServicer_to_server(Predictor(run_with_zookeeper), server)
+    service_rpc_pb2_grpc.add_PredictorServicer_to_server(Predictor(run_with_zookeeper, verbose), server)
     server.add_insecure_port(cnn_controller_ip)
     server.start()
     server.wait_for_termination()
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv[1:], "z")
+        opts, args = getopt.getopt(argv[1:], 'z:v')
     except getopt.GetoptError:
         print(f"ERROR by parsing args: {argv}!")
     run_with_zookeeper = False
+    verbose = False
     for opt, arg in opts:
-        if opt in ('-z, "--zookeeper'):
-            run_with_zookeeper = True    
-    # logging.basicConfig()
-    serve(run_with_zookeeper=run_with_zookeeper)
+        if opt in ('-z', '--zookeeper'):
+            run_with_zookeeper = True
+        if opt in ('-v', '--verbose'):
+            verbose = True
+    serve(run_with_zookeeper=run_with_zookeeper, verbose=verbose)
 
 if __name__ == '__main__':
     main(sys.argv)

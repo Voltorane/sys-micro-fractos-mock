@@ -37,19 +37,19 @@ class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
     def __init__(self, run_with_zookeeper=False, verbose=False) -> None:
         super().__init__()
         self.adaptor = storage_adaptor.Adaptor()
+        self.name = "storage_controller"
+        self.dir_path = os.path.dirname(__file__)
         self.verbose = verbose
         self.run_with_zookeeper = run_with_zookeeper
 
         logging.basicConfig(filename=log_file_output_collector,filemode=log_filemode, format=log_format)
         self.logger = logging.getLogger()
+        # print to console
         if self.verbose:
             consoleHandler = logging.StreamHandler()
             self.logger.addHandler(consoleHandler)
-
         self.logger.setLevel(logging.INFO)
 
-        self.name = "storage_controller"
-        self.dir_path = os.path.dirname(__file__)
         if self.run_with_zookeeper:
             self.logger.info(f"Controller {self.name} is being run with zookeeper!")
             self.z_ips = ip_connector.extract_ip_list(os.path.join(self.dir_path, "ips.cfg"))
@@ -59,7 +59,7 @@ class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
             if self.z_port is not None:
                 for z_ip in self.z_ips:
                     try:
-                        self.zookeeper = zookeeper_service.ZKeeper(f"{z_ip}:{self.z_port}", f"{self.name}")
+                        self.zookeeper = zookeeper_service.ZKeeper(f"{z_ip}:{self.z_port}", f"{self.name}", self.logger)
                     except Exception as e:
                         self.logger.warning("Trying to reconnect to different ip...")
                     else:
@@ -69,18 +69,22 @@ class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
 
     
     def StoreOutput(self, request, context):
-        self.logger.info("Received the following request: ", request)
-        response_code, description = self.adaptor.handle_request("STORE", request.data, request.name, request.storage_id)
+        request_name = "STORE"
+        self.logger.info(f"Received the following request: {request_name}")
+        response_code, description = self.adaptor.handle_request(request_name, request.data, request.name, request.storage_id)
+
         if response_code == 0:
             self.logger.info("Output storage was successfull!")
         else:
-            self.logger.warning("Something went wrong: {description}")
+            self.logger.error("ERROR something went wrong: {description}")
         return service_rpc_pb2.OutputSotrageResponse(response_code=response_code, description=description)
 
 class ImageSender(service_rpc_pb2_grpc.ImageSenderServicer):
     def __init__(self, run_with_zookeeper=False, verbose=False) -> None:
         super().__init__()
         self.adaptor = storage_adaptor.Adaptor()
+        self.name = "image_sender"
+        self.dir_path = os.path.dirname(__file__)
         self.verbose = verbose
         self.run_with_zookeeper = run_with_zookeeper
 
@@ -91,23 +95,19 @@ class ImageSender(service_rpc_pb2_grpc.ImageSenderServicer):
         if self.verbose:
             consoleHandler = logging.StreamHandler()
             self.logger.addHandler(consoleHandler)
-
         self.logger.setLevel(logging.INFO)
 
-        self.name = "storage_controller"
-        self.dir_path = os.path.dirname(__file__)
         self.z_ips = ip_connector.extract_ip_list(os.path.join(self.dir_path, "ips.cfg"))
         # TODO think about giving port config path in the arguments when calling
         self.z_port = ip_connector.extract_port(self.name, os.path.join(config_dir, "zookeeper_controller_ports.cfg"))
         # try connecting to all the ip's from config utill connection is successfull
         #TODO delete if move to other file
-        self.name = "image_sender"
         if self.run_with_zookeeper:
             self.logger.info(f"Controller {self.name} is being run with zookeeper!")
             if self.z_port is not None:
                 for z_ip in self.z_ips:
                     try:
-                        self.zookeeper = zookeeper_service.ZKeeper(f"{z_ip}:{self.z_port}", f"{self.name}")
+                        self.zookeeper = zookeeper_service.ZKeeper(f"{z_ip}:{self.z_port}", f"{self.name}", self.logger)
                     except Exception as e:
                         self.logger.warning("Trying to reconnect to different ip...")
                     else:
@@ -159,11 +159,14 @@ class ImageSender(service_rpc_pb2_grpc.ImageSenderServicer):
             return response
     
     def SendImage(self, request, context):
-        self.logger.info(f"Received the following request: {request}")
-        response_code, encoded_arr, description = self.adaptor.handle_request("SEND", request.name, request.img_width, request.img_height, request.client_id)
+        request_name = "SEND"
+        self.logger.info(f"Received the following request: {request_name}")
+        response_code, encoded_arr, description = self.adaptor.handle_request(request_name, request.name, request.img_width, request.img_height, request.client_id)
+
         if response_code != 0:
-            self.logger.error(description)
+            self.logger.error("ERROR something went wrong: {description}")
             return service_rpc_pb2.Response(response_code=response_code, description=description)
+        self.logger.info("Sending of image was successfull!")
         next_request = self.parse_next_request(request.next_request.pop(0))
         req = request.next_request
         if next_request is not None:
