@@ -22,8 +22,9 @@ class Adaptor:
                 sample_limit, epochs, img_width, img_height = args
                 b = perceptron.Bot(img_width, img_height)
                 if not b.has_models():
-                    b.train(b.df, b.df, sample_limit=sample_limit, epochs=epochs)
+                    b.train_model(b.df, b.df, sample_limit=sample_limit, epochs=epochs)
             except Exception as e:
+                print(e)
                 response_code, description = 1, "Model initialization failed!" + str(e)
             return response_code, description
         elif req_type == "PREDICT":
@@ -33,12 +34,13 @@ class Adaptor:
                 img_arr = np.frombuffer(base64.b64decode(encoded_image), dtype=np.float64).reshape(1, img_width, img_height, 3)
                 b = perceptron.Bot(img_width, img_height)
                 if not b.has_models():
-                    model = b.train(b.df, b.df, sample_limit=self.DEFAULT_SAMPLE_LIMIT, epochs=self.DEFAULT_EPOCHS)
+                    model = b.train_model(b.df, b.df, sample_limit=self.DEFAULT_SAMPLE_LIMIT, epochs=self.DEFAULT_EPOCHS)
                 model = b.load_model()
                 try:
                     label = b.predict_img(model, img_arr)
                 except Exception as e:
-                    model = b.train(b.df, b.df, sample_limit=self.DEFAULT_SAMPLE_LIMIT, epochs=self.DEFAULT_EPOCHS)
+                    print(str(e))
+                    model = b.train_model(b.df, b.df, sample_limit=self.DEFAULT_SAMPLE_LIMIT, epochs=self.DEFAULT_EPOCHS)
                     label = b.predict_img(model, img_arr)
                 data_class = b.label_list[int(label)]
             except Exception as e:

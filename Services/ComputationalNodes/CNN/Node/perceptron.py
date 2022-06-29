@@ -154,7 +154,14 @@ class Bot:
 
     def has_models(self, source_dir="models"):
         model_dir = os.path.join(dir_path, source_dir)
-        return len(os.listdir(model_dir)) != 0
+        for model in os.listdir(model_dir):
+            try:
+                model = keras.models.load_model(os.path.join(model_dir, model))
+            except:
+                pass
+            else:
+                return True
+        return False
     
     def load_model(self, source_dir="models", name=""):
         """
@@ -321,4 +328,5 @@ if __name__ == "__main__":
     # b.trim_dataset()
     # df = b.create_dataframe()
     # model = b.train_model(df, df, sample_limit=100000, batch_size=100, epochs=150, name="150_epochs")
-    model = b.load_model()
+    # model = b.load_model()
+    print(b.has_models("models"))

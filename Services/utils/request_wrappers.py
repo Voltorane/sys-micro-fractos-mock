@@ -19,7 +19,6 @@ def send_request_to_int_sender(name, client_id, next_request, ip, logger=None):
         logger.info(f"Sending request to {ip}!")
         stub = service_rpc_pb2_grpc.DataSenderStub(channel)
         response = stub.SendInt(service_rpc_pb2.IntSendRequest(name=name, client_id=client_id, next_request=next_request))
-        # response = stub.SendInt(service_rpc_pb2.IntSendRequest(name=name, client_id=client_id, next_request=next_request))
         if response.response_code != 0:
             logger.error(f"ERROR response from {ip}: {response.response_code} - {response.description}")
         else:
@@ -122,7 +121,6 @@ def handle_next_request(node_type, ip, next_request, args, logger=None):
         return send_image_to_predictor(encoded_arr, img_width, img_height, client_id, next_request, ip, logger)
     elif node_type == NodeType.IntSenderNode:
         name, client_id = args[0], args[1]
-        print(name, client_id)
         return send_request_to_int_sender(name, client_id, next_request, ip)
     elif node_type == NodeType.ImageSenderNode:
         name, img_width, img_height, client_id = args[0], args[1], args[2], args[3]

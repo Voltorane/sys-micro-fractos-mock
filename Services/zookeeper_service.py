@@ -6,12 +6,12 @@ class ZKeeper():
     # :attr:`~kazoo.interfaces.IHandler.timeout_exception`
     #              if the connection wasn't established within `timeout`
     #              seconds.
-    def __init__(self, ip, server_name, logger):
+    def __init__(self, ip, server_name, logger, server_id=1):
         try:
             self.logger = logger
             self.logger.info(f"Initializing zookeeper for {server_name}...")
             self.zookeeper = KazooClient(ip)
-            self.server_name = server_name + datetime.now().strftime("%H:%M:%S")
+            self.server_name = server_name + str(server_id) + "(" + datetime.now().strftime("%H:%M:%S") + ")"
             try:
                 self.server_dict = {"node" : self.server_name.split("_")[0], "sequence" : self.server_name.split("_")[1]}
             except:
@@ -67,8 +67,12 @@ class ZKeeper():
         self.logger.info("Datetime: {0}".format((datetime.now()).strftime("%B %d, %Y %H:%M:%S")))
         self.logger.info("Nodes:")
         self.logger.info("Server name: {0}".format(self.server_name))
+        nodes = []
         for i in application_nodes:
-            self.logger.info("  - {0} with sequence {1}".format(i["node"], i["sequence"]))
+            nodes.append("  - {0} with sequence {1}".format(i["node"], i["sequence"]))
+        nodes = sorted(nodes)
+        for node in nodes:
+            self.logger.info(node)
         self.logger.info("Role: {0}".format("leader" if current_leader['node'] == self.server_dict['node'] and current_leader['sequence'] == self.server_dict['sequence'] else "follower"))
 
     def __del__(self):
