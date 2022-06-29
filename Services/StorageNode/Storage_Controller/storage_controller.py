@@ -42,7 +42,7 @@ class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
         self.verbose = verbose
         self.run_with_zookeeper = run_with_zookeeper
 
-        logging.basicConfig(filename=log_file_output_collector,filemode=log_filemode, format=log_format)
+        logging.basicConfig(filename=log_file_output_collector,filemode=log_filemode, format=log_format, force=True)
         self.logger = logging.getLogger()
         # print to console
         if self.verbose:
@@ -89,7 +89,7 @@ class ImageSender(service_rpc_pb2_grpc.ImageSenderServicer):
         self.run_with_zookeeper = run_with_zookeeper
 
 
-        logging.basicConfig(filename=log_file_image_sender,filemode=log_filemode, format=log_format)
+        logging.basicConfig(filename=log_file_image_sender,filemode=log_filemode, format=log_format, force=True)
         self.logger = logging.getLogger()
         # prints to console
         if self.verbose:

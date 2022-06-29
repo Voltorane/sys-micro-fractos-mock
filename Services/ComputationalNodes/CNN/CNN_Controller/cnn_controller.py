@@ -40,7 +40,7 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
         self.verbose = verbose
         self.run_with_zookeeper = run_with_zookeeper
 
-        logging.basicConfig(filename=log_file,filemode=log_filemode, format=log_format)
+        logging.basicConfig(filename=log_file,filemode=log_filemode, format=log_format, force=True)
         self.logger = logging.getLogger()
         # prints to console
         if self.verbose:
