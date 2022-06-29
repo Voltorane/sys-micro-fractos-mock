@@ -1,10 +1,8 @@
-from operator import mod
 import os
 import pandas as pd
 import shutil
 import warnings
 from datetime import datetime
-from tensorflow.keras.utils import load_img
 from tensorflow import keras
 from keras.preprocessing.image import ImageDataGenerator
 from keras import Sequential
@@ -12,47 +10,45 @@ from keras.layers import Conv2D, MaxPool2D, Flatten, Dense
 import numpy as np
 from perceptron_exceptions import *
 from PIL import Image
-import time
 
 warnings.filterwarnings('ignore')
+dir_path = os.path.dirname(__file__)
 
-class Bot:
-    def __init__(self, image_width=256, image_height=256) -> None:
-        self.class_labels = {}
-        self.label_list = []
-        self.img_width = image_width
-        self.img_height = image_height
-        self.model = None
-        self.dir_path = os.path.dirname(__file__)
-    
-    #returns dict
+
+class Bot:   
+    #returns dict, list
     #throws FileNotFoundError
     def data_class_label(self, resource_folder="TrainingData"):
-        if not os.path.isdir(os.path.join(self.dir_path, resource_folder)):
+        resource_path = os.path.join(dir_path, resource_folder)
+        if not os.path.isdir(resource_path):
             raise FileNotFoundError(f"{resource_folder} does not exist or is invalid!")
         
-        self.class_labels = {}
+        class_labels = {}
+        label_list = []
         label = 0
         
         #labeling the names of data_classes with 0 or 1
-        for index, data_class in enumerate(os.listdir(os.path.join(self.dir_path, resource_folder))):
+        for index, data_class in enumerate(os.listdir(resource_path)):
             if index > 1:
-                print(f"The perceptron is limited to only two data classes\nProceeding with {self.class_labels.keys()}")
+                print(f"The perceptron is limited to only two data classes\nProceeding with {class_labels.keys()}")
                 break
-            self.class_labels[data_class] = str(label)
-            self.label_list.append(data_class)
+            # add data_class to dictionary and assign it label
+            class_labels[data_class] = str(label)
+            label_list.append(data_class)
             label += 1
-        return self.class_labels
+        return class_labels, label_list
     
     #throws FileNotFoundError
     def trim_dataset(self, resource_folder="TrainingData"):
-        if not os.path.isdir(os.path.join(self.dir_path, resource_folder)):
+        resource_path = os.path.join(dir_path, resource_folder)
+        if not os.path.isdir(resource_path):
             raise FileNotFoundError(f"{resource_folder} does not exist or is invalid!")
         
-        for data_class in os.listdir(os.path.join(self.dir_path, resource_folder)):
+        for data_class in os.listdir(resource_path):
+            print("Trimming: ", data_class)
             #remove files that are not images or are corrupted from the dataset
-            for file in os.listdir(os.path.join(os.path.join(self.dir_path, resource_folder), data_class)):
-                path_to_file = os.path.join(os.path.join(self.dir_path, resource_folder), data_class, file)
+            for file in os.listdir(os.path.join(resource_path, data_class)):
+                path_to_file = os.path.join(resource_path, data_class, file)
                 try:
                     if not os.path.isfile(path_to_file):
                         print(f"{path_to_file} is not a file!")
@@ -72,12 +68,13 @@ class Bot:
     #returns pd.DataFrame
     #throws InvalidDatasetDistribution
     def create_dataframe(self, resource_folder="TrainingData", treshold=0.4):
-        if not os.path.isdir(os.path.join(self.dir_path, resource_folder)):
-            raise FileNotFoundError(f"{os.path.join(self.dir_path, resource_folder)} does not exist or is invalid!")
+        resource_path = os.path.join(dir_path, resource_folder)
+        if not os.path.isdir(resource_path):
+            raise FileNotFoundError(f"{resource_path} does not exist or is invalid!")
         data = []
-        for data_class in os.listdir(os.path.join(self.dir_path, resource_folder)):
-            for file in os.listdir(os.path.join(os.path.join(self.dir_path, resource_folder), data_class)):
-                path_to_file = os.path.join(os.path.join(self.dir_path, resource_folder), data_class, file)
+        for data_class in os.listdir(resource_path):
+            for file in os.listdir(os.path.join(resource_path, data_class)):
+                path_to_file = os.path.join(resource_path, data_class, file)
                 # add files to the dataframe
                 data.append([path_to_file, data_class, self.class_labels[data_class]])
         
@@ -85,6 +82,7 @@ class Bot:
         zero_amount = df[df['Label']=="0"]['Label'].count()
         total_amount = df['Label'].count()
         print(zero_amount, total_amount)
+        # check for correct distribution
         if zero_amount/total_amount < treshold or zero_amount/total_amount > 1-treshold:
             raise InvalidDatasetDistribution(f"Datasets are distributed incorrectly.\n \
                                             Was {int((1 - zero_amount/total_amount)*100)} | {int((zero_amount/total_amount)*100)} \n \
@@ -94,90 +92,89 @@ class Bot:
         return df.sample(frac=1).reset_index(drop=True)
     
     
-    def get_model_list(self, source_dir="models"):
-        if not os.path.isdir(source_dir):
-            raise IOError(f"Source dir {source_dir} does not exist or is invalid!")
-        elif os.path.getsize(os.path.join(self.dir_path, source_dir)) == 0:
-            raise IOError(f"Source dir {source_dir} is empty!")
+    def __init__(self, image_width=256, image_height=256, resource_folder="TrainingData") -> None:
+        # create data class labels and label list for easier access to results
+        self.class_labels, self.label_list = self.data_class_label(resource_folder)
         
-        list_ = os.listdir(source_dir)
-        return list(map(lambda x: os.path.join(os.path.join(self.dir_path, source_dir), x), list_))
+        #prepare dataset for further instructions and create dataframe
+        self.trim_dataset(resource_folder)
+        self.df = self.create_dataframe(resource_folder)
+        self.img_width = image_width
+        self.img_height = image_height
+        self.model = None
 
     #@throws IncorrectModelType
     def save_model(self, model, name="model", target_dir="models"):
         if not isinstance(model, Sequential):
             raise IncorrectModelType(f"Should be Sequential, but was {type(model)}")
-        if not os.path.isdir(os.path.join(self.dir_path, target_dir)):
-            os.makedirs(os.path.join(self.dir_path, target_dir))
-            
+        if not os.path.isdir(os.path.join(dir_path, target_dir)):
+            os.makedirs(os.path.join(dir_path, target_dir))
+        
+        #TODO uncomment
         #to save only last model
-        if os.path.exists(os.path.join(self.dir_path, target_dir)):
-            shutil.rmtree(os.path.join(self.dir_path, target_dir))
-        os.mkdir(os.path.join(self.dir_path, target_dir))    
+        # if os.path.exists(os.path.join(dir_path, target_dir)):
+        #     shutil.rmtree(os.path.join(dir_path, target_dir))
+        # os.mkdir(os.path.join(dir_path, target_dir))    
             
         try:
-            model.save(os.path.join(os.path.join(self.dir_path, target_dir), name))
+            model.save(os.path.join(os.path.join(dir_path, target_dir), name))
+            model.save_weights(os.path.join(os.path.join(dir_path, target_dir), "model_weights.h5"))
         except Exception as e:
             print("Model saving failed!")
             print(e.message)
         else:
-            print(f"Model saved successfully at: {os.path.join(os.path.join(self.dir_path, target_dir), name)}")
+            print(f"Model saved successfully at: {os.path.join(os.path.join(dir_path, target_dir), name)}")
 
     def has_models(self, source_dir="models"):
-        return len(os.listdir(os.path.join(self.dir_path, source_dir))) != 0
+        return len(os.listdir(source_dir)) != 0
     
     #@returns model
     #@throws IOError
-    def load_model(self, source_dir="models"):
-        model_dir = os.listdir(os.path.join(self.dir_path, source_dir))
-        if self.has_models(source_dir=source_dir) != 0:
-            for dir_ in model_dir:
-                name = dir_
+    def load_model(self, source_dir="models", name=""):
+        model_dir = os.path.join(dir_path, source_dir)
+        print(model_dir)
+        if self.has_models(model_dir) != 0:
+            models = os.listdir(model_dir)
+            path_to_model = os.path.join(model_dir, name)
+            # if name is provided, load the model with that name
+            if name in models:
                 try:
-                    print(os.path.join(os.path.join(self.dir_path, source_dir), name))
-                    model = keras.models.load_model(os.path.join(os.path.join(self.dir_path, source_dir), name))
+                    print("Loading", path_to_model)
+                    model = keras.models.load_model(path_to_model)
                 except Exception as e:
                     print(e)
-                    user_input = input(f"The model {os.path.join(os.path.join(self.dir_path, source_dir), name)} is not appropriate and could not be loaded. Should it be deleted? [y/n]")
+                    user_input = input(f"The model {path_to_model} is not appropriate and could not be loaded. Should it be deleted? [y/n]")
                     if user_input.lower() in {"yes", "y"}:
                         print("Deleting the model...")
-                        shutil.rmtree(os.path.join(os.path.join(self.dir_path, source_dir), name))
+                        shutil.rmtree(path_to_model)
+                else:
+                    print("Model successfully loaded!")
+                    return model
+            #otherwise, finde first fitting model
+            for name in models:
+                path_to_model = os.path.join(model_dir, name)
+                try:
+                    print("Loading", path_to_model)
+                    model = keras.models.load_model(path_to_model)
+                except Exception as e:
+                    print(e)
+                    user_input = input(f"The model {path_to_model} is not appropriate and could not be loaded. Should it be deleted? [y/n]")
+                    if user_input.lower() in {"yes", "y"}:
+                        print("Deleting the model...")
+                        shutil.rmtree(path_to_model)
                 else:
                     print("Model successfully loaded!")
                     return model   
-        # if not os.path.isdir(source_dir):
-        #     raise IOError(f"Source dir {source_dir} does not exist or is invalid!")
-        # elif os.path.getsize(source_dir) == 0:
-        #     raise IOError(f"Source dir {source_dir} is empty!")
-
-        # if path is None:
-        #     #loading random model from the source
-        #     if name is None:
-        #         print("Name was not provided. Loading last any model from the source.")
-        #         dir_list = os.listdir(source_dir)
-        #         
-        #         #if no appropriate model was found
-        #         if name is None:
-        #             raise IOError(f"Source dir {source_dir} contains no appropriate models!")
-        #     else:
-        #         path = os.path.join(source_dir, name)
-        # try:
-        #     model = keras.models.load_model(path)
-        # except:
-        #     user_input = input(f"The model {path} is not appropriate and could not be loaded. Should it be deleted? [y/n]")
-        #     if user_input.lower() in {"yes", "y"}:
-        #         print("Deleting the model...")
-        #         shutil.rmtree(path)
-        #     raise IOError(f"Model could not be loaded!")
-        # else:
-        #     print("Model successfully loaded!")
-        #     return model
+        return None
     
     # @params
     # train_dataframe, test_dataframe - panas.Dataframe for training and testing
     # throws invalid dataset distribution
     # training model design and some parameters taken from https://www.geeksforgeeks.org/python-image-classification-using-keras/?ref=lbp
-    def train_model(self, train_dataframe, test_dataframe, img_width=128, img_height=128, sample_limit=5000, epochs=10, batch_size=32, name=None, save=True, target_dir="models"):
+    def train_model(self, train_dataframe, test_dataframe=None, img_width=128, img_height=128, sample_limit=5000, epochs=10, batch_size=32, name=None, save=True, target_dir="models"):
+        if test_dataframe is None:
+            test_dataframe = train_dataframe.copy(deep=True)
+        
         if train_dataframe.size < 32 or test_dataframe.size < 32:
             raise InvalidDatasetDistribution("Datasets should contain at least 32 images!")
         
@@ -225,13 +222,13 @@ class Bot:
                     Dense(1, activation='sigmoid')
         ])
         
-        if os.path.exists(os.path.join(self.dir_path, "checkpoints")):
-            shutil.rmtree(os.path.join(self.dir_path, "checkpoints"))
-        os.mkdir(os.path.join(self.dir_path, "checkpoints"))
+        if os.path.exists(os.path.join(dir_path, "checkpoints")):
+            shutil.rmtree(os.path.join(dir_path, "checkpoints"))
+        os.mkdir(os.path.join(dir_path, "checkpoints"))
         
         model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-        model_checkpoint = keras.callbacks.ModelCheckpoint(os.path.join(os.path.join(self.dir_path, "checkpoints"), "weights{epoch:08d}.h5"), save_weights_only=True)
-        best_checkpoint = keras.callbacks.ModelCheckpoint(os.path.join(os.path.join(self.dir_path, "checkpoints"), "best_weights.h5"), save_weights_only=True, save_best_only=True)
+        model_checkpoint = keras.callbacks.ModelCheckpoint(os.path.join(os.path.join(dir_path, "checkpoints"), "weights{epoch:08d}.h5"), save_weights_only=True)
+        best_checkpoint = keras.callbacks.ModelCheckpoint(os.path.join(os.path.join(dir_path, "checkpoints"), "best_weights.h5"), save_weights_only=True, save_best_only=True)
         model.fit(train_iterator, epochs=epochs, validation_data=test_iterator, callbacks=[model_checkpoint, best_checkpoint])
         
         if save:
@@ -246,13 +243,9 @@ class Bot:
         self.model = model
         return model
 
-    # def predict(self, model, path):
-    #     image = load_img(path, target_size=(self.img_width, self.img_height))
-    #     img = np.array(image)
-    #     img = img / 255.0
-    #     img = img.reshape(1, self.img_width, self.img_height,3)
-    #     return model.predict(img)
-
+    # params model - keras.Model
+    # params img_add - np.arr(shape=(1,img_width,img_height,3), dtype=float32)
+    # returns np.array [[prediction : float]]
     def predict_img(self, model, img_arr):
         return model.predict(img_arr)
     
@@ -281,17 +274,9 @@ if __name__ == "__main__":
     # sys.path.insert(1, "../../../StorageNode")
     # import storage_service
     
-    # img_arr = storage_service.img_to_arr('3.jpg', 128, 128)
-    # # print(img_arr)
-    # encoded_arr = base64.b64encode(img_arr)
-    # img_arr = np.frombuffer(base64.b64decode(encoded_arr), dtype=np.float64).reshape(1,128,128,3)
-    # # print(img_arr)
-    
-    # b = Bot(128, 128)
+    b = Bot(128, 128)
     # b.data_class_label()
     # b.trim_dataset()
     # df = b.create_dataframe()
-    # # model = b.train_model(df, df, sample_limit=1000, epochs=2)
-    # model = keras.models.load_model("models/model_27_06_22")
-    # print(b.predict_img(model, img_arr))
-    pass
+    # model = b.train_model(df, df, sample_limit=100000, batch_size=100, epochs=150, name="150_epochs")
+    model = b.load_model()

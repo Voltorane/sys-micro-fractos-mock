@@ -8,9 +8,9 @@ package service_connector;
 
 service Predictor {
   // Sends a prediction
-  rpc Prediction (PredictionRequest) returns (PredictionResponse) {}
+  rpc Prediction (PredictionRequest) returns (Response) {}
   // initializes the CNN with the given parameters
-  rpc Initialization (InitRequest) returns (InitResponse) {}
+  rpc Initialization (InitRequest) returns (Response) {}
 }
 
 message PredictionRequest {
@@ -49,7 +49,6 @@ service ImageSender {
     rpc SendImage (ImageSendRequest) returns (ImageSendResponse) {}
 }
 
-
 message OutputStorageRequest {
     string data = 1;
     string name = 2;
@@ -72,6 +71,25 @@ message ImageSendRequest {
 }
 
 message ImageSendResponse {
+    int32 response_code = 1;
+    string description = 2;
+}
+
+service ApplicationStarter {
+    // starts application
+    rpc SendInitialRequest (ApplicationInitRequest) returns (ApplicationInitResponse) {}
+}
+
+message ApplicationInitRequest {
+    repeated string request = 1;
+}
+
+message ApplicationInitResponse {
+    int32 response_code = 1;
+    string description = 2;
+}
+
+message Response {
     int32 response_code = 1;
     string description = 2;
 }

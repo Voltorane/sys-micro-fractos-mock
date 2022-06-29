@@ -21,33 +21,21 @@ import service_rpc_pb2_grpc
 from utils.node_types import NodeType
 from utils import ip_connector
 
-log_filemode = "a"
-log_format = "%(levelname)s %(asctime)s - %(message)s"
-log_file = "logfile_cnn_controller.log"
-# logger = logging.getLogger()
-
 config_dir = "../../../config"
 grpc_ip = ip_connector.get_grpc_ip(os.path.join(config_dir, "grpc_ip.cfg"))
-cnn_controller_port = ip_connector.extract_port("cnn_controller", os.path.join(config_dir, "controller_ports.cfg"))
-cnn_controller_ip = f"{grpc_ip}:{cnn_controller_port}"
+math_controller_port = ip_connector.extract_port("math_controller", os.path.join(config_dir, "controller_ports.cfg"))
+math_controller_ip = f"{grpc_ip}:{math_controller_port}"
 
-class Predictor(service_rpc_pb2_grpc.PredictorServicer):
+class Math_Calculator(service_rpc_pb2_grpc.PredictorServicer):
     def __init__(self, run_with_zookeeper=False) -> None:
         super().__init__()
-        self.adaptor = Adaptor()
-
-        logging.basicConfig(filename=log_file,filemode=log_filemode, format=log_format)
-        self.logger = logging.getLogger()
-        consoleHandler = logging.StreamHandler()
-        self.logger.addHandler(consoleHandler)
-        self.logger.setLevel(logging.INFO)
-        
-        self.name = "cnn_controller"
+        self.a = Adaptor()
+        self.name = "math_controller"
         self.dir_path = os.path.dirname(__file__)
-        
+        # TODO make argument when running
         self.run_with_zookeeper = run_with_zookeeper
         if self.run_with_zookeeper:
-            self.logger.info(f"Controller {self.name} is being run with zookeeper!")
+            print("Controller is being run with zookeeper!")
             self.z_ips = ip_connector.extract_ip_list(os.path.join(self.dir_path, "ips.cfg"))
             # TODO think about giving port config path in the arguments when calling
             self.z_port = ip_connector.extract_port(self.name, os.path.join(config_dir, "zookeeper_controller_ports.cfg"))
@@ -57,16 +45,15 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
                     try:
                         self.zookeeper = zookeeper_service.ZKeeper(f"{z_ip}:{self.z_port}", f"{self.name}")
                     except Exception as e:
-                        self.logger.warning("Trying to reconnect to different ip...")
+                        print("Trying to reconnect to different ip...")
                     else:
                         break
         else:
-            self.logger.info(f"Controller {self.name} is being run without zookeeper!")
+            print("Controller is being run without zookeeper!")
         
 
     # returns next request method and all the keys
     def parse_next_request(self, request):
-        self.logger.info("Parsing the request...")
         request = request.split(",")
         node_type = request[0]
         ip = request[1]
@@ -88,25 +75,17 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
     
     def send_output(self, data, name, ip, next_request, storage_id=""):
         with grpc.insecure_channel(ip) as channel:       
-            self.logger.info(f"Requesting response from {ip}!")
             stub = service_rpc_pb2_grpc.OutputCollectorStub(channel)
             response = stub.StoreOutput(service_rpc_pb2.OutputStorageRequest(data=data, name=name, storage_id=storage_id, next_request=next_request))
-            if response.response_code != 0:
-                self.logger.error(f"ERROR response from {ip}: {response.response_code} - {response.description}")
-            else:
-                self.logger.info(f"Received response from {ip}: {response.response_code} - {response.description}")
-            return response
+            print("Response from output storage: " + str(response.description))
     
-    def Prediction (self, request, context):
-        request_name = "PREDICT"
-        self.logger.info(f"Received the following request: {request_name}")
-        adaptor_response = self.adaptor.handle_request(request_name, request.image, request.img_width, request.img_height)
-        
-        response_code, label, data_class, description = adaptor_response
+    def Calculate (self, request, context):
+        response = self.a.handle_request("CALCULATE", request.function, request.arg1, request.arg2, request.arg3)
+        response_code, label, data_class = response
         if response_code != 0:
-            return service_rpc_pb2.Response(response_code=response_code, desciption=description)
+            return service_rpc_pb2.PredictionResponse(error_code=response_code)
         # send output to other storage node
-        # print(request.next_request)
+        print(request.next_request)
         next_request = self.parse_next_request(request.next_request.pop(0))
         req = request.next_request
         if next_request is not None:
@@ -116,17 +95,13 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
             try:
                 self.send_output(data_class, name, ip, req, storage_id)
             except:
-                self.logger.error("ERROR: output storage was usuccessfull!")
-        return service_rpc_pb2.Response(response_code=response_code, description=description)
-    
-    def Initialization(self, request, context):
-        response_code, description = self.adaptor.handle_request("INIT", request.sample_limit, request.epochs, request.img_width, request.img_height)
-        return service_rpc_pb2.Response(response_code=response_code, description=description)
+                print("Output storage was usuccessfull!")
+        return service_rpc_pb2.PredictionResponse(label=int(label), data_class=data_class)
 
 def serve(run_with_zookeeper=False):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     service_rpc_pb2_grpc.add_PredictorServicer_to_server(Predictor(run_with_zookeeper), server)
-    server.add_insecure_port(cnn_controller_ip)
+    server.add_insecure_port(math_controller_ip)
     server.start()
     server.wait_for_termination()
 
@@ -134,12 +109,13 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv[1:], "z")
     except getopt.GetoptError:
-        print(f"ERROR by parsing args: {argv}!")
+        print("Error by parsing args!")
+        return
     run_with_zookeeper = False
     for opt, arg in opts:
         if opt in ('-z, "--zookeeper'):
             run_with_zookeeper = True    
-    # logging.basicConfig()
+    logging.basicConfig()
     serve(run_with_zookeeper=run_with_zookeeper)
 
 if __name__ == '__main__':

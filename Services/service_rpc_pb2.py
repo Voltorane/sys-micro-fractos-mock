@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11service_rpc.proto\x12\x11service_connector\"r\n\x11PredictionRequest\x12\r\n\x05image\x18\x01 \x01(\t\x12\x11\n\timg_width\x18\x02 \x01(\x05\x12\x12\n\nimg_height\x18\x03 \x01(\x05\x12\x11\n\tclient_id\x18\x04 \x01(\t\x12\x14\n\x0cnext_request\x18\x06 \x03(\t\"K\n\x12PredictionResponse\x12\x12\n\ndata_class\x18\x01 \x01(\t\x12\r\n\x05label\x18\x02 \x01(\x05\x12\x12\n\nerror_code\x18\x03 \x01(\x05\"p\n\x0bInitRequest\x12\x14\n\x0csample_limit\x18\x01 \x01(\x05\x12\x0e\n\x06\x65pochs\x18\x02 \x01(\x05\x12\x11\n\timg_width\x18\x03 \x01(\x05\x12\x12\n\nimg_height\x18\x04 \x01(\x05\x12\x14\n\x0cnext_request\x18\x06 \x03(\t\":\n\x0cInitResponse\x12\x15\n\rresponse_code\x18\x01 \x01(\x05\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\"\\\n\x14OutputStorageRequest\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\nstorage_id\x18\x03 \x01(\t\x12\x14\n\x0cnext_request\x18\x06 \x03(\t\"C\n\x15OutputSotrageResponse\x12\x15\n\rresponse_code\x18\x01 \x01(\x05\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\"\x83\x01\n\x10ImageSendRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\timg_width\x18\x02 \x01(\x05\x12\x12\n\nimg_height\x18\x03 \x01(\x05\x12\x11\n\tclient_id\x18\x04 \x01(\t\x12\x11\n\tnext_node\x18\x05 \x01(\t\x12\x14\n\x0cnext_request\x18\x06 \x03(\t\"?\n\x11ImageSendResponse\x12\x15\n\rresponse_code\x18\x01 \x01(\x05\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t2\xbd\x01\n\tPredictor\x12[\n\nPrediction\x12$.service_connector.PredictionRequest\x1a%.service_connector.PredictionResponse\"\x00\x12S\n\x0eInitialization\x12\x1e.service_connector.InitRequest\x1a\x1f.service_connector.InitResponse\"\x00\x32u\n\x0fOutputCollector\x12\x62\n\x0bStoreOutput\x12\'.service_connector.OutputStorageRequest\x1a(.service_connector.OutputSotrageResponse\"\x00\x32g\n\x0bImageSender\x12X\n\tSendImage\x12#.service_connector.ImageSendRequest\x1a$.service_connector.ImageSendResponse\"\x00\x42 B\x11Service_ConnectorP\x01\xa2\x02\x08SERVCONNb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x11service_rpc.proto\x12\x11service_connector\"r\n\x11PredictionRequest\x12\r\n\x05image\x18\x01 \x01(\t\x12\x11\n\timg_width\x18\x02 \x01(\x05\x12\x12\n\nimg_height\x18\x03 \x01(\x05\x12\x11\n\tclient_id\x18\x04 \x01(\t\x12\x14\n\x0cnext_request\x18\x06 \x03(\t\"K\n\x12PredictionResponse\x12\x12\n\ndata_class\x18\x01 \x01(\t\x12\r\n\x05label\x18\x02 \x01(\x05\x12\x12\n\nerror_code\x18\x03 \x01(\x05\"p\n\x0bInitRequest\x12\x14\n\x0csample_limit\x18\x01 \x01(\x05\x12\x0e\n\x06\x65pochs\x18\x02 \x01(\x05\x12\x11\n\timg_width\x18\x03 \x01(\x05\x12\x12\n\nimg_height\x18\x04 \x01(\x05\x12\x14\n\x0cnext_request\x18\x06 \x03(\t\":\n\x0cInitResponse\x12\x15\n\rresponse_code\x18\x01 \x01(\x05\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\"\\\n\x14OutputStorageRequest\x12\x0c\n\x04\x64\x61ta\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x12\n\nstorage_id\x18\x03 \x01(\t\x12\x14\n\x0cnext_request\x18\x06 \x03(\t\"C\n\x15OutputSotrageResponse\x12\x15\n\rresponse_code\x18\x01 \x01(\x05\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\"\x83\x01\n\x10ImageSendRequest\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x11\n\timg_width\x18\x02 \x01(\x05\x12\x12\n\nimg_height\x18\x03 \x01(\x05\x12\x11\n\tclient_id\x18\x04 \x01(\t\x12\x11\n\tnext_node\x18\x05 \x01(\t\x12\x14\n\x0cnext_request\x18\x06 \x03(\t\"?\n\x11ImageSendResponse\x12\x15\n\rresponse_code\x18\x01 \x01(\x05\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\")\n\x16\x41pplicationInitRequest\x12\x0f\n\x07request\x18\x01 \x03(\t\"E\n\x17\x41pplicationInitResponse\x12\x15\n\rresponse_code\x18\x01 \x01(\x05\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\"6\n\x08Response\x12\x15\n\rresponse_code\x18\x01 \x01(\x05\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t2\xaf\x01\n\tPredictor\x12Q\n\nPrediction\x12$.service_connector.PredictionRequest\x1a\x1b.service_connector.Response\"\x00\x12O\n\x0eInitialization\x12\x1e.service_connector.InitRequest\x1a\x1b.service_connector.Response\"\x00\x32u\n\x0fOutputCollector\x12\x62\n\x0bStoreOutput\x12\'.service_connector.OutputStorageRequest\x1a(.service_connector.OutputSotrageResponse\"\x00\x32g\n\x0bImageSender\x12X\n\tSendImage\x12#.service_connector.ImageSendRequest\x1a$.service_connector.ImageSendResponse\"\x00\x32\x83\x01\n\x12\x41pplicationStarter\x12m\n\x12SendInitialRequest\x12).service_connector.ApplicationInitRequest\x1a*.service_connector.ApplicationInitResponse\"\x00\x42 B\x11Service_ConnectorP\x01\xa2\x02\x08SERVCONNb\x06proto3')
 
 
 
@@ -26,6 +26,9 @@ _OUTPUTSTORAGEREQUEST = DESCRIPTOR.message_types_by_name['OutputStorageRequest']
 _OUTPUTSOTRAGERESPONSE = DESCRIPTOR.message_types_by_name['OutputSotrageResponse']
 _IMAGESENDREQUEST = DESCRIPTOR.message_types_by_name['ImageSendRequest']
 _IMAGESENDRESPONSE = DESCRIPTOR.message_types_by_name['ImageSendResponse']
+_APPLICATIONINITREQUEST = DESCRIPTOR.message_types_by_name['ApplicationInitRequest']
+_APPLICATIONINITRESPONSE = DESCRIPTOR.message_types_by_name['ApplicationInitResponse']
+_RESPONSE = DESCRIPTOR.message_types_by_name['Response']
 PredictionRequest = _reflection.GeneratedProtocolMessageType('PredictionRequest', (_message.Message,), {
   'DESCRIPTOR' : _PREDICTIONREQUEST,
   '__module__' : 'service_rpc_pb2'
@@ -82,9 +85,31 @@ ImageSendResponse = _reflection.GeneratedProtocolMessageType('ImageSendResponse'
   })
 _sym_db.RegisterMessage(ImageSendResponse)
 
+ApplicationInitRequest = _reflection.GeneratedProtocolMessageType('ApplicationInitRequest', (_message.Message,), {
+  'DESCRIPTOR' : _APPLICATIONINITREQUEST,
+  '__module__' : 'service_rpc_pb2'
+  # @@protoc_insertion_point(class_scope:service_connector.ApplicationInitRequest)
+  })
+_sym_db.RegisterMessage(ApplicationInitRequest)
+
+ApplicationInitResponse = _reflection.GeneratedProtocolMessageType('ApplicationInitResponse', (_message.Message,), {
+  'DESCRIPTOR' : _APPLICATIONINITRESPONSE,
+  '__module__' : 'service_rpc_pb2'
+  # @@protoc_insertion_point(class_scope:service_connector.ApplicationInitResponse)
+  })
+_sym_db.RegisterMessage(ApplicationInitResponse)
+
+Response = _reflection.GeneratedProtocolMessageType('Response', (_message.Message,), {
+  'DESCRIPTOR' : _RESPONSE,
+  '__module__' : 'service_rpc_pb2'
+  # @@protoc_insertion_point(class_scope:service_connector.Response)
+  })
+_sym_db.RegisterMessage(Response)
+
 _PREDICTOR = DESCRIPTOR.services_by_name['Predictor']
 _OUTPUTCOLLECTOR = DESCRIPTOR.services_by_name['OutputCollector']
 _IMAGESENDER = DESCRIPTOR.services_by_name['ImageSender']
+_APPLICATIONSTARTER = DESCRIPTOR.services_by_name['ApplicationStarter']
 if _descriptor._USE_C_DESCRIPTORS == False:
 
   DESCRIPTOR._options = None
@@ -105,10 +130,18 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _IMAGESENDREQUEST._serialized_end=702
   _IMAGESENDRESPONSE._serialized_start=704
   _IMAGESENDRESPONSE._serialized_end=767
-  _PREDICTOR._serialized_start=770
-  _PREDICTOR._serialized_end=959
-  _OUTPUTCOLLECTOR._serialized_start=961
-  _OUTPUTCOLLECTOR._serialized_end=1078
-  _IMAGESENDER._serialized_start=1080
-  _IMAGESENDER._serialized_end=1183
+  _APPLICATIONINITREQUEST._serialized_start=769
+  _APPLICATIONINITREQUEST._serialized_end=810
+  _APPLICATIONINITRESPONSE._serialized_start=812
+  _APPLICATIONINITRESPONSE._serialized_end=881
+  _RESPONSE._serialized_start=883
+  _RESPONSE._serialized_end=937
+  _PREDICTOR._serialized_start=940
+  _PREDICTOR._serialized_end=1115
+  _OUTPUTCOLLECTOR._serialized_start=1117
+  _OUTPUTCOLLECTOR._serialized_end=1234
+  _IMAGESENDER._serialized_start=1236
+  _IMAGESENDER._serialized_end=1339
+  _APPLICATIONSTARTER._serialized_start=1342
+  _APPLICATIONSTARTER._serialized_end=1473
 # @@protoc_insertion_point(module_scope)

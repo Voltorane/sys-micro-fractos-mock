@@ -10,11 +10,11 @@ class ZKeeper():
         try:
             print(f"Initializing zookeeper for {server_name}...")
             self.zookeeper = KazooClient(ip)
-            self.server_name = server_name
+            self.server_name = server_name + datetime.now().strftime("%H:%M:%S")
             try:
-                self.server_dict = {"node" : server_name.split("_")[0], "sequence" : server_name.split("_")[1]}
+                self.server_dict = {"node" : self.server_name.split("_")[0], "sequence" : self.server_name.split("_")[1]}
             except:
-                self.server_dict = {"node" : server_name, "sequence" : ""}
+                self.server_dict = {"node" : self.server_name, "sequence" : ""}
             print("Server name: ", server_name)
             self.path_nodes = "/node_storage"
             self.path_data = "/data"
