@@ -134,7 +134,7 @@ def serve(run_with_zookeeper=False, verbose=False):
 
 def main(argv):
     try:
-        opts, args = getopt.getopt(argv[1:], 'z:v')
+        opts, args = getopt.getopt(argv[1:], 'zv')
     except getopt.GetoptError:
         print(f"ERROR by parsing args: {argv}!")
     run_with_zookeeper = False
