@@ -6,26 +6,27 @@ class ZKeeper():
     # :attr:`~kazoo.interfaces.IHandler.timeout_exception`
     #              if the connection wasn't established within `timeout`
     #              seconds.
-    def __init__(self, ip, server_name):
+    def __init__(self, ip, server_name, logger):
         try:
-            print(f"Initializing zookeeper for {server_name}...")
+            self.logger = logger
+            self.logger.info(f"Initializing zookeeper for {server_name}...")
             self.zookeeper = KazooClient(ip)
             self.server_name = server_name + datetime.now().strftime("%H:%M:%S")
             try:
                 self.server_dict = {"node" : self.server_name.split("_")[0], "sequence" : self.server_name.split("_")[1]}
             except:
                 self.server_dict = {"node" : self.server_name, "sequence" : ""}
-            print("Server name: ", server_name)
+            self.logger.info("Server name: ", server_name)
             self.path_nodes = "/node_storage"
             self.path_data = "/data"
-            print(f"Connecting to {ip}...")
+            self.logger.info(f"Connecting to {ip}...")
             self.connect()
-            print(f"Connection successfull!")
+            self.logger.info(f"Connection successfull!")
             self.register()
             self.watch_application_nodes()
             self.watch_application_data()
         except Exception as e:
-            print(f"Error {str(e)} occured, while loading zookeeper for: {server_name} on {ip}")
+            self.logger.error(f"ERROR {str(e)} occured, while loading zookeeper for: {server_name} on {ip}")
     
     def connect(self):
         self.zookeeper.start()
@@ -45,8 +46,7 @@ class ZKeeper():
     def check_application_nodes(self, children):
         application_nodes = [{"node": i[0], "sequence": i[1]} for i in (i.split("_") for i in children)]
         current_leader = min(application_nodes, key=lambda x: x["sequence"])
-        # print("ababa",application_nodes)
-        print(f"Current leader: {current_leader['node']}_{current_leader['sequence']}")
+        self.logger.info(f"Current leader: {current_leader['node']}_{current_leader['sequence']}")
         
 
         self.display_server_information(application_nodes, current_leader)
@@ -54,10 +54,9 @@ class ZKeeper():
             self.update_shared_data()
 
     def check_application_data(self, data, stat):
-        print(
+        self.logger.info(
             "Data change detected on {0}:\nData: {1}\nStat: {2}".format((datetime.now()).strftime("%B %d, %Y %H:%M:%S"),
-                                                                        data, stat))
-        print()
+                                                                        data, stat), "\n")
 
     def update_shared_data(self):
         if not self.zookeeper.exists(self.path_data):
@@ -66,13 +65,14 @@ class ZKeeper():
                                   ephemeral=True, sequence=False, makepath=True)
 
     def display_server_information(self, application_nodes, current_leader):
-        print("Datetime: {0}".format((datetime.now()).strftime("%B %d, %Y %H:%M:%S")))
-        print("Server name: {0}".format(self.server_name))
-        print("Nodes:")
+        self.logger.info("Datetime: {0}".format((datetime.now()).strftime("%B %d, %Y %H:%M:%S")))
+        self.logger.info("Nodes:")
+        self.logger.info("Server name: {0}".format(self.server_name))
         for i in application_nodes:
-            print("  - {0} with sequence {1}".format(i["node"], i["sequence"]))
-        print("Role: {0}".format("leader" if current_leader['node'] == self.server_dict['node'] and current_leader['sequence'] == self.server_dict['sequence'] else "follower"))
-        print()
+            self.logger.info("  - {0} with sequence {1}".format(i["node"], i["sequence"]))
+        self.logger.info("Role: {0}".format("leader" if current_leader['node'] == self.server_dict['node'] and current_leader['sequence'] == self.server_dict['sequence'] else "follower"), "\n")
 
     def __del__(self):
+        self.logger.warning("Closing connection...")
         self.zookeeper.close()    
+        self.logger.warning("Disconnected from server.")

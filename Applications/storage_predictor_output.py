@@ -12,9 +12,17 @@ cnn_controller_ip = "127.0.0.1:2182"
 storage_controller_ip = "127.0.0.1:2181"
 application_controller_ip = "127.0.0.1:2183"
 
+log_filemode = "a"
+log_format = "%(levelname)s %(asctime)s - %(message)s"
+log_file = "logfile_cnn_controller.log"
+
 class Storage_Predictor_Output(object):
     def __init__(self) -> None:
-        self.zookeeper = zookeeper_service.ZKeeper("127.0.0.1:2186", "test_app")
+        logging.basicConfig(filename=log_file,filemode=log_filemode, format=log_format)
+        self.logger = logging.getLogger()
+        # prints to console
+        self.logger.setLevel(logging.INFO)
+        self.zookeeper = zookeeper_service.ZKeeper("127.0.0.1:2186", "test_app", self.logger)
 
 def run():
     with grpc.insecure_channel(application_controller_ip) as channel:       
