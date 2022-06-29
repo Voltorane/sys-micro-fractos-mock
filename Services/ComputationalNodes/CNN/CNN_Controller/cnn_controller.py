@@ -1,20 +1,15 @@
-from concurrent import futures
 import logging
 import getopt
-
 import grpc
 import sys
 import os
 from datetime import datetime
-
+from concurrent import futures
 sys.path.insert(1, "../CNN_Adaptor")
 from cnn_adaptor import Adaptor
-
 sys.path.insert(1, "../../../")
 import zookeeper_service
-import kazoo
-
-#goto Services
+# goto Services
 sys.path.insert(1, "../../..")
 import service_rpc_pb2
 import service_rpc_pb2_grpc
@@ -26,12 +21,13 @@ from utils.request_wrappers import *
 log_filemode = "a"
 log_format = "%(levelname)s %(asctime)s - %(message)s"
 log_file = "logfile_cnn_controller.log"
-# logger = logging.getLogger()
 
 config_dir = "../../../config"
 grpc_ip = ip_connector.get_grpc_ip(os.path.join(config_dir, "grpc_ip.cfg"))
-cnn_controller_port = ip_connector.extract_port("cnn_controller", os.path.join(config_dir, "controller_ports.cfg"))
+cnn_controller_port = ip_connector.extract_port("cnn_controller"
+                        , os.path.join(config_dir, "controller_ports.cfg"))
 cnn_controller_ip = f"{grpc_ip}:{cnn_controller_port}"
+
 
 class Predictor(service_rpc_pb2_grpc.PredictorServicer):
     def __init__(self, run_with_zookeeper=False, verbose=False) -> None:
@@ -42,19 +38,20 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
         self.verbose = verbose
         self.run_with_zookeeper = run_with_zookeeper
 
-        logging.basicConfig(filename=log_file,filemode=log_filemode, format=log_format)
+        logging.basicConfig(filename=log_file, filemode=log_filemode, format=log_format, force=True)
         self.logger = logging.getLogger()
         # prints to console
         if self.verbose:
             consoleHandler = logging.StreamHandler()
             self.logger.addHandler(consoleHandler)
         self.logger.setLevel(logging.INFO)
-        
+
         if self.run_with_zookeeper:
             self.logger.info(f"Controller {self.name} is being run with zookeeper!")
             self.z_ips = ip_connector.extract_ip_list(os.path.join(self.dir_path, "ips.cfg"))
             # TODO think about giving port config path in the arguments when calling
-            self.z_port = ip_connector.extract_port(self.name, os.path.join(config_dir, "zookeeper_controller_ports.cfg"))
+            self.z_port = ip_connector.extract_port(self.name
+                            , os.path.join(config_dir, "zookeeper_controller_ports.cfg"))
             # try connecting to all the ip's from config utill connection is successfull
             if self.z_port is not None:
                 for z_ip in self.z_ips:
@@ -88,10 +85,14 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
             except:
                 self.logger.error("ERROR: output storage was usuccessfull!")
         return service_rpc_pb2.Response(response_code=response_code, description=description)
-    
+
     def Initialization(self, request, context):
-        response_code, description = self.adaptor.handle_request("INIT", request.sample_limit, request.epochs, request.img_width, request.img_height)
+        request_name = "INIT"
+        self.logger.info(f"Received the following request: {request_name}")
+        response_code, description = self.adaptor.handle_request(request_name, request.sample_limit
+                                        , request.epochs, request.img_width, request.img_height)
         return service_rpc_pb2.Response(response_code=response_code, description=description)
+
 
 def serve(run_with_zookeeper=False, verbose=False):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
@@ -113,6 +114,7 @@ def main(argv):
         if opt in ('-v', '--verbose'):
             verbose = True
     serve(run_with_zookeeper=run_with_zookeeper, verbose=verbose)
+
 
 if __name__ == '__main__':
     main(sys.argv)

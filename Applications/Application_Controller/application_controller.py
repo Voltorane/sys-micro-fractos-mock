@@ -1,16 +1,18 @@
-from concurrent import futures
 import logging
 import os
 import sys
-from urllib import response
-
-service_dir = "../../Services"
-sys.path.insert(1, service_dir)
 import getopt
 import grpc
 import service_rpc_pb2
 import service_rpc_pb2_grpc
 import zookeeper_service
+import ip_connector
+from node_types import NodeType
+from urllib import response
+from concurrent import futures
+
+service_dir = "../../Services"
+sys.path.insert(1, service_dir)
 
 # TODO REMOVE
 # from ...Services import service_rpc_pb2
@@ -30,8 +32,10 @@ from request_wrappers import *
 
 config_dir = os.path.join(service_dir, "config")
 grpc_ip = ip_connector.get_grpc_ip(os.path.join(config_dir, "grpc_ip.cfg"))
-application_controller_port = ip_connector.extract_port("application_controller", os.path.join(config_dir, "controller_ports.cfg"))
+application_controller_port = ip_connector.extract_port("application_controller"
+                                , os.path.join(config_dir, "controller_ports.cfg"))
 application_controller_ip = f"{grpc_ip}:{application_controller_port}"
+
 
 class ApplicationStarter(service_rpc_pb2_grpc.ApplicationStarterServicer):
     def __init__(self, run_with_zookeeper=False, verbose=False) -> None:
@@ -41,7 +45,8 @@ class ApplicationStarter(service_rpc_pb2_grpc.ApplicationStarterServicer):
         self.verbose = verbose
         self.run_with_zookeeper = run_with_zookeeper
 
-        logging.basicConfig(filename=log_file,filemode=log_filemode, format=log_format)
+        logging.basicConfig(filename=log_file, filemode=log_filemode
+                            , format=log_format, force=True)
         self.logger = logging.getLogger()
         # prints to console
         if self.verbose:
@@ -52,7 +57,8 @@ class ApplicationStarter(service_rpc_pb2_grpc.ApplicationStarterServicer):
         if self.run_with_zookeeper:
             self.logger.info(f"Controller {self.name} is being run with zookeeper!")
             self.z_ips = ip_connector.extract_ip_list(os.path.join(self.dir_path, "ips.cfg"))
-            self.z_port = ip_connector.extract_port(self.name, os.path.join(config_dir, "zookeeper_controller_ports.cfg"))
+            self.z_port = ip_connector.extract_port(self.name
+                            , os.path.join(config_dir, "zookeeper_controller_ports.cfg"))
             # try connecting to all the ip's from config utill connection is successfull
             if self.z_port is not None:
                 for z_ip in self.z_ips:
@@ -110,12 +116,14 @@ class ApplicationStarter(service_rpc_pb2_grpc.ApplicationStarterServicer):
                 self.logger.info("No further requests!")
         return service_rpc_pb2.Response(response_code=0, description="OK")
 
+
 def serve(run_with_zookeeper=False, verbose=False):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     service_rpc_pb2_grpc.add_ApplicationStarterServicer_to_server(ApplicationStarter(run_with_zookeeper, verbose), server)
     server.add_insecure_port(application_controller_ip)
     server.start()
     server.wait_for_termination()
+
 
 def main(argv):
     try:
@@ -128,7 +136,7 @@ def main(argv):
         if opt in ('-z', '--zookeeper'):
             run_with_zookeeper = True
         if opt in ('-v', '--verbose'):
-            verbose = True   
+            verbose = True
     serve(run_with_zookeeper=run_with_zookeeper, verbose=verbose)
 
 if __name__ == '__main__':
