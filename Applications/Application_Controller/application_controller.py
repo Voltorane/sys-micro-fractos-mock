@@ -88,7 +88,7 @@ class ApplicationStarter(service_rpc_pb2_grpc.ApplicationStarterServicer):
     
     def send_request_to_image_sender(self, name, img_width, img_height, client_id, next_request, ip):
         with grpc.insecure_channel(ip) as channel:
-            self.logger.info(f"Requesting response from {ip}!")
+            self.logger.info(f"Sending request to {ip}!")
             stub = service_rpc_pb2_grpc.ImageSenderStub(channel)
             response = stub.SendImage(service_rpc_pb2.ImageSendRequest(name=name, img_width=img_width, img_height=img_height, client_id=client_id, next_request=next_request))
             if response.response_code != 0:
@@ -110,7 +110,7 @@ class ApplicationStarter(service_rpc_pb2_grpc.ApplicationStarterServicer):
                     self.send_request_to_image_sender(name, img_width, img_height, client_id, req, ip)
             else:
                 self.logger.info("No further requests!")
-        return service_rpc_pb2.ApplicationInitResponse(response_code=0, description="OK")
+        return service_rpc_pb2.Response(response_code=0, description="OK")
 
 def serve(run_with_zookeeper=False, verbose=False):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

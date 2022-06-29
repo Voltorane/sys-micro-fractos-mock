@@ -101,7 +101,6 @@ class Bot:
         df = pd.DataFrame(data, columns=['Path', 'Classification', 'Label'])
         zero_amount = df[df['Label']=="0"]['Label'].count()
         total_amount = df['Label'].count()
-        print(zero_amount, total_amount)
         # check for correct distribution
         if zero_amount/total_amount < treshold or zero_amount/total_amount > 1-treshold:
             raise InvalidDatasetDistribution(f"Datasets are distributed incorrectly.\n \
@@ -154,7 +153,8 @@ class Bot:
             print(f"Model saved successfully at: {os.path.join(os.path.join(dir_path, target_dir), name)}")
 
     def has_models(self, source_dir="models"):
-        return len(os.listdir(source_dir)) != 0
+        model_dir = os.path.join(dir_path, source_dir)
+        return len(os.listdir(model_dir)) != 0
     
     def load_model(self, source_dir="models", name=""):
         """

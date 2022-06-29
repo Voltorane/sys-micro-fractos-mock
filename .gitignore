@@ -7,8 +7,12 @@ apache-zookeeper-3.7.1-bin
 *.gz
 *.code-workspace
 *.pid
-**/log.*
+*.h5
+*.log
+*.pyc
 zookeeper/**/version-2
 Services/ComputationalNodes/CNN/Node/TrainingData/*
 Services/ComputationalNodes/CNN/Node/models/*
 Services/ComputationalNodes/CNN/Node/checkpoints/*
+Services/StorageNode/Node/target
+Services/StorageNode/Node/storage
