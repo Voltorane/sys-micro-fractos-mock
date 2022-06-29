@@ -16,9 +16,15 @@ dir_path = os.path.dirname(__file__)
 
 
 class Bot:   
-    #returns dict, list
-    #throws FileNotFoundError
     def data_class_label(self, resource_folder="TrainingData"):
+        """
+        data_class_label labels names of classes woth 0 or 1, creates a dictionary of class-label and list of labels.
+        e.g. Cat - 0, Dog - 1.
+
+        :param resource_folder: source of two directories with pictures of two classes we need to label;
+        :throws FileNotFoundError: if the path is not a directory or does not exist, an error will be thrown;
+        :return: dictionary and list: filled out dictionary class-label and label list.
+        """
         resource_path = os.path.join(dir_path, resource_folder)
         if not os.path.isdir(resource_path):
             raise FileNotFoundError(f"{resource_folder} does not exist or is invalid!")
@@ -38,8 +44,14 @@ class Bot:
             label += 1
         return class_labels, label_list
     
-    #throws FileNotFoundError
     def trim_dataset(self, resource_folder="TrainingData"):
+        """
+        trim_dataset removes not images from the resource folder
+
+        :param resourceFolder: source of files to remove not images;
+        :throws FileNotFoundError: if the path is not a directory or does not exist, an error will be thrown;
+        :return: void -> the dataset now contains only images now.
+        """
         resource_path = os.path.join(dir_path, resource_folder)
         if not os.path.isdir(resource_path):
             raise FileNotFoundError(f"{resource_folder} does not exist or is invalid!")
@@ -68,6 +80,14 @@ class Bot:
     #returns pd.DataFrame
     #throws InvalidDatasetDistribution
     def create_dataframe(self, resource_folder="TrainingData", treshold=0.4):
+        """
+        create_dataframe creates a dataframe from the source.
+
+        :param resource_folder: the source of images to create a dataframe from;
+        :param treshold: difference between amounts of images (e.g. here: 40 to 60);
+        :throws InvalidDatasetDistribution: if the path is not a directory or does not exist, an error will be thrown;
+        :return: pd.DataFrame.
+        """
         resource_path = os.path.join(dir_path, resource_folder)
         if not os.path.isdir(resource_path):
             raise FileNotFoundError(f"{resource_path} does not exist or is invalid!")
@@ -103,8 +123,16 @@ class Bot:
         self.img_height = image_height
         self.model = None
 
-    #@throws IncorrectModelType
     def save_model(self, model, name="model", target_dir="models"):
+        """
+        save_model saves the trained model.
+
+        :param model: provided model to save;
+        :param name: name of a model;
+        :param target_dir: provided directory where to save the model (creates directory if it does not exist);
+        :throws IncorrectModelType: if the model is not Sequentional, an error will be thrown;
+        :return: void -> the model is saved in the provided directory.
+        """
         if not isinstance(model, Sequential):
             raise IncorrectModelType(f"Should be Sequential, but was {type(model)}")
         if not os.path.isdir(os.path.join(dir_path, target_dir)):
@@ -128,9 +156,15 @@ class Bot:
     def has_models(self, source_dir="models"):
         return len(os.listdir(source_dir)) != 0
     
-    #@returns model
-    #@throws IOError
     def load_model(self, source_dir="models", name=""):
+        """
+        load_model loads the model from provided directory.
+
+        :param source_dir: source directory from which to load the model;
+        :param name: name of desired model, if not in the directory - the first fitting model will be loaded;
+        :throws IOError: if directory is incorrect, an error will be thrown;
+        :return: model.
+        """
         model_dir = os.path.join(dir_path, source_dir)
         print(model_dir)
         if self.has_models(model_dir) != 0:
@@ -167,11 +201,14 @@ class Bot:
                     return model   
         return None
     
-    # @params
-    # train_dataframe, test_dataframe - panas.Dataframe for training and testing
-    # throws invalid dataset distribution
-    # training model design and some parameters taken from https://www.geeksforgeeks.org/python-image-classification-using-keras/?ref=lbp
     def train_model(self, train_dataframe, test_dataframe=None, img_width=128, img_height=128, sample_limit=5000, epochs=10, batch_size=32, name=None, save=True, target_dir="models"):
+        """
+        train_model -> training model design and some parameters taken from https://www.geeksforgeeks.org/python-image-classification-using-keras/?ref=lbp.
+
+        :params train_dataframe, test_dataframe: panas.Dataframe for training and testing;
+        :throws InvalidDatasetDistribution" if the dataset contains not enough (< 32) images, an error will be thrown;
+        :return: trained model.
+        """
         if test_dataframe is None:
             test_dataframe = train_dataframe.copy(deep=True)
         
@@ -242,11 +279,15 @@ class Bot:
         
         self.model = model
         return model
-
-    # params model - keras.Model
-    # params img_add - np.arr(shape=(1,img_width,img_height,3), dtype=float32)
-    # returns np.array [[prediction : float]]
+  
     def predict_img(self, model, img_arr):
+        """
+        predict_img predict the provided image with trained model.
+
+        :param model: keras.Model;
+        :params img_arr: image represented as np.arr(shape=(1,img_width,img_height,3), dtype=float32);
+        :return: np.array [[prediction : float]] : predicted resilt of provided image.
+        """
         return model.predict(img_arr)
     
 if __name__ == "__main__":
