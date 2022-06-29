@@ -115,6 +115,11 @@ class OutputCollectorStub(object):
                 request_serializer=service__rpc__pb2.PredictionStorageRequest.SerializeToString,
                 response_deserializer=service__rpc__pb2.Response.FromString,
                 )
+        self.StoreInt = channel.unary_unary(
+                '/service_connector.OutputCollector/StoreInt',
+                request_serializer=service__rpc__pb2.IntStorageRequest.SerializeToString,
+                response_deserializer=service__rpc__pb2.Response.FromString,
+                )
 
 
 class OutputCollectorServicer(object):
@@ -127,12 +132,23 @@ class OutputCollectorServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def StoreInt(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_OutputCollectorServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'StorePrediction': grpc.unary_unary_rpc_method_handler(
                     servicer.StorePrediction,
                     request_deserializer=service__rpc__pb2.PredictionStorageRequest.FromString,
+                    response_serializer=service__rpc__pb2.Response.SerializeToString,
+            ),
+            'StoreInt': grpc.unary_unary_rpc_method_handler(
+                    servicer.StoreInt,
+                    request_deserializer=service__rpc__pb2.IntStorageRequest.FromString,
                     response_serializer=service__rpc__pb2.Response.SerializeToString,
             ),
     }
@@ -162,6 +178,23 @@ class OutputCollector(object):
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
+    @staticmethod
+    def StoreInt(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/service_connector.OutputCollector/StoreInt',
+            service__rpc__pb2.IntStorageRequest.SerializeToString,
+            service__rpc__pb2.Response.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
 
 class DataSenderStub(object):
     """Missing associated documentation comment in .proto file."""
@@ -177,6 +210,11 @@ class DataSenderStub(object):
                 request_serializer=service__rpc__pb2.ImageSendRequest.SerializeToString,
                 response_deserializer=service__rpc__pb2.Response.FromString,
                 )
+        self.SendInt = channel.unary_unary(
+                '/service_connector.DataSender/SendInt',
+                request_serializer=service__rpc__pb2.IntSendRequest.SerializeToString,
+                response_deserializer=service__rpc__pb2.Response.FromString,
+                )
 
 
 class DataSenderServicer(object):
@@ -188,12 +226,23 @@ class DataSenderServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def SendInt(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_DataSenderServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'SendImage': grpc.unary_unary_rpc_method_handler(
                     servicer.SendImage,
                     request_deserializer=service__rpc__pb2.ImageSendRequest.FromString,
+                    response_serializer=service__rpc__pb2.Response.SerializeToString,
+            ),
+            'SendInt': grpc.unary_unary_rpc_method_handler(
+                    servicer.SendInt,
+                    request_deserializer=service__rpc__pb2.IntSendRequest.FromString,
                     response_serializer=service__rpc__pb2.Response.SerializeToString,
             ),
     }
@@ -219,6 +268,23 @@ class DataSender(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/service_connector.DataSender/SendImage',
             service__rpc__pb2.ImageSendRequest.SerializeToString,
+            service__rpc__pb2.Response.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def SendInt(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/service_connector.DataSender/SendInt',
+            service__rpc__pb2.IntSendRequest.SerializeToString,
             service__rpc__pb2.Response.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

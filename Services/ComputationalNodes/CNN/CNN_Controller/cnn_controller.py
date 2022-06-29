@@ -21,6 +21,7 @@ import service_rpc_pb2_grpc
 from utils.node_types import NodeType
 from utils.node_types import parse_next_request
 from utils import ip_connector
+from utils.request_wrappers import *
 
 log_filemode = "a"
 log_format = "%(levelname)s %(asctime)s - %(message)s"
@@ -66,17 +67,6 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
         else:
             self.logger.info(f"Controller {self.name} is being run without zookeeper!")
     
-    def send_output(self, data, name, ip, next_request, storage_id=""):
-        with grpc.insecure_channel(ip) as channel:       
-            self.logger.info(f"Sending request to {ip}!")
-            stub = service_rpc_pb2_grpc.OutputCollectorStub(channel)
-            response = stub.StorePrediction(service_rpc_pb2.PredictionStorageRequest(data=data, name=name, storage_id=storage_id, next_request=next_request))
-            if response.response_code != 0:
-                self.logger.error(f"ERROR response from {ip}: {response.response_code} - {response.description}")
-            else:
-                self.logger.info(f"Received response from {ip}: {response.response_code} - {response.description}")
-            return response
-    
     def Prediction (self, request, context):
         request_name = "PREDICT"
         self.logger.info(f"Received the following request: {request_name}")
@@ -94,7 +84,7 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
             if node_type == NodeType.OutputCollectorNode:
                 name, storage_id = args[0], args[1]
             try:
-                self.send_output(data_class, name, ip, req, storage_id)
+                send_prediction(data_class, name, ip, req, storage_id, self.logger)
             except:
                 self.logger.error("ERROR: output storage was usuccessfull!")
         return service_rpc_pb2.Response(response_code=response_code, description=description)

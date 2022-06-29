@@ -48,7 +48,7 @@ message PredictionStorageRequest {
 }
 
 message IntStorageRequest{
-    int32 data = 1;
+    string data = 1;
     string name = 2;
     string storage_id = 3;
     repeated string next_request = 4;
@@ -90,9 +90,11 @@ service MathComputer {
 
 message ComputeFactRequest {
     int32 n = 1;
+    repeated string next_request = 2;
 }
 
 message ComputeBinomRequest {
     int32 n = 1;
     int32 k = 2;
+    repeated string next_request = 3;
 }

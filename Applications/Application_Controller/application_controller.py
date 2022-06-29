@@ -12,6 +12,10 @@ import service_rpc_pb2
 import service_rpc_pb2_grpc
 import zookeeper_service
 
+# TODO REMOVE
+# from ...Services import service_rpc_pb2
+# from ...Services import service_rpc_pb2_grpc
+
 log_filemode = "a"
 log_format = "%(levelname)s %(asctime)s - %(message)s"
 log_file = "logfile_app_controller.log"
@@ -22,6 +26,7 @@ sys.path.insert(1, util_dir)
 import ip_connector
 from node_types import NodeType
 from node_types import parse_next_request
+from request_wrappers import *
 
 config_dir = os.path.join(service_dir, "config")
 grpc_ip = ip_connector.get_grpc_ip(os.path.join(config_dir, "grpc_ip.cfg"))
@@ -60,16 +65,29 @@ class ApplicationStarter(service_rpc_pb2_grpc.ApplicationStarterServicer):
         else:
             self.logger.info(f"Controller {self.name} is being run without zookeeper!")
     
-    def send_request_to_image_sender(self, name, img_width, img_height, client_id, next_request, ip):
-        with grpc.insecure_channel(ip) as channel:
-            self.logger.info(f"Sending request to {ip}!")
-            stub = service_rpc_pb2_grpc.DataSenderStub(channel)
-            response = stub.SendImage(service_rpc_pb2.ImageSendRequest(name=name, img_width=img_width, img_height=img_height, client_id=client_id, next_request=next_request))
-            if response.response_code != 0:
-                self.logger.error(f"ERROR response from {ip}: {response.response_code} - {response.description}")
-            else:
-                self.logger.info(f"Received response from {ip}: {response.response_code} - {response.description}")
-            return response
+    # def send_request_to_image_sender(self, name, img_width, img_height, client_id, next_request, ip):
+    #     with grpc.insecure_channel(ip) as channel:
+    #         self.logger.info(f"Sending request to {ip}!")
+    #         stub = service_rpc_pb2_grpc.DataSenderStub(channel)
+    #         response = stub.SendImage(service_rpc_pb2.ImageSendRequest(name=name, img_width=img_width, img_height=img_height, client_id=client_id, next_request=next_request))
+    #         if response.response_code != 0:
+    #             self.logger.error(f"ERROR response from {ip}: {response.response_code} - {response.description}")
+    #         else:
+    #             self.logger.info(f"Received response from {ip}: {response.response_code} - {response.description}")
+    #         return response
+    
+    # def send_request_to_int_sender(self, name, client_id, next_request, ip):
+    #     with grpc.insecure_channel(ip) as channel:
+    #         self.logger.info(f"Sending request to {ip}!")
+    #         stub = service_rpc_pb2_grpc.DataSenderStub(channel)
+    #         stub = service_rpc_pb2_grpc.DataSenderStub(channel)
+    #         response = stub.SendInt(service_rpc_pb2.IntSendRequest(name=name, client_id=client_id, next_request=next_request))
+    #         # response = stub.SendInt(service_rpc_pb2.IntSendRequest(name=name, client_id=client_id, next_request=next_request))
+    #         if response.response_code != 0:
+    #             self.logger.error(f"ERROR response from {ip}: {response.response_code} - {response.description}")
+    #         else:
+    #             self.logger.info(f"Received response from {ip}: {response.response_code} - {response.description}")
+    #         return response
     
     def SendInitialRequest(self, request, context):
         # parse next request from the task graph
@@ -79,9 +97,15 @@ class ApplicationStarter(service_rpc_pb2_grpc.ApplicationStarterServicer):
             req = request.request
             if next_request is not None:
                 node_type, ip, args = next_request[0], next_request[1], next_request[2:]
-                if node_type == NodeType.DataSenderNode:
-                    name, img_width, img_height, client_id = args[0], args[1], args[2], args[3]
-                    self.send_request_to_image_sender(name, img_width, img_height, client_id, req, ip)
+                if node_type == NodeType.ImageSenderNode:
+                    # name, img_width, img_height, client_id = args[0], args[1], args[2], args[3]
+                    self.logger.info(f"Passing request to {node_type.name}!")
+                    return handle_next_request(node_type, ip, req, args, self.logger)
+                elif node_type == NodeType.IntSenderNode:
+                    # name, client_id = args[0], args[1]
+                    self.logger.info(f"Passing request to {node_type.name}!")
+                    return handle_next_request(node_type, ip, req, args, self.logger)
+                    # return send_request_to_int_sender(name, client_id, req, ip, self.logger)
             else:
                 self.logger.info("No further requests!")
         return service_rpc_pb2.Response(response_code=0, description="OK")

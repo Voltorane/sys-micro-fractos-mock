@@ -11,6 +11,7 @@ import zookeeper_service
 cnn_controller_ip = "127.0.0.1:2182"
 storage_controller_ip = "127.0.0.1:2181"
 application_controller_ip = "127.0.0.1:2183"
+math_controller_ip = "127.0.0.1:2184"
 
 log_filemode = "a"
 log_format = "%(levelname)s %(asctime)s - %(message)s"
@@ -32,23 +33,55 @@ def run():
         img_width = 128
         img_height = 128
         output_name = name.replace(".jpg", "_")+"class.txt"
-        request = [f"DATA_SENDER,{storage_controller_ip},name:{name},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
+        request = [f"IMAGE_SENDER,{storage_controller_ip},name:{name},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
                         f"PREDICTOR,{cnn_controller_ip},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
                         f"STORAGE,{storage_controller_ip},name:{output_name},storage_id:{client_id}"]
         response = stub.SendInitialRequest(service_rpc_pb2.ApplicationInitRequest(request=request))
-        print("Received response: " + str(response))
+        # stub = service_rpc_pb2_grpc.ApplicationStarterStub(channel)
+        # name = "cat_image.jpg"
+        # client_id = "admin"
+        # img_width = 128
+        # img_height = 128
+        # output_name = name.replace(".jpg", "_")+"class.txt"
+        # request = [f"INT_SENDER,{storage_controller_ip},name:{name},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
+        #                 f"PREDICTOR,{cnn_controller_ip},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
+        #                 f"STORAGE,{storage_controller_ip},name:{output_name},storage_id:{client_id}"]
+        # response = stub.SendInitialRequest(service_rpc_pb2.ApplicationInitRequest(request=request))
+        # print("Received response: " + str(response))
         
-        stub = service_rpc_pb2_grpc.ApplicationStarterStub(channel)
-        name = "dog_image.jpg"
-        client_id = "admin"
-        img_width = 128
-        img_height = 128
-        output_name = name.replace(".jpg", "_")+"class.txt"
-        request = [f"DATA_SENDER,{storage_controller_ip},name:{name},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
-                        f"PREDICTOR,{cnn_controller_ip},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
-                        f"STORAGE,{storage_controller_ip},name:{output_name},storage_id:{client_id}"]
-        response = stub.SendInitialRequest(service_rpc_pb2.ApplicationInitRequest(request=request))
-        print("Received response: " + str(response))
+        # stub = service_rpc_pb2_grpc.ApplicationStarterStub(channel)
+        # name = "dog_image.jpg"
+        # client_id = "admin"
+        # img_width = 128
+        # img_height = 128
+        # output_name = name.replace(".jpg", "_")+"class.txt"
+        # request = [f"INT_SENDER,{storage_controller_ip},name:{name},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
+        #                 f"PREDICTOR,{cnn_controller_ip},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
+        #                 f"STORAGE,{storage_controller_ip},name:{output_name},storage_id:{client_id}"]
+        # response = stub.SendInitialRequest(service_rpc_pb2.ApplicationInitRequest(request=request))
+        # print("Received response: " + str(response))
+        
+        # stub = service_rpc_pb2_grpc.ApplicationStarterStub(channel)
+        # name = "number"
+        # client_id = "admin"
+        # # img_width = 128
+        # # img_height = 128
+        # output_name1 = "fac_output"
+        # output_name2 = "fac_fac_output"
+        # output_name3 = "fac_fac_fac_output"
+        # request = [f"INT_SENDER,{storage_controller_ip},name:{name},client_id:{client_id}",
+        #             f"MATH_COMPUTE,{math_controller_ip},client_id:{client_id}",
+        #             f"STORAGE,{storage_controller_ip},name:{output_name1},storage_id:{client_id}",
+        #             # give previous result as input
+        #             f"INT_SENDER,{storage_controller_ip},name:{output_name1},client_id:{client_id}",
+        #             f"MATH_COMPUTE,{math_controller_ip},client_id:{client_id}",
+        #             f"STORAGE,{storage_controller_ip},name:{output_name2},storage_id:{client_id}",
+        #             # give previous result as input
+        #             f"INT_SENDER,{storage_controller_ip},name:{output_name2},client_id:{client_id}",
+        #             f"MATH_COMPUTE,{math_controller_ip},client_id:{client_id}",
+        #             f"STORAGE,{storage_controller_ip},name:{output_name3},storage_id:{client_id}"]
+        # response = stub.SendInitialRequest(service_rpc_pb2.ApplicationInitRequest(request=request))
+        # print("Received response: " + str(response))
 
 if __name__ == '__main__':
     Storage_Predictor_Output()

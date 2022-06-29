@@ -7,8 +7,8 @@ import sys
 import os
 from datetime import datetime
 
-sys.path.insert(1, "../CNN_Adaptor")
-from cnn_adaptor import Adaptor
+sys.path.insert(1, "../Math_Adaptor")
+from math_adaptor import Adaptor
 
 sys.path.insert(1, "../../../")
 import zookeeper_service
@@ -19,6 +19,8 @@ sys.path.insert(1, "../../..")
 import service_rpc_pb2
 import service_rpc_pb2_grpc
 from utils.node_types import NodeType
+from utils.node_types import parse_next_request
+from utils.request_wrappers import *
 from utils import ip_connector
 
 config_dir = "../../../config"
@@ -29,10 +31,11 @@ math_controller_ip = f"{grpc_ip}:{math_controller_port}"
 class MathComputer(service_rpc_pb2_grpc.MathComputerServicer):
     def __init__(self, run_with_zookeeper=False) -> None:
         super().__init__()
-        self.a = Adaptor()
+        self.adaptor = Adaptor()
         self.name = "math_controller"
         self.dir_path = os.path.dirname(__file__)
-        # TODO make argument when running
+        self.logger = None #TODO LOGGER
+
         self.run_with_zookeeper = run_with_zookeeper
         if self.run_with_zookeeper:
             print("Controller is being run with zookeeper!")
@@ -51,56 +54,55 @@ class MathComputer(service_rpc_pb2_grpc.MathComputerServicer):
         else:
             print("Controller is being run without zookeeper!")
         
-
-    # returns next request method and all the keys
-    def parse_next_request(self, request):
-        request = request.split(",")
-        node_type = request[0]
-        ip = request[1]
-        request = request[2:]
-        if node_type == NodeType.OutputCollectorNode.value:
-            name, storage_id = "", ""
-            for argument in request:
-                print(argument)
-                argument = argument.split(":")
-                key, value = argument[0], argument[1]
-                if key == "storage_id":
-                        storage_id = value
-                elif key == "name":
-                        name = value
-            return [NodeType.OutputCollectorNode, ip, name, storage_id]
-        
-        #last call - no further requests
-        return None
     
-    def send_output(self, data, name, ip, next_request, storage_id=""):
-        with grpc.insecure_channel(ip) as channel:       
-            stub = service_rpc_pb2_grpc.OutputCollectorStub(channel)
-            response = stub.StorePrediction(service_rpc_pb2.ImageStorageRequest(data=data, name=name, storage_id=storage_id, next_request=next_request))
-            print("Response from output storage: " + str(response.description))
+    # def send_math_output(self, data, name, ip, next_request, storage_id=""):
+    #     with grpc.insecure_channel(ip) as channel:       
+    #         stub = service_rpc_pb2_grpc.OutputCollectorStub(channel)
+    #         response = stub.StoreInt(service_rpc_pb2.IntStorageRequest(data=data, name=name, storage_id=storage_id, next_request=next_request))
+    #         print("Response from output storage: " + str(response.description))
+    #         return response
     
-    def Calculate (self, request, context):
-        response = self.a.handle_request("CALCULATE", request.function, request.arg1, request.arg2, request.arg3)
-        response_code, label, data_class = response
+    # def send_request_to_int_sender(self, name, client_id, next_request, ip):
+    #     with grpc.insecure_channel(ip) as channel:
+    #         self.logger.info(f"Sending request to {ip}!")
+    #         stub = service_rpc_pb2_grpc.DataSenderStub(channel)
+    #         stub = service_rpc_pb2_grpc.DataSenderStub(channel)
+    #         response = stub.SendInt(service_rpc_pb2.IntSendRequest(name=name, client_id=client_id, next_request=next_request))
+    #         # response = stub.SendInt(service_rpc_pb2.IntSendRequest(name=name, client_id=client_id, next_request=next_request))
+    #         if response.response_code != 0:
+    #             self.logger.error(f"ERROR response from {ip}: {response.response_code} - {response.description}")
+    #         else:
+    #             self.logger.info(f"Received response from {ip}: {response.response_code} - {response.description}")
+    #         return response
+    
+    def ComputeFact(self, request, context):
+        response = self.adaptor.handle_request("COMPUTE_FAC", request.n)
+        response_code, result, description = response
         if response_code != 0:
-            return service_rpc_pb2.PredictionResponse(error_code=response_code)
+            return service_rpc_pb2.Response(response_code=response_code, description=description)
         # send output to other storage node
-        print(request.next_request)
-        next_request = self.parse_next_request(request.next_request.pop(0))
+        next_request = parse_next_request(request.next_request.pop(0))
         req = request.next_request
         if next_request is not None:
             node_type, ip, args = next_request[0], next_request[1], next_request[2:]
+            print(node_type, args)
             if node_type == NodeType.OutputCollectorNode:
                 name, storage_id = args[0], args[1]
-            try:
-                self.send_output(data_class, name, ip, req, storage_id)
-            except:
-                print("Output storage was usuccessfull!")
-        return service_rpc_pb2.PredictionResponse(label=int(label), data_class=data_class)
+                return handle_next_request(node_type, ip, req, [result, name, storage_id], self.logger)
+                # try:
+                #     return send_output(result, name, ip, req, storage_id, self.logger)
+                # except:
+                #     print("Output storage was usuccessfull!")
+            elif node_type == NodeType.IntSenderNode:
+                # name, client_id = args[0], args[1]
+                return handle_next_request(node_type, ip, req, args, self.logger)
+                # return self.send_request_to_int_sender(name, client_id, req, ip)
+                
+        return service_rpc_pb2.Response(response_code=response_code, description=description)
 
 def serve(run_with_zookeeper=False):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    service_rpc_pb2_grpc.add_PredictorServicer_to_server(Predictor(run_with_zookeeper), server)
+    service_rpc_pb2_grpc.add_MathComputerServicer_to_server(MathComputer(run_with_zookeeper), server)
     server.add_insecure_port(math_controller_ip)
     server.start()
     server.wait_for_termination()

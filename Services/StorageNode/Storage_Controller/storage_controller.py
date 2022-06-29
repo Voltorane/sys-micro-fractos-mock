@@ -21,6 +21,7 @@ import zookeeper_service
 from utils.node_types import NodeType
 from utils import ip_connector
 from utils.node_types import parse_next_request
+from utils.request_wrappers import *
 import kazoo
 from kazoo.client import KazooClient
 
@@ -77,7 +78,28 @@ class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
         if response_code == 0:
             self.logger.info("Output storage was successfull!")
         else:
+            self.logger.warning(f"Something went wrong: {description}")
+        return service_rpc_pb2.Response(response_code=response_code, description=description)
+    
+    def StoreInt(self, request, context):
+        request_name = "STORE"
+        self.logger.info(f"Received the following request: {request_name}")
+        response_code, description = self.adaptor.handle_request(request_name, request.data, request.name, request.storage_id)
+
+        if response_code == 0:
+            self.logger.info("Output storage was successfull!")
+        else:
             self.logger.warning("Something went wrong: {description}")
+        
+        if not len(request.next_request) == 0:
+            next_request = parse_next_request(request.next_request.pop(0))
+            req = request.next_request
+            if next_request is not None:
+                node_type, ip, args = next_request[0], next_request[1], next_request[2:]
+                if node_type == NodeType.IntSenderNode:
+                    return handle_next_request(node_type, ip, req, args, self.logger)
+                elif node_type == NodeType.ImageSenderNode:
+                    return handle_next_request(node_type, ip, req, args, self.logger)  
         return service_rpc_pb2.Response(response_code=response_code, description=description)
 
 class DataSender(service_rpc_pb2_grpc.DataSenderServicer):
@@ -115,25 +137,13 @@ class DataSender(service_rpc_pb2_grpc.DataSenderServicer):
         else:
             self.logger.info(f"Controller {self.name} is being run without zookeeper!")
     
-    def send_to_predictor(self, encoded_arr, img_width, img_height, client_id, next_request, ip):
-        with grpc.insecure_channel(ip) as channel:     
-            self.logger.info(f"Sending request to {ip}!")  
-            stub = service_rpc_pb2_grpc.PredictorStub(channel)
-            response = stub.Initialization(service_rpc_pb2.InitRequest(sample_limit=1000, epochs=5, img_width=img_width, img_height=img_height, next_request=next_request))
-            response = stub.Prediction(service_rpc_pb2.PredictionRequest(image=encoded_arr, img_width=img_width, img_height=img_height, client_id=client_id, next_request=next_request))
-            if response.response_code != 0:
-                self.logger.error(f"ERROR response from {ip}: {response.response_code} - {response.description}")
-            else:
-                self.logger.info(f"Received response from {ip}: {response.response_code} - {response.description}")
-            return response
-    
     def SendImage(self, request, context):
-        request_name = "SEND"
+        request_name = "SEND_IMAGE"
         self.logger.info(f"Received the following request: {request_name}")
         response_code, encoded_arr, description = self.adaptor.handle_request(request_name, request.name, request.img_width, request.img_height, request.client_id)
 
         if response_code != 0:
-            self.logger.error("ERROR something went wrong: {description}")
+            self.logger.error(f"ERROR something went wrong: {description}")
             return service_rpc_pb2.Response(response_code=response_code, description=description)
         self.logger.info("Sending of image was successfull!")
         next_request = parse_next_request(request.next_request.pop(0))
@@ -142,7 +152,34 @@ class DataSender(service_rpc_pb2_grpc.DataSenderServicer):
             node_type, ip, args = next_request[0], next_request[1], next_request[2:]
             if node_type == NodeType.PredictorNode:
                 img_width, img_height, client_id = args[0], args[1], args[2]
-                return self.send_to_predictor(encoded_arr, img_width, img_height, client_id, req, ip)
+                return handle_next_request(node_type, ip, req, [encoded_arr, img_width, img_height, client_id], self.logger)
+            # nothing to append to the request from this node
+            elif node_type == NodeType.IntSenderNode:
+                return handle_next_request(node_type, ip, req, args, self.logger)
+            elif node_type == NodeType.ImageSenderNode:
+                return handle_next_request(node_type, ip, req, args, self.logger)  
+
+    def SendInt(self, request, context):
+        request_name = "SEND_INT"
+        self.logger.info(f"Received the following request: {request_name}")
+        response_code, n, description = self.adaptor.handle_request(request_name, request.name, request.client_id)
+
+        if response_code != 0:
+            self.logger.error(f"ERROR something went wrong: {description}")
+            return service_rpc_pb2.Response(response_code=response_code, description=description)
+        self.logger.info("Sending of int was successfull!")
+        print(request)
+        next_request = parse_next_request(request.next_request.pop(0))
+        req = request.next_request
+        if next_request is not None:
+            node_type, ip, args = next_request[0], next_request[1], next_request[2:]
+            if node_type == NodeType.MathComputeNode:
+                return handle_next_request(node_type, ip, req, [n], self.logger)
+            elif node_type == NodeType.IntSenderNode:
+                return handle_next_request(node_type, ip, req, args, self.logger)
+            elif node_type == NodeType.ImageSenderNode:
+                return handle_next_request(node_type, ip, req, args, self.logger)
+                # return send_int_to_math_compute(n, req, ip, self.logger)
 
 def serve(run_with_zookeeper=False,verbose=False):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

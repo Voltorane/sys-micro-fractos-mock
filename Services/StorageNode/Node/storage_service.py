@@ -17,6 +17,7 @@ def img_to_arr(name, img_width, img_height, client_id, storage_dir):
     return base64.b64encode(img)
 
 def store_data(name, storage_dir, data, storage_id=""):
+    print("in store data")
     # common storage for all unordered requests
     if storage_id == "":
         storage_id="common"
@@ -27,9 +28,11 @@ def store_data(name, storage_dir, data, storage_id=""):
     if name == "" or name is None:
         name = "output"
     path_to_file = os.path.join(storage_path, name)
+    print(path_to_file)
     try:
         with open(path_to_file, "w+") as f:
-            f.write(data)
+            print(data)
+            f.write(str(data))
     except Exception as e:
         return 1, "FAILURE: " + str(e)
     else:
