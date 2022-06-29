@@ -5,12 +5,18 @@ import sys
 import os
 from datetime import datetime
 from concurrent import futures
-sys.path.insert(1, "../CNN_Adaptor")
+dir_path = os.path.dirname(__file__)
+
+sys.path.insert(1, os.path.join(dir_path, "../CNN_Adaptor"))
 from cnn_adaptor import Adaptor
-sys.path.insert(1, "../../../")
+sys.path.pop(0)
+
+sys.path.insert(1, os.path.join(dir_path, "../../../"))
 import zookeeper_service
+sys.path.pop(0)
+
 # goto Services
-sys.path.insert(1, "../../..")
+sys.path.insert(1, os.path.join(dir_path, "../../.."))
 import service_rpc_pb2
 import service_rpc_pb2_grpc
 from utils.node_types import NodeType
@@ -18,12 +24,13 @@ from utils.node_types import parse_next_request
 from utils import ip_connector
 from utils.request_wrappers import *
 from utils.controller_arg_parser import *
+sys.path.pop(0)
 
 log_filemode = "a"
 log_format = "%(levelname)s %(asctime)s - %(message)s"
 log_file = "logfile_cnn_controller.log"
 
-config_dir = "../../../config"
+config_dir = os.path.join(dir_path, "../../../config")
 grpc_ip = ip_connector.get_grpc_ip(os.path.join(config_dir, "grpc_ip.cfg"))
 cnn_controller_port = ip_connector.extract_port("cnn_controller"
                         , os.path.join(config_dir, "controller_ports.cfg"))
@@ -35,7 +42,7 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
         super().__init__()
         self.adaptor = Adaptor()
         self.name = "cnn_controller"
-        self.dir_path = os.path.dirname(__file__)
+        dir_path = os.path.dirname(__file__)
         self.verbose = verbose
         self.run_with_zookeeper = run_with_zookeeper
 
@@ -49,7 +56,7 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
 
         if self.run_with_zookeeper:
             self.logger.info(f"Controller {self.name} is being run with zookeeper!")
-            self.z_ips = ip_connector.extract_ip_list(os.path.join(self.dir_path, "ips.cfg"))
+            self.z_ips = ip_connector.extract_ip_list(os.path.join(dir_path, "ips.cfg"))
             # TODO think about giving port config path in the arguments when calling
             self.z_port = ip_connector.extract_port(self.name
                             , os.path.join(config_dir, "zookeeper_controller_ports.cfg"))
@@ -75,7 +82,6 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
         if response_code != 0:
             return service_rpc_pb2.Response(response_code=response_code, desciption=description)
         # send output to other storage node
-        # print(request.next_request)
         next_request = parse_next_request(request.next_request.pop(0))
         req = request.next_request
         if next_request is not None:

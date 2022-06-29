@@ -5,11 +5,15 @@ import os
 import sys
 from datetime import datetime
 from concurrent import futures
-from sqlalchemy import desc
-sys.path.insert(1, "../")
+
+dir_path = os.path.dirname(__file__)
+
+sys.path.insert(1, os.path.join(dir_path,"../"))
 from Storage_Adaptor import storage_adaptor
+sys.path.pop(0)
+
 # goto Services
-sys.path.insert(1, "../..")
+sys.path.insert(1, os.path.join(dir_path,"../.."))
 import service_rpc_pb2_grpc
 import service_rpc_pb2
 import zookeeper_service
@@ -18,15 +22,15 @@ from utils import ip_connector
 from utils.node_types import parse_next_request
 from utils.request_wrappers import *
 from utils.controller_arg_parser import *
-import kazoo
-from kazoo.client import KazooClient
+sys.path.pop(0)
 
 log_filemode = "a"
 log_format = "%(levelname)s %(asctime)s - %(message)s"
 log_file_output_collector = "logfile_storage_controller_output_collector.log"
 log_file_image_sender = "logfile_storage_controller_image_sender.log"
+sys.path.pop(0)
 
-config_dir = "../../config"
+config_dir = os.path.join(dir_path,"../../config")
 grpc_ip = ip_connector.get_grpc_ip(os.path.join(config_dir, "grpc_ip.cfg"))
 storage_controller_port = ip_connector.extract_port("storage_controller"
                             , os.path.join(config_dir, "controller_ports.cfg"))
@@ -38,7 +42,6 @@ class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
         super().__init__()
         self.adaptor = storage_adaptor.Adaptor()
         self.name = "storage_controller"
-        self.dir_path = os.path.dirname(__file__)
         self.verbose = verbose
         self.run_with_zookeeper = run_with_zookeeper
 
@@ -52,7 +55,7 @@ class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
 
         if self.run_with_zookeeper:
             self.logger.info(f"Controller {self.name} is being run with zookeeper!")
-            self.z_ips = ip_connector.extract_ip_list(os.path.join(self.dir_path, "ips.cfg"))
+            self.z_ips = ip_connector.extract_ip_list(os.path.join(dir_path, "ips.cfg"))
             # TODO think about giving port config path in the arguments when calling
             self.z_port = ip_connector.extract_port(self.name, os.path.join(config_dir, "zookeeper_controller_ports.cfg"))
             # try connecting to all the ip's from config utill connection is successfull
@@ -106,7 +109,6 @@ class DataSender(service_rpc_pb2_grpc.DataSenderServicer):
         super().__init__()
         self.adaptor = storage_adaptor.Adaptor()
         self.name = "image_sender"
-        self.dir_path = os.path.dirname(__file__)
         self.verbose = verbose
         self.run_with_zookeeper = run_with_zookeeper
 
@@ -118,7 +120,7 @@ class DataSender(service_rpc_pb2_grpc.DataSenderServicer):
             self.logger.addHandler(consoleHandler)
         self.logger.setLevel(logging.INFO)
 
-        self.z_ips = ip_connector.extract_ip_list(os.path.join(self.dir_path, "ips.cfg"))
+        self.z_ips = ip_connector.extract_ip_list(os.path.join(dir_path, "ips.cfg"))
         # TODO think about giving port config path in the arguments when calling
         self.z_port = ip_connector.extract_port(self.name, os.path.join(config_dir, "zookeeper_controller_ports.cfg"))
         # try connecting to all the ip's from config utill connection is successfull

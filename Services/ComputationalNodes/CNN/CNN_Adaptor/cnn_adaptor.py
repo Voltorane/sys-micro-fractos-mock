@@ -2,8 +2,10 @@ import sys
 import base64
 from urllib import response
 import numpy as np
+import os
 
-sys.path.insert(1, "../Node")
+dir_path = os.path.dirname(__file__)
+sys.path.insert(1, os.path.join(dir_path, "../Node"))
 import perceptron
 
 class Adaptor:

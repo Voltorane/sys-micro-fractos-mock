@@ -7,15 +7,19 @@ import sys
 import os
 from datetime import datetime
 
-sys.path.insert(1, "../Math_Adaptor")
-from math_adaptor import Adaptor
+dir_path = os.path.dirname(__file__)
 
-sys.path.insert(1, "../../../")
+sys.path.insert(1, os.path.join(dir_path,"../Math_Adaptor"))
+from math_adaptor import Adaptor
+sys.path.pop(0)
+
+sys.path.insert(1, os.path.join(dir_path,"../../../"))
 import zookeeper_service
 import kazoo
+sys.path.pop(0)
 
 #goto Services
-sys.path.insert(1, "../../..")
+sys.path.insert(1, os.path.join(dir_path,"../../.."))
 import service_rpc_pb2
 import service_rpc_pb2_grpc
 from utils.node_types import NodeType
@@ -23,12 +27,13 @@ from utils.node_types import parse_next_request
 from utils.request_wrappers import *
 from utils import ip_connector
 from utils.controller_arg_parser import *
+sys.path.pop(0)
 
 log_filemode = "a"
 log_format = "%(levelname)s %(asctime)s - %(message)s"
 log_file = "logfile_math_controller.log"
 
-config_dir = "../../../config"
+config_dir = os.path.join(dir_path, "../../../config")
 grpc_ip = ip_connector.get_grpc_ip(os.path.join(config_dir, "grpc_ip.cfg"))
 math_controller_port = ip_connector.extract_port("math_controller", os.path.join(config_dir, "controller_ports.cfg"))
 math_controller_ip = f"{grpc_ip}:{math_controller_port}"
@@ -38,7 +43,6 @@ class MathComputer(service_rpc_pb2_grpc.MathComputerServicer):
         super().__init__()
         self.adaptor = Adaptor()
         self.name = "math_controller"
-        self.dir_path = os.path.dirname(__file__)
         self.verbose = verbose
         logging.basicConfig(filename=log_file,filemode=log_filemode, format=log_format)
         self.logger = logging.getLogger()
@@ -51,7 +55,7 @@ class MathComputer(service_rpc_pb2_grpc.MathComputerServicer):
         self.run_with_zookeeper = run_with_zookeeper
         if self.run_with_zookeeper:
             self.logger.info(f"Controller {self.name} is being run with zookeeper!")
-            self.z_ips = ip_connector.extract_ip_list(os.path.join(self.dir_path, "ips.cfg"))
+            self.z_ips = ip_connector.extract_ip_list(os.path.join(dir_path, "ips.cfg"))
             # TODO think about giving port config path in the arguments when calling
             self.z_port = ip_connector.extract_port(self.name, os.path.join(config_dir, "zookeeper_controller_ports.cfg"))
             # try connecting to all the ip's from config utill connection is successfull

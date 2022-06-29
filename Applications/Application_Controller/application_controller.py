@@ -3,27 +3,31 @@ import logging
 import os
 import sys
 from urllib import response
-
-service_dir = "../../Services"
-sys.path.insert(1, service_dir)
 import getopt
+
+dir_path = os.path.dirname(__file__)
+
+service_dir = os.path.join(dir_path,"../../Services")
+sys.path.insert(1, service_dir)
 import grpc
 import service_rpc_pb2
 import service_rpc_pb2_grpc
 import zookeeper_service
+sys.path.pop(0)
 
 log_filemode = "a"
 log_format = "%(levelname)s %(asctime)s - %(message)s"
 log_file = "logfile_app_controller.log"
 # logger = logging.getLogger()
 
-util_dir = "../../Services/utils"
+util_dir = os.path.join(dir_path,"../../Services/utils")
 sys.path.insert(1, util_dir)
 import ip_connector
 from node_types import NodeType
 from node_types import parse_next_request
 from request_wrappers import *
 from controller_arg_parser import *
+sys.path.pop(0)
 
 config_dir = os.path.join(service_dir, "config")
 grpc_ip = ip_connector.get_grpc_ip(os.path.join(config_dir, "grpc_ip.cfg"))
@@ -34,7 +38,6 @@ class ApplicationStarter(service_rpc_pb2_grpc.ApplicationStarterServicer):
     def __init__(self, run_with_zookeeper=False, verbose=False, servers=1) -> None:
         super().__init__()
         self.name = "application_controller"
-        self.dir_path = os.path.dirname(__file__)
         self.verbose = verbose
         self.run_with_zookeeper = run_with_zookeeper
 
@@ -48,7 +51,7 @@ class ApplicationStarter(service_rpc_pb2_grpc.ApplicationStarterServicer):
 
         if self.run_with_zookeeper:
             self.logger.info(f"Controller {self.name} is being run with zookeeper!")
-            self.z_ips = ip_connector.extract_ip_list(os.path.join(self.dir_path, "ips.cfg"))
+            self.z_ips = ip_connector.extract_ip_list(os.path.join(dir_path, "ips.cfg"))
             self.z_port = ip_connector.extract_port(self.name, os.path.join(config_dir, "zookeeper_controller_ports.cfg"))
             # try connecting to all the ip's from config utill connection is successfull
             for server_id in range(servers):

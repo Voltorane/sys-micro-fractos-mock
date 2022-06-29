@@ -1,8 +1,11 @@
 import sys
 import os
 
-sys.path.insert(1, "../Node")
+dir_path = os.path.dirname(__file__)
+
+sys.path.insert(1, os.path.join(dir_path,"../Node"))
 import storage_service
+sys.path.pop(0)
 
 class Adaptor:
     def __init__(self) -> None:
