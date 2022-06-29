@@ -6,6 +6,11 @@ option objc_class_prefix = "SERVCONN";
 
 package service_connector;
 
+message Response {
+    int32 response_code = 1;
+    string description = 2;
+}
+
 service Predictor {
   // Sends a prediction
   rpc Prediction (PredictionRequest) returns (Response) {}
@@ -31,18 +36,27 @@ message InitRequest {
 
 service OutputCollector {
   // Send output from computational node to storage node (typically not the sender node)
-  rpc StoreOutput (OutputStorageRequest) returns (Response) {}
+    rpc StorePrediction (PredictionStorageRequest) returns (Response) {}
+    rpc StoreInt (IntStorageRequest) returns (Response) {}
 }
 
-service ImageSender {
-    rpc SendImage (ImageSendRequest) returns (Response) {}
-}
-
-message OutputStorageRequest {
+message PredictionStorageRequest {
     string data = 1;
     string name = 2;
     string storage_id = 3;
     repeated string next_request = 6;
+}
+
+message IntStorageRequest{
+    string data = 1;
+    string name = 2;
+    string storage_id = 3;
+    repeated string next_request = 4;
+}
+
+service DataSender {
+    rpc SendImage (ImageSendRequest) returns (Response) {}
+    rpc SendInt (IntSendRequest) returns (Response) {}
 }
 
 message ImageSendRequest {
@@ -50,7 +64,12 @@ message ImageSendRequest {
     int32 img_width = 2;
     int32 img_height = 3;
     string client_id = 4;
-    string next_node = 5;
+    repeated string next_request = 6;
+}
+
+message IntSendRequest{
+    string name = 1;
+    string client_id = 4;
     repeated string next_request = 6;
 }
 
@@ -63,7 +82,19 @@ message ApplicationInitRequest {
     repeated string request = 1;
 }
 
-message Response {
-    int32 response_code = 1;
-    string description = 2;
+service MathComputer {
+    rpc ComputeFact (ComputeFactRequest) returns (Response) {}
+    rpc ComputeBinom (ComputeBinomRequest) returns (Response) {}
+}
+
+
+message ComputeFactRequest {
+    int32 n = 1;
+    repeated string next_request = 2;
+}
+
+message ComputeBinomRequest {
+    int32 n = 1;
+    int32 k = 2;
+    repeated string next_request = 3;
 }
