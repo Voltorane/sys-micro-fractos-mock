@@ -21,10 +21,7 @@ util_dir = "../../Services/utils"
 sys.path.insert(1, util_dir)
 import ip_connector
 from node_types import NodeType
-
-# # TODO delete after
-# from ...Services import service_rpc_pb2
-# from ...Services import service_rpc_pb2_grpc
+from node_types import parse_next_request
 
 config_dir = os.path.join(service_dir, "config")
 grpc_ip = ip_connector.get_grpc_ip(os.path.join(config_dir, "grpc_ip.cfg"))
@@ -62,29 +59,6 @@ class ApplicationStarter(service_rpc_pb2_grpc.ApplicationStarterServicer):
                         break
         else:
             self.logger.info(f"Controller {self.name} is being run without zookeeper!")
-        
-    # returns next request method and all the keys
-    def parse_next_request(self, request):
-        self.logger.info("Parsing the request...")
-        request = request.split(",")
-        node_type = request[0]
-        ip = request[1]
-        request = request[2:]
-        if node_type == NodeType.DataSenderNode.value:
-            img_width, img_height, client_id, name = None, None, "", ""
-            for argument in request:
-                print(argument)
-                argument = argument.split(":")
-                key, value = argument[0], argument[1]
-                if key == "img_width":
-                        img_width = int(value)
-                elif key == "img_height":
-                        img_height = int(value)
-                elif key == "client_id":
-                        client_id = value
-                elif key == "name":
-                        name = value
-            return [NodeType.DataSenderNode, ip, name, img_width, img_height, client_id]
     
     def send_request_to_image_sender(self, name, img_width, img_height, client_id, next_request, ip):
         with grpc.insecure_channel(ip) as channel:
@@ -101,7 +75,7 @@ class ApplicationStarter(service_rpc_pb2_grpc.ApplicationStarterServicer):
         # parse next request from the task graph
         self.logger.info(f"Received the following request: {request}")
         if len(request.request) != 0:
-            next_request = self.parse_next_request(request.request.pop(0))
+            next_request = parse_next_request(request.request.pop(0))
             req = request.request
             if next_request is not None:
                 node_type, ip, args = next_request[0], next_request[1], next_request[2:]

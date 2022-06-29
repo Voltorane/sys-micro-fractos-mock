@@ -26,7 +26,7 @@ grpc_ip = ip_connector.get_grpc_ip(os.path.join(config_dir, "grpc_ip.cfg"))
 math_controller_port = ip_connector.extract_port("math_controller", os.path.join(config_dir, "controller_ports.cfg"))
 math_controller_ip = f"{grpc_ip}:{math_controller_port}"
 
-class Math_Calculator(service_rpc_pb2_grpc.PredictorServicer):
+class MathComputer(service_rpc_pb2_grpc.MathComputerServicer):
     def __init__(self, run_with_zookeeper=False) -> None:
         super().__init__()
         self.a = Adaptor()

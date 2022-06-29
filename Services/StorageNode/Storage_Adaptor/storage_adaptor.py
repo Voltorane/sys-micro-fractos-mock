@@ -18,7 +18,7 @@ class Adaptor:
             data, name, storage_id = args
             response_code, description = 0, "Output successfully stored!"
             try:
-                storage_service.store_output(name, self.TARGET_PATH, data, storage_id)
+                storage_service.store_data(name, self.TARGET_PATH, data, storage_id)
             except Exception as e:
                 response_code, description = 1, "Failed to store output: " + str(e)
             return response_code, description

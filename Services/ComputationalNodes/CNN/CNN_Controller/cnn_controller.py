@@ -19,6 +19,7 @@ sys.path.insert(1, "../../..")
 import service_rpc_pb2
 import service_rpc_pb2_grpc
 from utils.node_types import NodeType
+from utils.node_types import parse_next_request
 from utils import ip_connector
 
 log_filemode = "a"
@@ -64,29 +65,6 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
                         break
         else:
             self.logger.info(f"Controller {self.name} is being run without zookeeper!")
-        
-
-    # returns next request method and all the keys
-    def parse_next_request(self, request):
-        self.logger.info("Parsing the request...")
-        request = request.split(",")
-        node_type = request[0]
-        ip = request[1]
-        request = request[2:]
-        if node_type == NodeType.OutputCollectorNode.value:
-            name, storage_id = "", ""
-            for argument in request:
-                print(argument)
-                argument = argument.split(":")
-                key, value = argument[0], argument[1]
-                if key == "storage_id":
-                        storage_id = value
-                elif key == "name":
-                        name = value
-            return [NodeType.OutputCollectorNode, ip, name, storage_id]
-        
-        #last call - no further requests
-        return None
     
     def send_output(self, data, name, ip, next_request, storage_id=""):
         with grpc.insecure_channel(ip) as channel:       
@@ -109,7 +87,7 @@ class Predictor(service_rpc_pb2_grpc.PredictorServicer):
             return service_rpc_pb2.Response(response_code=response_code, desciption=description)
         # send output to other storage node
         # print(request.next_request)
-        next_request = self.parse_next_request(request.next_request.pop(0))
+        next_request = parse_next_request(request.next_request.pop(0))
         req = request.next_request
         if next_request is not None:
             node_type, ip, args = next_request[0], next_request[1], next_request[2:]

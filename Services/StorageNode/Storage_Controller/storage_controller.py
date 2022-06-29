@@ -20,6 +20,7 @@ import service_rpc_pb2
 import zookeeper_service
 from utils.node_types import NodeType
 from utils import ip_connector
+from utils.node_types import parse_next_request
 import kazoo
 from kazoo.client import KazooClient
 
@@ -88,7 +89,6 @@ class DataSender(service_rpc_pb2_grpc.DataSenderServicer):
         self.verbose = verbose
         self.run_with_zookeeper = run_with_zookeeper
 
-
         logging.basicConfig(filename=log_file_image_sender,filemode=log_filemode, format=log_format)
         self.logger = logging.getLogger()
         # prints to console
@@ -115,36 +115,6 @@ class DataSender(service_rpc_pb2_grpc.DataSenderServicer):
         else:
             self.logger.info(f"Controller {self.name} is being run without zookeeper!")
     
-    # returns next request method and all the keys
-    def parse_next_request(self, request):
-        self.logger.info(f"Parsing the request: {request}")
-        request = request.split(",")
-        node_type = request[0]
-        ip = request[1]
-        request = request[2:]
-        if node_type == NodeType.PredictorNode.value:
-            img_width, img_height, client_id = None, None, ""
-            for argument in request:
-                print(argument)
-                argument = argument.split(":")
-                key, value = argument[0], argument[1]
-                if key == "img_width":
-                        img_width = int(value)
-                elif key == "img_height":
-                        img_height = int(value)
-                elif key == "client_id":
-                        client_id = value
-            return [NodeType.PredictorNode, ip, img_width, img_height, client_id]
-        
-        #last call - no further requests
-        return None
-        # elif node_type == NodeType.OutputCollectorNode:
-        #     for argument in request:
-        #         pass
-        # elif node_type == NodeType.DataSenderNode:
-        #     for argument in request:
-        #         pass
-    
     def send_to_predictor(self, encoded_arr, img_width, img_height, client_id, next_request, ip):
         with grpc.insecure_channel(ip) as channel:     
             self.logger.info(f"Sending request to {ip}!")  
@@ -166,7 +136,7 @@ class DataSender(service_rpc_pb2_grpc.DataSenderServicer):
             self.logger.error("ERROR something went wrong: {description}")
             return service_rpc_pb2.Response(response_code=response_code, description=description)
         self.logger.info("Sending of image was successfull!")
-        next_request = self.parse_next_request(request.next_request.pop(0))
+        next_request = parse_next_request(request.next_request.pop(0))
         req = request.next_request
         if next_request is not None:
             node_type, ip, args = next_request[0], next_request[1], next_request[2:]

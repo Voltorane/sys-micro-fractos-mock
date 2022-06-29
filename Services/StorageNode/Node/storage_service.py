@@ -16,7 +16,7 @@ def img_to_arr(name, img_width, img_height, client_id, storage_dir):
     img = img.reshape(1, img_width, img_height, 3)
     return base64.b64encode(img)
 
-def store_output(name, storage_dir, data, storage_id=""):
+def store_data(name, storage_dir, data, storage_id=""):
     # common storage for all unordered requests
     if storage_id == "":
         storage_id="common"
@@ -34,3 +34,14 @@ def store_output(name, storage_dir, data, storage_id=""):
         return 1, "FAILURE: " + str(e)
     else:
         return response_code, description
+
+
+def read_int(name, client_id, storage_dir):
+    path_to_file = os.path.join(dir_path, storage_dir, client_id, name)
+    with open(path_to_file, "r") as f:
+        n = f.read()
+        return int(n)
+
+if __name__ == "__main__":
+    # store_data("test", "storage", 1, "admin")
+    pass
