@@ -19,12 +19,23 @@ class Storage_Predictor_Output(object):
 def run():
     with grpc.insecure_channel(application_controller_ip) as channel:       
         stub = service_rpc_pb2_grpc.ApplicationStarterStub(channel)
-        name = "1.jpg"
-        client_id = "muse4ka"
+        name = "cat_image.jpg"
+        client_id = "admin"
         img_width = 128
         img_height = 128
-        output_name = "love_musja_very_much.txt"
-        # request = []
+        output_name = name.replace(".jpg", "_")+"class.txt"
+        request = [f"IMAGE_SENDER,{storage_controller_ip},name:{name},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
+                        f"PREDICTOR,{cnn_controller_ip},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
+                        f"STORAGE,{storage_controller_ip},name:{output_name},storage_id:{client_id}"]
+        response = stub.SendInitialRequest(service_rpc_pb2.ApplicationInitRequest(request=request))
+        print("Received response: " + str(response))
+        
+        stub = service_rpc_pb2_grpc.ApplicationStarterStub(channel)
+        name = "dog_image.jpg"
+        client_id = "admin"
+        img_width = 128
+        img_height = 128
+        output_name = name.replace(".jpg", "_")+"class.txt"
         request = [f"IMAGE_SENDER,{storage_controller_ip},name:{name},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
                         f"PREDICTOR,{cnn_controller_ip},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
                         f"STORAGE,{storage_controller_ip},name:{output_name},storage_id:{client_id}"]

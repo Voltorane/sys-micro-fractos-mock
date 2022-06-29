@@ -21,12 +21,6 @@ message PredictionRequest {
     repeated string next_request = 6;
 }
 
-message PredictionResponse {
-    string data_class = 1;
-    int32 label = 2;
-    int32 error_code = 3;
-}
-
 message InitRequest {
     int32 sample_limit = 1;
     int32 epochs = 2;
@@ -35,18 +29,13 @@ message InitRequest {
     repeated string next_request = 6;
 }
 
-message InitResponse {
-    int32 response_code = 1;
-    string description = 2;
-}
-
 service OutputCollector {
   // Send output from computational node to storage node (typically not the sender node)
-  rpc StoreOutput (OutputStorageRequest) returns (OutputSotrageResponse) {}
+  rpc StoreOutput (OutputStorageRequest) returns (Response) {}
 }
 
 service ImageSender {
-    rpc SendImage (ImageSendRequest) returns (ImageSendResponse) {}
+    rpc SendImage (ImageSendRequest) returns (Response) {}
 }
 
 message OutputStorageRequest {
@@ -54,11 +43,6 @@ message OutputStorageRequest {
     string name = 2;
     string storage_id = 3;
     repeated string next_request = 6;
-}
-
-message OutputSotrageResponse {
-    int32 response_code = 1;
-    string description = 2;
 }
 
 message ImageSendRequest {
@@ -70,23 +54,13 @@ message ImageSendRequest {
     repeated string next_request = 6;
 }
 
-message ImageSendResponse {
-    int32 response_code = 1;
-    string description = 2;
-}
-
 service ApplicationStarter {
     // starts application
-    rpc SendInitialRequest (ApplicationInitRequest) returns (ApplicationInitResponse) {}
+    rpc SendInitialRequest (ApplicationInitRequest) returns (Response) {}
 }
 
 message ApplicationInitRequest {
     repeated string request = 1;
-}
-
-message ApplicationInitResponse {
-    int32 response_code = 1;
-    string description = 2;
 }
 
 message Response {
