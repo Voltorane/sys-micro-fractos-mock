@@ -4,10 +4,10 @@ A FractOS mock imitates a distributed system for decentralized appliactions foll
 Our mock system nodes are an abstraction of hardware, e.g., a storage node represents an SSD, and computational nodes act as CPU/GPU.
 We use ZooKeeper to maintain large set of hosts and coordinate among them.
 ## Table of content
-- [## Setup](#-setup)
-- [## Configuration](#-configuration)
-- [## Demo](#-demo)
-- [## Research paper](#-research-paper)
+- [Setup](#-setup)
+- [Configuration](#-configuration)
+- [Demo](#-demo)
+- [Research paper](#-research-paper)
 ## Setup
 Here is a checklist of dependencies to get this project up and running on your system:
 * Install python3 to your system.
