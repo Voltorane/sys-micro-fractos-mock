@@ -6,7 +6,7 @@ We use ZooKeeper to maintain large set of hosts and coordinate among them.
 Each node represents the following structure:
 ![node model][node_model] \
 Our system consists of application, storage, math and convolutional neural network nodes. Hence, using the above representation we can model our system this way: \
-![system model][sys_model] \
+![system model][sys_model]
 
 ## Table of content
 - [Setup](#-setup)
@@ -33,4 +33,4 @@ Here we will walk you through the workflow of this program, mainly how to run a 
 Our [TODO: research paper]() describes the design of our mock system as well as the design of initial reference system - FractOS.
 
 [node_model]: resources/node_model.png
-[sys_model]: resources/sys_model.png
+[sys_model]: resourrces/sys_model.png
