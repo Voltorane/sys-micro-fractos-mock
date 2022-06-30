@@ -1,18 +1,18 @@
 from math_exceptions import *
 
 
-def factorial(n):
+def mul_by_2(n):
     """
-    factorial calculates the factorial of a given number.
+    mul_by_2 calculates the mul_by_2 of a given number.
     represents the following: n!
 
-    :param n: number for which the factorial value should be computed
-    :return: factorial value of n
+    :param n: number for which the mul_by_2 value should be computed
+    :return: mul_by_2 value of n
     """
-    if n == 1 or n == 0: 
-        return 1
+    if n > 0:
+        return n*2
     else:
-        return n * factorial(n - 1)
+        return 1
 
 def binomial(n, k):
     """
@@ -25,7 +25,7 @@ def binomial(n, k):
     if not 0 <= k <= n:
         return 0
     else:
-        return factorial(n) / (factorial(k) * factorial(n - k))
+        return mul_by_2(n) / (mul_by_2(k) * mul_by_2(n - k))
 
 def newton_bin_expansion(a, b, n):
     """

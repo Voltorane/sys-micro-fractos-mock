@@ -19,7 +19,7 @@ class Adaptor:
             response_code, result, description = 0, 0, "Factorial successfully calculated!"      
             try:
                 n = args[0]
-                result = math_calc.factorial(n)
+                result = math_calc.mul_by_2(n)
             except Exception as e:
                 response_code, description = 1, "Factorial calculation failed!" + str(e)
             return response_code, result, description

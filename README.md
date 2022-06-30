@@ -21,20 +21,22 @@ Our implementation already contains a configuration file, that you may modify de
 Here is a checklist of dependencies to get this project up and running on your system:
 * Install python3 to your system.
 [Installation & setup guide](https://realpython.com/installing-python/)
-* Install dependencies.
-  ```
-  python3 -m pip install grpcio grpcio-tools tensorflow kazoo
-  ```
 * Clone repository.
   ```
   git clone https://github.com/Voltorane/sys-micro-fractos-mock.git
   ```
-* Do something
+* Install dependencies.
+  ```
+  python3 -m pip install -r requirements.txt
+  ```
+* Setup config
+TBD
 
 ## Demo
 Here we will walk you through the workflow of this program, mainly how to run a convolutional neural network application in the proposed system.
 ## Research paper
-Our [TODO: research paper]() describes the design of our mock system as well as the design of initial reference system - FractOS.
+Our [research_paper] describes the design of our mock system as well as the design of initial reference system - FractOS.
 
 [node_model]: resources/node_model.png
 [sys_model]: resources/sys_model.png
+[research_paper]: resources/report.pdf

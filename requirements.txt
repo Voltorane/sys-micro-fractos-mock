@@ -1,0 +1,7 @@
+kazoo
+numpy
+pandas
+tensorflow
+grpcio
+grpcio-tools
+config_parser
