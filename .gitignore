@@ -15,5 +15,4 @@ Services/ComputationalNodes/CNN/Node/models/*
 Services/ComputationalNodes/CNN/Node/checkpoints/*
 Services/StorageNode/Node/target
 Services/StorageNode/Node/storage
-150_epochs
 zookeeper/*
