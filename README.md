@@ -13,6 +13,8 @@ Our system consists of application, storage, math and convolutional neural netwo
 ![system model][sys_model] \
 Our implementation already contains a configuration file, that you may modify depending on your needs.
 
+##### The implementation consists of around 2.5k LoC
+
 ## Table of content
 - [Setup](#-setup)
 - [Demo](#-demo)
@@ -35,8 +37,8 @@ TBD
 ## Demo
 Here we will walk you through the workflow of this program, mainly how to run a convolutional neural network application in the proposed system.
 ## Research paper
-Our [research_paper] describes the design of our mock system as well as the design of initial reference system - FractOS.
+Our [research paper] describes the design of our mock system as well as the design of initial reference system - FractOS.
 
 [node_model]: resources/node_model.png
 [sys_model]: resources/sys_model.png
-[research_paper]: resources/report.pdf
+[research paper]: resources/report.pdf

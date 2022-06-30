@@ -79,6 +79,7 @@ zookeeper_port = 2189
 [storage_controller]
 paths_to_controller = Services/StorageNode/Storage_Controller/storage_controller.py
 
+storage_path = Services/storage
 
 # port on which the controller will run
 controller_port = 2181

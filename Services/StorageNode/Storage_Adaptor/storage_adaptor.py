@@ -9,7 +9,8 @@ sys.path.pop(0)
 
 class Adaptor:
     def __init__(self) -> None:
-        self.STORAGE_PATH = "../Node/storage/"
+        # self.STORAGE_PATH = "../Node/storage/"
+        self.STORAGE_PATH = "../../storage/"
         self.TARGET_PATH = "../Node/target/"
     
     # response codes:

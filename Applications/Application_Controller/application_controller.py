@@ -2,8 +2,6 @@ from concurrent import futures
 import logging
 import os
 import sys
-from urllib import response
-import getopt
 
 dir_path = os.path.dirname(__file__)
 

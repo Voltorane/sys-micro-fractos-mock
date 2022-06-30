@@ -98,7 +98,7 @@ def setup_zookeeper(ports):
     
     os.system(f"gnome-terminal -e 'bash -c \"{request}; exec bash \"'")
 
-def fill_internal_config(controller_port_dict, zookeeper_controller_port_dict={}):
+def fill_internal_config(controller_port_dict, zookeeper_controller_port_dict={}, storage_path=""):
     service_config_paths = config_parser.get('DataCenter', 'service_config_paths')
     service_config_paths = service_config_paths.replace(" ", "").split(",")
     try:
@@ -137,6 +137,7 @@ def run_controllers():
     zookeeper_ports = set()
     controller_port_dict, zookeeper_controller_port_dict = {}, {}
     controller_path_dict = {}
+    storage_path = ""
     for controller in controllers:
         paths_to_controller, servers, controller_port, verbose, zookeeper, zookeeper_port = "", "", "", "", "", ""
         try:
@@ -147,11 +148,6 @@ def run_controllers():
             # can't run controller without path
             print(f"Controller path for {controller} is not found in [{controller}] controller_port")
             continue
-        # amount of servers
-        try:
-            servers = config_parser.get(controller, "servers")
-        except:
-            pass
         # port on which the controller will run
         try:
             controller_port = config_parser.get(controller, "controller_port")
@@ -163,6 +159,11 @@ def run_controllers():
         # print output in the terminal
         try:
             verbose = bool(config_parser.get(controller, "verbose"))
+        except:
+            pass
+        # print output in the terminal
+        try:
+            storage_path = config_parser.get(controller, "storage_path")
         except:
             pass
         # run with zookeeper
@@ -178,7 +179,7 @@ def run_controllers():
         except:
             pass
         
-    fill_internal_config(controller_port_dict, zookeeper_controller_port_dict)
+    fill_internal_config(controller_port_dict, zookeeper_controller_port_dict, storage_path)
 
     for controller in controllers:
         for id, path in enumerate(controller_path_dict[controller]):
