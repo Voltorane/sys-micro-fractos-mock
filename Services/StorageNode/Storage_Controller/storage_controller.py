@@ -38,7 +38,7 @@ storage_controller_ip = f"{grpc_ip}:{storage_controller_port}"
 
 
 class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
-    def __init__(self, run_with_zookeeper=False, verbose=False, servers=1) -> None:
+    def __init__(self, run_with_zookeeper=False, verbose=False, name="") -> None:
         super().__init__()
         self.adaptor = storage_adaptor.Adaptor()
         self.name = "storage_controller"
@@ -59,15 +59,14 @@ class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
             # TODO think about giving port config path in the arguments when calling
             self.z_port = ip_connector.extract_port(self.name, os.path.join(config_dir, "zookeeper_controller_ports.cfg"))
             # try connecting to all the ip's from config utill connection is successfull
-            for server_id in range(servers):
-                if self.z_port is not None:
-                    for z_ip in self.z_ips:
-                        try:
-                            self.zookeeper = zookeeper_service.ZKeeper(f"{z_ip}:{self.z_port}", f"{self.name}", self.logger)
-                        except Exception as e:
-                            self.logger.warning("Trying to reconnect to different ip...")
-                        else:
-                            break
+            if self.z_port is not None:
+                for z_ip in self.z_ips:
+                    try:
+                        self.zookeeper = zookeeper_service.ZKeeper(f"{z_ip}:{self.z_port}", f"{self.name}", self.logger, name)
+                    except Exception as e:
+                        self.logger.warning("Trying to reconnect to different ip...")
+                    else:
+                        break
         else:
             self.logger.info(f"Controller {self.name} is being run without zookeeper!")
 
@@ -105,7 +104,7 @@ class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
         return service_rpc_pb2.Response(response_code=response_code, description=description)
 
 class DataSender(service_rpc_pb2_grpc.DataSenderServicer):
-    def __init__(self, run_with_zookeeper=False, verbose=False, servers=1) -> None:
+    def __init__(self, run_with_zookeeper=False, verbose=False, name="") -> None:
         super().__init__()
         self.adaptor = storage_adaptor.Adaptor()
         self.name = "image_sender"
@@ -127,15 +126,14 @@ class DataSender(service_rpc_pb2_grpc.DataSenderServicer):
         # TODO delete if move to other file
         if self.run_with_zookeeper:
             self.logger.info(f"Controller {self.name} is being run with zookeeper!")
-            for server_id in range(servers):
-                if self.z_port is not None:
-                    for z_ip in self.z_ips:
-                        try:
-                            self.zookeeper = zookeeper_service.ZKeeper(f"{z_ip}:{self.z_port}", f"{self.name}", self.logger)
-                        except Exception as e:
-                            self.logger.warning("Trying to reconnect to different ip...")
-                        else:
-                            break
+            if self.z_port is not None:
+                for z_ip in self.z_ips:
+                    try:
+                        self.zookeeper = zookeeper_service.ZKeeper(f"{z_ip}:{self.z_port}", f"{self.name}", self.logger, name)
+                    except Exception as e:
+                        self.logger.warning("Trying to reconnect to different ip...")
+                    else:
+                        break
         else:
             self.logger.info(f"Controller {self.name} is being run without zookeeper!")
     
@@ -185,18 +183,18 @@ class DataSender(service_rpc_pb2_grpc.DataSenderServicer):
                 # return send_int_to_math_compute(n, req, ip, self.logger)
 
 
-def serve(run_with_zookeeper=False, verbose=False, servers=1):
+def serve(run_with_zookeeper=False, verbose=False, name=""):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    service_rpc_pb2_grpc.add_OutputCollectorServicer_to_server(OutputCollector(run_with_zookeeper, verbose, servers), server)
-    service_rpc_pb2_grpc.add_DataSenderServicer_to_server(DataSender(run_with_zookeeper, verbose, servers), server)
+    service_rpc_pb2_grpc.add_OutputCollectorServicer_to_server(OutputCollector(run_with_zookeeper, verbose, name), server)
+    service_rpc_pb2_grpc.add_DataSenderServicer_to_server(DataSender(run_with_zookeeper, verbose, name), server)
     server.add_insecure_port(storage_controller_ip)
     server.start()
     server.wait_for_termination()
 
 
 def main(argv):
-    run_with_zookeeper, verbose, servers = arg_parser(argv)
-    serve(run_with_zookeeper=run_with_zookeeper, verbose=verbose, servers=servers)
+    run_with_zookeeper, verbose, name = arg_parser(argv)
+    serve(run_with_zookeeper=run_with_zookeeper, verbose=verbose, name=name)
 
 
 

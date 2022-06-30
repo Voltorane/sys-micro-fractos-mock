@@ -181,10 +181,9 @@ def run_controllers():
     fill_internal_config(controller_port_dict, zookeeper_controller_port_dict)
 
     for controller in controllers:
-        for path in controller_path_dict[controller]:
+        for id, path in enumerate(controller_path_dict[controller]):
             runner_request = f"python3 {path} "
-            if servers != "":
-                runner_request += f"-s {servers} "
+            runner_request += f"-n {id} "
             if zookeeper:
                 runner_request += f"-z "
             if verbose:

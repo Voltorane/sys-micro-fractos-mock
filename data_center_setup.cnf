@@ -22,8 +22,6 @@ application_zookeeper_port = 2186
 paths_to_controller = Services/ComputationalNodes/CNN/CNN_Controller/cnn_controller.py
 #, Services/ComputationalNodes/CNN2/CNN_Controller/cnn_controller.py
 
-# amount of servers
-servers = 3
 
 # port on which the controller will run
 controller_port = 2182
@@ -43,8 +41,6 @@ zookeeper_port = 2187
 [math_controller]
 paths_to_controller = Services/ComputationalNodes/MathCompute/Math_Controller/math_controller.py
 
-# amount of servers
-servers = 3
 
 # port on which the controller will run
 controller_port = 2184
@@ -64,8 +60,6 @@ zookeeper_port = 2188
 [application_controller]
 paths_to_controller = Applications/Application_Controller/application_controller.py
 
-# amount of servers
-servers = 3
 
 # port on which the controller will run
 controller_port = 2183
@@ -85,8 +79,6 @@ zookeeper_port = 2189
 [storage_controller]
 paths_to_controller = Services/StorageNode/Storage_Controller/storage_controller.py
 
-# amount of servers
-servers = 3
 
 # port on which the controller will run
 controller_port = 2181
