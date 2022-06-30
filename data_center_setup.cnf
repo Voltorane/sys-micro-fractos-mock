@@ -1,3 +1,5 @@
+#ALL PATHS MUST BE RELATIVE TO THIS FILE
+
 [DataCenter]
 # ip for internal communication between all controllers
 grpc_ip = 127.0.0.1
@@ -7,6 +9,10 @@ service_config_paths = Services/config
 
 [Controllers]
 controller_names = cnn_controller, math_controller, application_controller, storage_controller
+
+[Applications]
+# in order to run applications wit zookeeper we need to provide a port for that
+application_zookeeper_port = 2186
 
 # ----------------------------------------------------------------------
 
