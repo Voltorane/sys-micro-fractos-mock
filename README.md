@@ -1,4 +1,8 @@
 # sys-micro-fractos-mock
+
+IMPORTANT! This is not final release! Demonstration video and further setup instructions will come by 4.06.2022!
+We beg for your patience!
+
 ## Overview
 A FractOS mock imitates a distributed system for decentralized appliactions following the proposed by FractOS design. 
 Our mock system nodes are an abstraction of hardware, e.g., a storage node represents an SSD, and computational nodes act as CPU/GPU.
