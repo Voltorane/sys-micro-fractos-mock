@@ -1,7 +1,11 @@
 import logging
 import sys
 import os
+from time import sleep
 import grpc
+import datetime
+
+from pexpect import TIMEOUT
 
 sys.path.insert(1, os.path.dirname(__file__))
 from node_types import NodeType
@@ -9,6 +13,8 @@ from node_types import NodeType
 sys.path.insert(1, "../")
 import service_rpc_pb2
 import service_rpc_pb2_grpc
+
+TIMEOUT = 5
 
 def send_request_to_int_sender(name, client_id, next_request, ip, logger=None):
     if logger is None:
@@ -113,18 +119,26 @@ def handle_next_request(node_type, ip, next_request, args, logger=None):
         logger = logging.getLogger()
         logger.setLevel(logging.INFO)
 
-    if node_type == NodeType.MathComputeNode:
-        n = args[0]
-        return send_int_to_math_compute(n, next_request, ip, logger)
-    elif node_type == NodeType.PredictorNode:
-        encoded_arr, img_width, img_height, client_id = args[0], args[1], args[2], args[3]
-        return send_image_to_predictor(encoded_arr, img_width, img_height, client_id, next_request, ip, logger)
-    elif node_type == NodeType.IntSenderNode:
-        name, client_id = args[0], args[1]
-        return send_request_to_int_sender(name, client_id, next_request, ip)
-    elif node_type == NodeType.ImageSenderNode:
-        name, img_width, img_height, client_id = args[0], args[1], args[2], args[3]
-        return send_request_to_image_sender(name, img_width, img_height, client_id, next_request, ip, logger)
-    elif node_type == NodeType.OutputCollectorNode:
-        data, name, storage_id = args[0], args[1], args[2]
-        return send_output(data, name, ip, next_request, storage_id, logger)
+    start_time = cur_time = int(round(datetime.datetime.now().timestamp() / 1000))
+    
+    while start_time - cur_time < TIMEOUT:
+        try:
+            if node_type == NodeType.MathComputeNode:
+                n = args[0]
+                return send_int_to_math_compute(n, next_request, ip, logger)
+            elif node_type == NodeType.PredictorNode:
+                encoded_arr, img_width, img_height, client_id = args[0], args[1], args[2], args[3]
+                return send_image_to_predictor(encoded_arr, img_width, img_height, client_id, next_request, ip, logger)
+            elif node_type == NodeType.IntSenderNode:
+                name, client_id = args[0], args[1]
+                return send_request_to_int_sender(name, client_id, next_request, ip)
+            elif node_type == NodeType.ImageSenderNode:
+                name, img_width, img_height, client_id = args[0], args[1], args[2], args[3]
+                return send_request_to_image_sender(name, img_width, img_height, client_id, next_request, ip, logger)
+            elif node_type == NodeType.OutputCollectorNode:
+                data, name, storage_id = args[0], args[1], args[2]
+                return send_output(data, name, ip, next_request, storage_id, logger)
+            cur_time = int(round(datetime.datetime.now().timestamp() / 1000))
+        except:
+            sleep(1)
+            logger.info(f"Waiting for response from {node_type}")
