@@ -4,12 +4,10 @@ import os
 import shutil
 import base64
 
-dir_path = os.path.dirname(__file__)
-
 def img_to_arr(name, img_width, img_height, client_id, storage_dir):
     if not name.lower().endswith(".jpg"):
         raise ValueError("Error occurred: incorrect name provided.")
-    path_to_image = os.path.join(dir_path, storage_dir, client_id, name)
+    path_to_image = os.path.join(storage_dir, client_id, name)
     image = load_img(path_to_image, target_size=(img_width, img_height))
     img = np.array(image)
     img = img / 255.0
@@ -20,7 +18,7 @@ def store_data(name, storage_dir, data, storage_id=""):
     # common storage for all unordered requests
     if storage_id == "":
         storage_id="common"
-    storage_path = os.path.join(dir_path, storage_dir, storage_id)
+    storage_path = os.path.join(storage_dir, storage_id)
     if not os.path.exists(storage_path):
         os.makedirs(storage_path)
     response_code, description = 0, "OK"
@@ -37,7 +35,7 @@ def store_data(name, storage_dir, data, storage_id=""):
 
 
 def read_int(name, client_id, storage_dir):
-    path_to_file = os.path.join(dir_path, storage_dir, client_id, name)
+    path_to_file = os.path.join(storage_dir, client_id, name)
     with open(path_to_file, "r") as f:
         n = f.read()
         return int(n)

@@ -1,8 +1,10 @@
 import os
 import shutil
 from configparser import ConfigParser
+from pathlib import Path
 
 dir_path = os.path.dirname(__file__)
+abs_path = Path(__file__).parent.absolute()
 config_path = os.path.join(dir_path, "data_center_setup.cnf")
 original_zookeeper_dir = os.path.join(dir_path, "apache-zookeeper-3.7.1-bin")
 zookeeper_target_dir = os.path.join(dir_path, "zookeeper_test1")
@@ -129,6 +131,10 @@ def fill_internal_config(controller_port_dict, zookeeper_controller_port_dict={}
             for controller, port in zookeeper_controller_port_dict.items():
                 s.append(f'{controller}:{port}\n')
             controller_ports_config.writelines(s)
+            
+        with open(os.path.join(path_to_dir, "storage_path"), "w") as storage_path_config:
+            print(dir_path)
+            storage_path_config.write(os.path.join(abs_path, storage_path))
 
         
 def run_controllers():    

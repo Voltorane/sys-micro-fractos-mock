@@ -7,10 +7,14 @@ sys.path.insert(1, os.path.join(dir_path,"../Node"))
 import storage_service
 sys.path.pop(0)
 
+config_dir = os.path.join(dir_path,"../../config")
+
 class Adaptor:
     def __init__(self) -> None:
         # self.STORAGE_PATH = "../Node/storage/"
         self.STORAGE_PATH = "../../storage/"
+        with open(os.path.join(config_dir, "storage_path"), "r") as storage_path_config:
+            self.STORAGE_PATH = storage_path_config.read()
         self.TARGET_PATH = "../Node/target/"
     
     # response codes:
