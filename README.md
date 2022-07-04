@@ -21,17 +21,22 @@ Our implementation already contains a configuration file, that you may modify de
 - [Research paper](#-research-paper)
 ## Setup
 Here is a checklist of dependencies to get this project up and running on your system:
-* ## Install python3 to your system.
+* ### Install python3 to your system.
 [Installation & setup guide](https://realpython.com/installing-python/)
-* ## Clone repository.
+* ### Clone repository.
   ```
   $ git clone https://github.com/Voltorane/sys-micro-fractos-mock.git
   ```
-* ## Install dependencies.
+* ### Install dependencies.
   ```
   $ python3 -m pip install -r requirements.txt
   ```
-* ## (opt.) Install Training dataset for Convolutional Neural Network node
+* ### Install ZooKeeper
+  ```
+  $ wget https://dlcdn.apache.org/zookeeper/zookeeper-3.7.1/apache-zookeeper-3.7.1-bin.tar.gz
+  $ tar -xf apache-zookeeper-3.7.1-bin.tar.gz
+  ```
+* ### (opt.) Install Training dataset for Convolutional Neural Network node
   If you want to have a CNN node in your dataset (required by default setup) you need to provide training data into the Services/ComputationalNodes/CNN/Node/TrainingData.
   In the example application we use Dogs and Cats classification, but you can use and binary classification data.
   ```
@@ -42,7 +47,7 @@ Here is a checklist of dependencies to get this project up and running on your s
     rm -R Services/ComputationalNodes/CNN/Node/TrainingData/PetImages
   ```
 
-* ## Setup config
+* ### Setup config
   The config is ready for the demonstration and you need to change it only if you want to add some new nodes \
   The data_center_setup.cfg config has the following layout:
     ```
@@ -79,13 +84,13 @@ Here is a checklist of dependencies to get this project up and running on your s
     # ----------------------------------------------------------------------
     ...
     ```
-* ## Setup data center
-  If you don't want to connect ZooKeeper to your data center, you can skip this step and directly [run data center](##-Run-data-center)! \
+* ### Setup data center
+  If you don't want to connect ZooKeeper to your data center, you can skip this step and directly run data center! \
   This step is needed to initialize all ZooKeeper directories and configs.
   ```
   $ python3 run_datacenter.py --setup
   ```
-* ## Run ZooKeeper for each node
+* ### Run ZooKeeper for each node
   After last step, the "zookeeper" folder should have appeared. In order to start each ZooKeeper, you should go to each ZooKeeper's bin folder (i.e. zookeeper/zookeeper0/bin, zookeeper/zookeeper1/bin, ...) and start it manually (We didn't find a way to automatize it :(... )
   ```
   $ cd zookeeper/zookeeper0/bin
@@ -102,13 +107,13 @@ Here is a checklist of dependencies to get this project up and running on your s
   Using config: path/to/sys-micro-fractos-mock/zookeeper/zookeeper(0/1/...)bin/../conf/zoo.cfg
   Starting zookeeper ... STARTED
   ```
-* ## Run data center
-  ### Via run_datacenter.py (Linux with gnome-terminal)
+* ### Run data center
+  #### **Via run_datacenter.py (Linux with gnome-terminal)**
   ```
   $ python3 run_datacenter.py
   ```
   This will create separate terminal for each of the nodes
-  ### Manually (Mac & Linux)
+  #### **Manually (Mac & Linux)**
   For each node you want in the data center, you need to start its controller:
   ```
   $ python3 path/to/controller/controller_name.py [-n <name>|--name=<name>] [-v|--verbose] [-z|--zookeeper]
@@ -117,7 +122,7 @@ Here is a checklist of dependencies to get this project up and running on your s
   ```
   $ python3 Services/StorageNode/Storage_Controller/storage_controller.py -v -z
   ``` 
-* ## Run Applications
+* ### Run Applications
   After you have started the data center, you are ready to run your applications.\
   You can either run applications, that we have already prepared, or write your own, using the template in Applications/application_template.py. \
   Example:

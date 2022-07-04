@@ -1,3 +1,4 @@
+from asyncio import subprocess
 import os
 import shutil
 from configparser import ConfigParser
@@ -211,12 +212,17 @@ def run_controllers():
     
     for controller in controller_dict.keys():
         for id, path in enumerate(controller_dict[controller]["paths"]):
+            args = []
             runner_request = f"python3 {path} "
+            args.append(f"python3 {path} ")
             runner_request += f"-n {id} "
+            args.append(f"-n {id} ")
             if controller_dict[controller]["zookeeper"]:
-                runner_request += f"-z "
+                runner_request += "-z "
+                args.append("-z ")
             if controller_dict[controller]["verbose"]:
-                runner_request += f"-v "
+                runner_request += "-v "
+                args.append("-z ")
 
             # code snippet taken from https://stackoverflow.com/questions/7574841/open-a-terminal-from-python
             
@@ -227,7 +233,7 @@ def run_controllers():
                             TITLE=\"\[\e]2;$*\a\]\"
                             PS1=${ORIG}${TITLE}
                             }"""
-            os.system(f"gnome-terminal -e 'bash -c \" {set_title}; set-title title; {runner_request}; exec bash \"'")
+            os.system(f"gnome-terminal -e 'bash -c \" {runner_request}; exec bash \"'")
             print(f"Controller {path} is now running!")
 
 if __name__ == "__main__":
@@ -242,7 +248,10 @@ if __name__ == "__main__":
     
     if setup:
         fill_internal_config()
-        setup_zookeeper()
+        try:
+            setup_zookeeper()
+        except Exception as e:
+            print(f"Couldn't setup zookeeper! {e}")
         print("Please proceed with further instructions!")
     else:
         run_controllers()
