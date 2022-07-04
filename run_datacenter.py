@@ -2,6 +2,7 @@ import os
 import shutil
 from configparser import ConfigParser
 from pathlib import Path
+import getopt
 import sys
 
 dir_path = os.path.dirname(__file__)
@@ -13,7 +14,11 @@ zookeeper_target_dir = os.path.join(dir_path, "zookeeper")
 config_parser = ConfigParser()   
 config_parser.read(config_path)
 
-def setup_zookeeper(ports):
+def setup_zookeeper():
+    print("Setting the zookeeper up!")
+    controller_dict, _, application_zookeeper_port = get_config_data()
+    ports = {controller_dict[controller]["zookeeper_port"] for controller in controller_dict.keys()}
+    ports.add(application_zookeeper_port)
     if not os.path.exists(zookeeper_target_dir):
         os.makedirs(zookeeper_target_dir)
     else:
@@ -33,6 +38,7 @@ def setup_zookeeper(ports):
     for id, port in enumerate(ports):
         path = os.path.join(zookeeper_target_dir, f"zookeeper{id}")
         shutil.copytree(original_zookeeper_dir, path)
+        print(f"Zookeeper folder {path} created!")
         z_config_path = os.path.join(path, os.path.join("conf", "zoo.cfg"))
         with open(z_config_path, "w") as config:
             conf = f'''
@@ -91,19 +97,25 @@ def setup_zookeeper(ports):
         
         with open(os.path.join(data_dir, "myid"), "w") as myid:
             myid.write(str(id))
+        
+        print(f"Zookeeper folder {path} filled!")
     
-    request = ""
-    for path in bin_paths.keys():
-        executable = "./zkServer.sh start"
-        # sys.path.insert(1, path)
-        request = f"cd {path} ; {executable} ; cd .. ; cd .. ;"
-        # request += f"{executable} {bin_paths[path]} ; "
-        os.system(f"gnome-terminal -e 'bash -c \"{request}; exec bash \"'")
-    print(request)
+    print("Zookeeper setup was done!")
+    # request = ""
+    # for path in bin_paths.keys():
+    #     executable = "./zkServer.sh start"
+    #     # sys.path.insert(1, path)
+    #     request = f"cd {path} ; {executable} ; cd .. ; cd .. ;"
+    #     # request += f"{executable} {bin_paths[path]} ; "
+    #     os.system(f"gnome-terminal -e 'bash -c \"{request}; exec bash \"'")
     
     
 
-def fill_internal_config(controller_port_dict, zookeeper_controller_port_dict={}, storage_path=""):
+def fill_internal_config():
+    controller_dict, _ = get_config_data()
+    controller_port_dict = {controller : controller_dict[controller]["port"] for controller in controller_dict.keys()}
+    zookeeper_controller_port_dict = {controller : controller_dict[controller]["zookeeper_port"] for controller in controller_dict.keys()}
+    
     service_config_paths = config_parser.get('DataCenter', 'service_config_paths')
     service_config_paths = service_config_paths.replace(" ", "").split(",")
     try:
@@ -112,6 +124,7 @@ def fill_internal_config(controller_port_dict, zookeeper_controller_port_dict={}
     except Exception as e:
         print("application_zookeeper_port, could not be added")
     
+    print("Getting data from config!")
     for path in service_config_paths:
         path_to_dir = os.path.join(dir_path, path)
         if not os.path.exists(path_to_dir):
@@ -136,13 +149,14 @@ def fill_internal_config(controller_port_dict, zookeeper_controller_port_dict={}
             controller_ports_config.writelines(s)
             
         with open(os.path.join(path_to_dir, "storage_path"), "w") as storage_path_config:
-            print(dir_path)
             storage_path_config.write(os.path.join(abs_path, storage_path))
+    print("Internal config setup was done!")
 
-        
-def run_controllers():    
-    controllers = config_parser.get('Controllers', 'controller_names')
-    controllers = controllers.replace(" ", "").split(",")
+def get_config_data():
+    # {name: }
+    controller_dict = {}
+    controllers = config_parser.get('Controllers', 'controller_names').replace(" ", "").split(",")
+    application_zookeeper_port = config_parser.get('Applications', 'application_zookeeper_port')
     zookeeper_ports = set()
     controller_port_dict, zookeeper_controller_port_dict = {}, {}
     controller_path_dict = {}
@@ -187,23 +201,48 @@ def run_controllers():
             zookeeper_controller_port_dict[controller] = zookeeper_port
         except:
             pass
-        
-    fill_internal_config(controller_port_dict, zookeeper_controller_port_dict, storage_path)
+        controller_dict[controller] = {"paths" : paths_to_controller, "zookeeper" : zookeeper, "verbose" : verbose, "zookeeper_port" : zookeeper_port, "port" : controller_port}
+    return controller_dict, storage_path, application_zookeeper_port
 
-    setup_zookeeper(zookeeper_ports)
+def run_controllers():    
+    controller_dict, _ = get_config_data()
+        
+    fill_internal_config()
     
-    for controller in controllers:
-        for id, path in enumerate(controller_path_dict[controller]):
+    for controller in controller_dict.keys():
+        for id, path in enumerate(controller_dict[controller]["paths"]):
             runner_request = f"python3 {path} "
             runner_request += f"-n {id} "
-            if zookeeper:
+            if controller_dict[controller]["zookeeper"]:
                 runner_request += f"-z "
-            if verbose:
+            if controller_dict[controller]["verbose"]:
                 runner_request += f"-v "
 
             # code snippet taken from https://stackoverflow.com/questions/7574841/open-a-terminal-from-python
-            os.system(f"gnome-terminal -e 'bash -c \"{runner_request}; exec bash \"'")
+            
+            set_title = """function set-title() {
+                            if [[ -z "$ORIG" ]]; then
+                                ORIG=$PS1
+                            fi
+                            TITLE=\"\[\e]2;$*\a\]\"
+                            PS1=${ORIG}${TITLE}
+                            }"""
+            os.system(f"gnome-terminal -e 'bash -c \" {set_title}; set-title title; {runner_request}; exec bash \"'")
             print(f"Controller {path} is now running!")
 
 if __name__ == "__main__":
-    run_controllers()
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], 's')
+    except getopt.GetoptError:
+        print(f"ERROR by parsing args: {sys.argv}!")
+    setup = False
+    for opt, arg in opts:
+        if opt in ('-s', '--setup'):
+            setup = True
+    
+    if setup:
+        fill_internal_config()
+        setup_zookeeper()
+        print("Please proceed with further instructions!")
+    else:
+        run_controllers()

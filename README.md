@@ -21,18 +21,109 @@ Our implementation already contains a configuration file, that you may modify de
 - [Research paper](#-research-paper)
 ## Setup
 Here is a checklist of dependencies to get this project up and running on your system:
-* Install python3 to your system.
+* ## Install python3 to your system.
 [Installation & setup guide](https://realpython.com/installing-python/)
-* Clone repository.
+* ## Clone repository.
   ```
-  git clone https://github.com/Voltorane/sys-micro-fractos-mock.git
+  $ git clone https://github.com/Voltorane/sys-micro-fractos-mock.git
   ```
-* Install dependencies.
+* ## Install dependencies.
   ```
-  python3 -m pip install -r requirements.txt
+  $ python3 -m pip install -r requirements.txt
   ```
-* Setup config
-TBD
+* ## (opt.) Install Training dataset for Convolutional Neural Network node
+  If you want to have a CNN node in your dataset (required by default setup) you need to provide training data into the Services/ComputationalNodes/CNN/Node/TrainingData.
+  In the example application we use Dogs and Cats classification, but you can use and binary classification data.
+  ```
+  $ wget https://download.microsoft.com/download/3/E/1/3E1C3F21-ECDB-4869-8368-6DEBA77B919F/kagglecatsanddogs_5340.zip -P Services/ComputationalNodes/CNN/Node/TrainingData
+  $ unzip Services/ComputationalNodes/CNN/Node/TrainingData/kagglecatsanddogs_5340.zip -d Services/ComputationalNodes/CNN/Node/TrainingData
+  $ mv Services/ComputationalNodes/CNN/Node/TrainingData/PetImages/Cat Services/ComputationalNodes/CNN/Node/TrainingData/Cat ;
+    mv Services/ComputationalNodes/CNN/Node/TrainingData/PetImages/Dog Services/ComputationalNodes/CNN/Node/TrainingData/Dog ;
+    rm -R Services/ComputationalNodes/CNN/Node/TrainingData/PetImages
+  ```
+
+* ## Setup config
+  The config is ready for the demonstration and you need to change it only if you want to add some new nodes \
+  The data_center_setup.cfg config has the following layout:
+    ```
+    #for setup only, change if config directory is in different place
+    [DataCenter]
+    # ip for internal communication between all controllers
+    grpc_ip = 127.0.0.1
+    # internal config folders (usually Services/config)
+    service_config_paths = Services/config
+
+    # for controller setup, add the name of controller to be initialized in datacenter
+    [Controllers]
+    controller_names = cnn_controller, math_controller, application_controller, storage_controller
+
+    # if you want to connect your application to zookeeper
+    [Applications]
+    # in order to run applications wit zookeeper we need to provide a port for that
+    application_zookeeper_port = 2186
+
+    # for each controller you shall create similar config structure and call it the same, as it was called in [Controllers]
+    # ----------------------------------------------------------------------
+    # create config with controller name for every controller you want to configure
+    [math_controller]
+    #separate paths to your nodes with commas
+    paths_to_controller = Services/ComputationalNodes/MathCompute/Math_Controller/math_controller.py, Services/ComputationalNodes/MathCompute1/Math_Controller/math_controller.py
+    # port on which the controller will run
+    controller_port = 2184
+    # print output in the terminal
+    verbose = True
+    # run with zookeeper
+    zookeeper = True
+    # select zookeeper port for this controller
+    zookeeper_port = 2188
+    # ----------------------------------------------------------------------
+    ...
+    ```
+* ## Setup data center
+  If you don't want to connect ZooKeeper to your data center, you can skip this step and directly [run data center](##-Run-data-center)! \
+  This step is needed to initialize all ZooKeeper directories and configs.
+  ```
+  $ python3 run_datacenter.py --setup
+  ```
+* ## Run ZooKeeper for each node
+  After last step, the "zookeeper" folder should have appeared. In order to start each ZooKeeper, you should go to each ZooKeeper's bin folder (i.e. zookeeper/zookeeper0/bin, zookeeper/zookeeper1/bin, ...) and start it manually (We didn't find a way to automatize it :(... )
+  ```
+  $ cd zookeeper/zookeeper0/bin
+  $ ./zkServer.sh start
+  # go back to the sys-micro-fractos-mock
+  $ cd zookeeper/zookeeper1/bin
+  $ ./zkServer.sh start
+  ...
+  ```
+  If you got the following message for each of your ZooKeepers - you are ready for running the data center!
+  ```
+  /usr/bin/java
+  ZooKeeper JMX enabled by default
+  Using config: path/to/sys-micro-fractos-mock/zookeeper/zookeeper(0/1/...)bin/../conf/zoo.cfg
+  Starting zookeeper ... STARTED
+  ```
+* ## Run data center
+  ### Via run_datacenter.py (Linux with gnome-terminal)
+  ```
+  $ python3 run_datacenter.py
+  ```
+  This will create separate terminal for each of the nodes
+  ### Manually (Mac & Linux)
+  For each node you want in the data center, you need to start its controller:
+  ```
+  $ python3 path/to/controller/controller_name.py [-n <name>|--name=<name>] [-v|--verbose] [-z|--zookeeper]
+  ```
+  Example for Storage Node with ZooKeeper and with output in terminal:
+  ```
+  $ python3 Services/StorageNode/Storage_Controller/storage_controller.py -v -z
+  ``` 
+* ## Run Applications
+  After you have started the data center, you are ready to run your applications.\
+  You can either run applications, that we have already prepared, or write your own, using the template in Applications/application_template.py. \
+  Example:
+  ```
+  $ python3 Applications/image_prediction_application.py
+  ```   
 
 ## Demo
 Here we will walk you through the workflow of this program, mainly how to run a convolutional neural network application in the proposed system.

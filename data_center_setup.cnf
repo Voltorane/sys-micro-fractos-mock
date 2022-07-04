@@ -23,7 +23,7 @@ paths_to_controller = Services/ComputationalNodes/CNN/CNN_Controller/cnn_control
 #, Services/ComputationalNodes/CNN2/CNN_Controller/cnn_controller.py
 
 
-# port on which the controller will run
+# port for communication with controller
 controller_port = 2182
 
 # print output in the terminal
@@ -42,7 +42,7 @@ zookeeper_port = 2187
 paths_to_controller = Services/ComputationalNodes/MathCompute/Math_Controller/math_controller.py, Services/ComputationalNodes/MathCompute1/Math_Controller/math_controller.py
 
 
-# port on which the controller will run
+# port for communication with controller
 controller_port = 2184
 
 # print output in the terminal
@@ -61,7 +61,7 @@ zookeeper_port = 2188
 paths_to_controller = Applications/Application_Controller/application_controller.py
 
 
-# port on which the controller will run
+# port for communication with controller
 controller_port = 2183
 
 # print output in the terminal
@@ -81,7 +81,7 @@ paths_to_controller = Services/StorageNode/Storage_Controller/storage_controller
 
 storage_path = Services/storage
 
-# port on which the controller will run
+# port for communication with controller
 controller_port = 2181
 
 # print output in the terminal
