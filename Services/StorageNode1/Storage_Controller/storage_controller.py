@@ -1,6 +1,5 @@
 import logging
 import getopt
-import multiprocessing
 import grpc
 import os
 import sys
@@ -163,7 +162,6 @@ class DataSender(service_rpc_pb2_grpc.DataSenderServicer):
 
     def SendInt(self, request, context):
         request_name = "SEND_INT"
-        self.logger.info("Send int")
         # self.logger.info(f"Received the following request: {request_name}")
         response_code, n, description = self.adaptor.handle_request(request_name, request.name, request.client_id)
 
@@ -196,9 +194,6 @@ def serve(run_with_zookeeper=False, verbose=False, name=""):
 
 def main(argv):
     run_with_zookeeper, verbose, name = arg_parser(argv)
-    # for i in range(5):
-    #     p = multiprocessing.Process(target=serve, args=(run_with_zookeeper, verbose, name))
-    #     p.start()
     serve(run_with_zookeeper=run_with_zookeeper, verbose=verbose, name=name)
 
 

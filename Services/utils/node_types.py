@@ -68,5 +68,5 @@ def parse_next_request(request):
             key, value = argument.split(":")
             if key == "n":
                 n = value
-        return [NodeType.MathComputeNode.value, ip, n]
+        return [NodeType.MathComputeNode, ip, n]
     return None

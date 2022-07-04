@@ -72,16 +72,13 @@ class ImagePredictionApplication(object):
             except ValueError:
                 power = 2
             client_id = "admin" if client_id == "" else client_id
-            client_id = "admin"
             output_name = "output"
             number_name = "one"
             request = [f"INT_SENDER,{storage_controller_ip},name:{number_name},client_id:{client_id}",
-                        f"MATH_COMPUTE,{math_controller_ip},client_id:{client_id}",
-                        f"STORAGE,{storage_controller_ip},name:{output_name},storage_id:{client_id}"]
+                        f"MATH_COMPUTE,{math_controller_ip},client_id:{client_id}"]
             for _ in range(power):
-                request += [f"INT_SENDER,{storage_controller_ip},name:{output_name},client_id:{client_id}",
-                        f"MATH_COMPUTE,{math_controller_ip},client_id:{client_id}",
-                        f"STORAGE,{storage_controller_ip},name:{output_name},storage_id:{client_id}"]
+                request += [f"MATH_COMPUTE,{math_controller_ip},client_id:{client_id}"]
+            request += [f"STORAGE,{storage_controller_ip},name:{output_name},storage_id:{client_id}"]
             response = stub.SendInitialRequest(service_rpc_pb2.ApplicationInitRequest(request=request))
             self.logger.info(response)
 

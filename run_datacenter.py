@@ -2,12 +2,13 @@ import os
 import shutil
 from configparser import ConfigParser
 from pathlib import Path
+import sys
 
 dir_path = os.path.dirname(__file__)
 abs_path = Path(__file__).parent.absolute()
 config_path = os.path.join(dir_path, "data_center_setup.cnf")
 original_zookeeper_dir = os.path.join(dir_path, "apache-zookeeper-3.7.1-bin")
-zookeeper_target_dir = os.path.join(dir_path, "zookeeper_test1")
+zookeeper_target_dir = os.path.join(dir_path, "zookeeper")
 
 config_parser = ConfigParser()   
 config_parser.read(config_path)
@@ -15,10 +16,11 @@ config_parser.read(config_path)
 def setup_zookeeper(ports):
     if not os.path.exists(zookeeper_target_dir):
         os.makedirs(zookeeper_target_dir)
-    print(ports)
+    else:
+        shutil.rmtree(zookeeper_target_dir)
     servers = ''
     ip = "localhost"
-    server_port1, server_port2 = 2888, 3888
+    server_port1, server_port2 = 2870, 3870
     nb_servers = len(ports) + 1 if len(ports) % 2 == 0 else len(ports)
     bin_paths = {}
     
@@ -29,7 +31,6 @@ def setup_zookeeper(ports):
         servers += s
     
     for id, port in enumerate(ports):
-        id += 1
         path = os.path.join(zookeeper_target_dir, f"zookeeper{id}")
         shutil.copytree(original_zookeeper_dir, path)
         z_config_path = os.path.join(path, os.path.join("conf", "zoo.cfg"))
@@ -93,12 +94,14 @@ def setup_zookeeper(ports):
     
     request = ""
     for path in bin_paths.keys():
-        executable = os.path.join(path, "zkServer.sh start")
-        request += f"{executable} {bin_paths[path]} ; "
-    
+        executable = "./zkServer.sh start"
+        # sys.path.insert(1, path)
+        request = f"cd {path} ; {executable} ; cd .. ; cd .. ;"
+        # request += f"{executable} {bin_paths[path]} ; "
+        os.system(f"gnome-terminal -e 'bash -c \"{request}; exec bash \"'")
     print(request)
     
-    os.system(f"gnome-terminal -e 'bash -c \"{request}; exec bash \"'")
+    
 
 def fill_internal_config(controller_port_dict, zookeeper_controller_port_dict={}, storage_path=""):
     service_config_paths = config_parser.get('DataCenter', 'service_config_paths')
@@ -145,7 +148,7 @@ def run_controllers():
     controller_path_dict = {}
     storage_path = ""
     for controller in controllers:
-        paths_to_controller, servers, controller_port, verbose, zookeeper, zookeeper_port = "", "", "", "", "", ""
+        paths_to_controller, controller_port, verbose, zookeeper, zookeeper_port = "", "", "", "", ""
         try:
             paths_to_controller = config_parser.get(controller, "paths_to_controller")
             paths_to_controller = paths_to_controller.replace(" ", "").split(",")
@@ -187,6 +190,8 @@ def run_controllers():
         
     fill_internal_config(controller_port_dict, zookeeper_controller_port_dict, storage_path)
 
+    setup_zookeeper(zookeeper_ports)
+    
     for controller in controllers:
         for id, path in enumerate(controller_path_dict[controller]):
             runner_request = f"python3 {path} "

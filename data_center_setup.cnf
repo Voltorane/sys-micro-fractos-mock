@@ -39,7 +39,7 @@ zookeeper_port = 2187
 
 # create config with controller name for every controller you want to configure
 [math_controller]
-paths_to_controller = Services/ComputationalNodes/MathCompute/Math_Controller/math_controller.py
+paths_to_controller = Services/ComputationalNodes/MathCompute/Math_Controller/math_controller.py, Services/ComputationalNodes/MathCompute1/Math_Controller/math_controller.py
 
 
 # port on which the controller will run
@@ -77,7 +77,7 @@ zookeeper_port = 2189
 
 # create config with controller name for every controller you want to configure
 [storage_controller]
-paths_to_controller = Services/StorageNode/Storage_Controller/storage_controller.py
+paths_to_controller = Services/StorageNode/Storage_Controller/storage_controller.py, Services/StorageNode/Storage_Controller/storage_controller.py
 
 storage_path = Services/storage
 

@@ -65,7 +65,7 @@ class ApplicationStarter(service_rpc_pb2_grpc.ApplicationStarterServicer):
     
     def SendInitialRequest(self, request, context):
         # parse next request from the task graph
-        self.logger.info(f"Received the following request: {request}")
+        # self.logger.info(f"Received the following request: {request}")
         if len(request.request) != 0:
             next_request = parse_next_request(request.request.pop(0))
             req = request.request
