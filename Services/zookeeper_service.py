@@ -60,7 +60,7 @@ class ZKeeper():
     def update_shared_data(self):
         if not self.zookeeper.exists(self.path_data):
             self.zookeeper.create(self.path_data,
-                                  bytes("name: {0}\ndata: {1}".format(self.server_name, self.server_data), "utf8"),
+                                  bytes("name: {0}".format(self.server_name), "utf8"),
                                   ephemeral=True, sequence=False, makepath=True)
 
     def display_server_information(self, application_nodes, current_leader):
