@@ -20,14 +20,13 @@ Our implementation already contains a configuration file, that you may modify de
 - [Demo](#-demo)
 - [Research paper](#-research-paper)
 ## Setup
-Here is a checklist of dependencies to get this project up and running on your system:
-* ### Install python3 to your system.
+* ### Install python3 to your system
 [Installation & setup guide](https://realpython.com/installing-python/)
-* ### Clone repository.
+* ### Clone repository
   ```
   $ git clone https://github.com/Voltorane/sys-micro-fractos-mock.git
   ```
-* ### Install dependencies.
+* ### Install dependencies
   ```
   $ python3 -m pip install -r requirements.txt
   ```
@@ -38,7 +37,7 @@ Here is a checklist of dependencies to get this project up and running on your s
   ```
 * ### (opt.) Install Training dataset for Convolutional Neural Network node
   If you want to have a CNN node in your dataset (required by default setup) you need to provide training data into the Services/ComputationalNodes/CNN/Node/TrainingData.
-  In the example application we use Dogs and Cats classification, but you can use and binary classification data.
+  In the example application we use Dogs and Cats classification, but you can use any binary classification data.
   ```
   $ wget https://download.microsoft.com/download/3/E/1/3E1C3F21-ECDB-4869-8368-6DEBA77B919F/kagglecatsanddogs_5340.zip -P Services/ComputationalNodes/CNN/Node/TrainingData
   $ unzip Services/ComputationalNodes/CNN/Node/TrainingData/kagglecatsanddogs_5340.zip -d Services/ComputationalNodes/CNN/Node/TrainingData
@@ -48,7 +47,7 @@ Here is a checklist of dependencies to get this project up and running on your s
   ```
 
 * ### Setup config
-  The config is ready for the demonstration and you need to change it only if you want to add some new nodes \
+  The config is ready for the demonstration and you need to change it only if you want to add some new nodes. \
   The data_center_setup.cfg config has the following layout:
     ```
     #for setup only, change if config directory is in different place

@@ -36,6 +36,7 @@ def store_data(name, storage_dir, data, storage_id=""):
 
 def read_int(name, client_id, storage_dir):
     path_to_file = os.path.join(storage_dir, client_id, name)
+    print(path_to_file)
     with open(path_to_file, "r") as f:
         n = f.read()
         return int(n)

@@ -74,13 +74,23 @@ class OutputCollector(service_rpc_pb2_grpc.OutputCollectorServicer):
     
     def StorePrediction(self, request, context):
         request_name = "STORE"
-        # self.logger.info(f"Received the following request: {request_name}")
+        self.logger.info(f"Received the following request: {request_name}")
         response_code, description = self.adaptor.handle_request(request_name, request.data, request.name, request.storage_id)
 
         if response_code == 0:
             self.logger.info("Output storage was successfull!")
         else:
-            self.logger.warning(f"Something went wrong: {description}")
+            self.logger.warning("Something went wrong: {description}")
+        
+        if not len(request.next_request) == 0:
+            next_request = parse_next_request(request.next_request.pop(0))
+            req = request.next_request
+            if next_request is not None:
+                node_type, ip, args = next_request[0], next_request[1], next_request[2:]
+                if node_type == NodeType.IntSenderNode:
+                    return handle_next_request(node_type, ip, req, args, self.logger)
+                elif node_type == NodeType.ImageSenderNode:
+                    return handle_next_request(node_type, ip, req, args, self.logger)  
         return service_rpc_pb2.Response(response_code=response_code, description=description)
     
     def StoreInt(self, request, context):
@@ -163,8 +173,8 @@ class DataSender(service_rpc_pb2_grpc.DataSenderServicer):
 
     def SendInt(self, request, context):
         request_name = "SEND_INT"
-        self.logger.info("Send int")
         # self.logger.info(f"Received the following request: {request_name}")
+        print(request)
         response_code, n, description = self.adaptor.handle_request(request_name, request.name, request.client_id)
 
         if response_code != 0:

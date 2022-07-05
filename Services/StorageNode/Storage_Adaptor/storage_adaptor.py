@@ -42,6 +42,7 @@ class Adaptor:
             name, client_id = args
             response_code, description = 0, "Integer retrieved sucessfully!"
             try:
+                print(self.STORAGE_PATH, client_id, name)
                 num = storage_service.read_int(name, client_id, self.STORAGE_PATH)
             except Exception as e:
                 response_code, num, description = 1, None, "Integer retrieving failed: " + str(e)

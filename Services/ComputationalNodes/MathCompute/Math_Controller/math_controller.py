@@ -72,14 +72,13 @@ class MathComputer(service_rpc_pb2_grpc.MathComputerServicer):
             self.logger.info(f"Controller {self.name} is being run without zookeeper!")
     
     def ComputeFact(self, request, context):
-        print("got request")
+        self.logger.info(f"Received the following request: {request}")
         response = self.adaptor.handle_request("COMPUTE_FAC", request.n)
         response_code, result, description = response
         if response_code != 0:
             return service_rpc_pb2.Response(response_code=response_code, description=description)
         # send output to other storage node
         next_request = parse_next_request(request.next_request.pop(0))
-        print(request.next_request)
         req = request.next_request
         if next_request is not None:
             node_type, ip, args = next_request[0], next_request[1], next_request[2:]

@@ -4,7 +4,9 @@ import grpc
 import sys
 import os
 from kazoo.client import KazooClient
-sys.path.insert(1, "../Services")
+dir_path = os.path.dirname(__file__)
+
+sys.path.insert(1, os.path.join("../Services"))
 import service_rpc_pb2
 import service_rpc_pb2_grpc
 import zookeeper_service
@@ -15,14 +17,9 @@ util_dir = os.path.join(dir_path, "../Services/utils")
 sys.path.insert(1, util_dir)
 import ip_connector
 
-# cnn_controller_ip = "127.0.0.1:2182"
-# storage_controller_ip = "127.0.0.1:2181"
-# application_controller_ip = "127.0.0.1:2183"
-# math_controller_ip = "127.0.0.1:2184"
-
 log_filemode = "a"
 log_format = "%(levelname)s %(asctime)s - %(message)s"
-log_file = "logfile_cnn_controller.log"
+log_file = "logfile_application.log"
 
 config_dir = os.path.join(dir_path, os.path.join("../Services", "config"))
 grpc_ip = ip_connector.get_grpc_ip(os.path.join(config_dir, "grpc_ip.cfg"))
@@ -37,7 +34,7 @@ cnn_controller_ip = f"{grpc_ip}:{cnn_controller_port}"
 application_controller_port = ip_connector.extract_port("application_controller", os.path.join(config_dir, "controller_ports.cfg"))
 application_controller_ip = f"{grpc_ip}:{application_controller_port}"
 
-class ImagePredictionApplication(object):
+class Application(object):
     def __init__(self, run_with_zookeeper=True) -> None:
         logging.basicConfig(filename=log_file,filemode=log_filemode, format=log_format)
         self.logger = logging.getLogger()
@@ -63,26 +60,23 @@ class ImagePredictionApplication(object):
             self.logger.info(f"Controller {self.name} is being run without zookeeper!")
 
     def run(self):
-        power = input("Please give where power, which should be computed: ")
-        client_id = input("Please give your id: ")
         with grpc.insecure_channel(application_controller_ip) as channel:       
             stub = service_rpc_pb2_grpc.ApplicationStarterStub(channel)
-            try:
-                power = int(power)
-            except ValueError:
-                power = 2
-            client_id = "admin" if client_id == "" else client_id
-            output_name = "output"
-            number_name = "one"
-            request = [f"INT_SENDER,{storage_controller_ip},name:{number_name},client_id:{client_id}",
-                        f"MATH_COMPUTE,{math_controller_ip},client_id:{client_id}"]
-            for _ in range(power):
-                request += [f"MATH_COMPUTE,{math_controller_ip},client_id:{client_id}"]
-            request += [f"STORAGE,{storage_controller_ip},name:{output_name},storage_id:{client_id}"]
+            # ------------------------------------TODO------------------------------------------------
+            # change the request for the needs of your application
+            
+            # Request can hold following elements:
+            # f"IMAGE_SENDER,{storage_controller_ip},name:{name},img_width:{img_width},img_height:{img_height},client_id:{client_id}"
+            # f"PREDICTOR,{cnn_controller_ip},img_width:{img_width},img_height:{img_height},client_id:{client_id}"
+            # f"STORAGE,{storage_controller_ip},name:{output_name},storage_id:{client_id}"
+            # f"INT_SENDER,{storage_controller_ip},name:{number_name},client_id:{client_id}"
+            # f"MATH_COMPUTE,{math_controller_ip},client_id:{client_id}"
+            request = [] # <--- add your messages here
+            # ------------------------------------------------------------------------------------------
             response = stub.SendInitialRequest(service_rpc_pb2.ApplicationInitRequest(request=request))
             self.logger.info(response)
 
 if __name__ == '__main__':
-    app = ImagePredictionApplication()
+    app = Application()
     logging.basicConfig()
     app.run()

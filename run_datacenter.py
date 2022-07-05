@@ -5,6 +5,8 @@ from configparser import ConfigParser
 from pathlib import Path
 import getopt
 import sys
+import socket
+from tracemalloc import start
 
 dir_path = os.path.dirname(__file__)
 abs_path = Path(__file__).parent.absolute()
@@ -17,7 +19,7 @@ config_parser.read(config_path)
 
 def setup_zookeeper():
     print("Setting the zookeeper up!")
-    controller_dict, _, application_zookeeper_port = get_config_data()
+    controller_dict, _, application_zookeeper_port = fill_internal_config()
     ports = {controller_dict[controller]["zookeeper_port"] for controller in controller_dict.keys()}
     ports.add(application_zookeeper_port)
     if not os.path.exists(zookeeper_target_dir):
@@ -26,14 +28,20 @@ def setup_zookeeper():
         shutil.rmtree(zookeeper_target_dir)
     servers = ''
     ip = "localhost"
-    server_port1, server_port2 = 2870, 3870
+    server_port1, server_port2 = 2879, 3879
     nb_servers = len(ports) + 1 if len(ports) % 2 == 0 else len(ports)
     bin_paths = {}
     
     for i in range(nb_servers):
+        sock = socket.socket()
+        sock.bind(('', 0))
+        server_port1 = sock.getsockname()[1]
+        sock = socket.socket()
+        sock.bind(('', 0))
+        server_port2 = sock.getsockname()[1]
         s = f"server.{i}={ip}:{server_port1}:{server_port2}\n"
-        server_port1 += 1
-        server_port2 += 1
+        # server_port1 += 1
+        # server_port2 += 1
         servers += s
     
     for id, port in enumerate(ports):
@@ -102,28 +110,17 @@ def setup_zookeeper():
         print(f"Zookeeper folder {path} filled!")
     
     print("Zookeeper setup was done!")
-    # request = ""
-    # for path in bin_paths.keys():
-    #     executable = "./zkServer.sh start"
-    #     # sys.path.insert(1, path)
-    #     request = f"cd {path} ; {executable} ; cd .. ; cd .. ;"
-    #     # request += f"{executable} {bin_paths[path]} ; "
-    #     os.system(f"gnome-terminal -e 'bash -c \"{request}; exec bash \"'")
     
     
 
 def fill_internal_config():
-    controller_dict, _ = get_config_data()
+    controller_dict, storage_path, application_zookeeper_port = get_config_data()
     controller_port_dict = {controller : controller_dict[controller]["port"] for controller in controller_dict.keys()}
     zookeeper_controller_port_dict = {controller : controller_dict[controller]["zookeeper_port"] for controller in controller_dict.keys()}
     
     service_config_paths = config_parser.get('DataCenter', 'service_config_paths')
     service_config_paths = service_config_paths.replace(" ", "").split(",")
-    try:
-        application_zookeeper_port = config_parser.get('Applications', 'application_zookeeper_port')
-        zookeeper_controller_port_dict["application"] = application_zookeeper_port
-    except Exception as e:
-        print("application_zookeeper_port, could not be added")
+    zookeeper_controller_port_dict["application"] = application_zookeeper_port
     
     print("Getting data from config!")
     for path in service_config_paths:
@@ -152,12 +149,16 @@ def fill_internal_config():
         with open(os.path.join(path_to_dir, "storage_path"), "w") as storage_path_config:
             storage_path_config.write(os.path.join(abs_path, storage_path))
     print("Internal config setup was done!")
+    return controller_dict, storage_path, application_zookeeper_port
 
 def get_config_data():
     # {name: }
     controller_dict = {}
     controllers = config_parser.get('Controllers', 'controller_names').replace(" ", "").split(",")
-    application_zookeeper_port = config_parser.get('Applications', 'application_zookeeper_port')
+    sock = socket.socket()
+    sock.bind(('', 0))
+    application_zookeeper_port = sock.getsockname()[1]
+    # application_zookeeper_port = config_parser.get('Applications', 'application_zookeeper_port')
     zookeeper_ports = set()
     controller_port_dict, zookeeper_controller_port_dict = {}, {}
     controller_path_dict = {}
@@ -174,7 +175,9 @@ def get_config_data():
             continue
         # port on which the controller will run
         try:
-            controller_port = config_parser.get(controller, "controller_port")
+            sock = socket.socket()
+            sock.bind(('', 0))
+            controller_port = sock.getsockname()[1]
             controller_port_dict[controller] = controller_port
         except:
             # can't run controller without port
@@ -197,7 +200,10 @@ def get_config_data():
             pass
         # select zookeeper port for this controller
         try:
-            zookeeper_port = config_parser.get(controller, "zookeeper_port")
+            sock = socket.socket()
+            sock.bind(('', 0))
+            zookeeper_port = sock.getsockname()[1]
+            # zookeeper_port = config_parser.get(controller, "zookeeper_port")
             zookeeper_ports.add(zookeeper_port)
             zookeeper_controller_port_dict[controller] = zookeeper_port
         except:
@@ -206,9 +212,9 @@ def get_config_data():
     return controller_dict, storage_path, application_zookeeper_port
 
 def run_controllers():    
-    controller_dict, _ = get_config_data()
+    controller_dict, _, _ = get_config_data()
         
-    fill_internal_config()
+    # fill_internal_config()
     
     for controller in controller_dict.keys():
         for id, path in enumerate(controller_dict[controller]["paths"]):
@@ -225,15 +231,7 @@ def run_controllers():
                 args.append("-z ")
 
             # code snippet taken from https://stackoverflow.com/questions/7574841/open-a-terminal-from-python
-            
-            set_title = """function set-title() {
-                            if [[ -z "$ORIG" ]]; then
-                                ORIG=$PS1
-                            fi
-                            TITLE=\"\[\e]2;$*\a\]\"
-                            PS1=${ORIG}${TITLE}
-                            }"""
-            os.system(f"gnome-terminal -e 'bash -c \" {runner_request}; exec bash \"'")
+            os.system(f"gnome-terminal -e 'bash -c \"{runner_request}; exec bash \"'")
             print(f"Controller {path} is now running!")
 
 if __name__ == "__main__":
@@ -247,7 +245,7 @@ if __name__ == "__main__":
             setup = True
     
     if setup:
-        fill_internal_config()
+        # fill_internal_config()
         try:
             setup_zookeeper()
         except Exception as e:

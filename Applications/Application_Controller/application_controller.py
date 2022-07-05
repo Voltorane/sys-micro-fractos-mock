@@ -64,6 +64,7 @@ class ApplicationStarter(service_rpc_pb2_grpc.ApplicationStarterServicer):
             self.logger.info(f"Controller {self.name} is being run without zookeeper!")
     
     def SendInitialRequest(self, request, context):
+        self.logger.info(f"Received the following request: {request}")
         # parse next request from the task graph
         # self.logger.info(f"Received the following request: {request}")
         if len(request.request) != 0:

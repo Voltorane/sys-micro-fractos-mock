@@ -1,14 +1,10 @@
 import logging
 import sys
 import os
-from threading import Semaphore
 from time import sleep
-from urllib import response
 import grpc
 import datetime
 from pathlib import Path
-
-from pexpect import TIMEOUT
 
 sys.path.insert(1, os.path.dirname(__file__))
 from node_types import NodeType
@@ -18,23 +14,6 @@ import service_rpc_pb2
 import service_rpc_pb2_grpc
 
 TIMEOUT = 5
-m = Semaphore(1)
-
-# def acquire():
-#     number = 0
-#     while number <= 0:
-#         with open(os.path.join(Path(__file__).parent.absolute(), "../config/math"), "r") as m:
-#             number = int(m.read())
-#             print(number)
-#         sleep(0.1)
-#     with open(os.path.join(Path(__file__).parent.absolute(), "../config/math"), "w") as m:
-#             m.write(str(number-1))
-
-# def release():
-#     with open(os.path.join(Path(__file__).parent.absolute(), "../config/math"), "r+") as m:
-#             number = int(m.read())
-#             m.write(str(number+1))
-        
 
 def send_request_to_int_sender(name, client_id, next_request, ip, logger=None):
     with grpc.insecure_channel(ip) as channel:
@@ -108,7 +87,8 @@ def handle_next_request(node_type, ip, next_request, args, logger=None):
     if logger is None:
         logger = logging.getLogger()
         logger.setLevel(logging.INFO)
-
+    # TODO change
+    sleep(0.5)
     start_time = cur_time = int(round(datetime.datetime.now().timestamp() / 1000))
     logger.info(f"Sending request to {ip}!")
     response = None
@@ -116,17 +96,13 @@ def handle_next_request(node_type, ip, next_request, args, logger=None):
         try:
             if node_type == NodeType.MathComputeNode:
                 n = args[0]
-                print("1")
-                # acquire()
-                print("4")
                 response = send_int_to_math_compute(n, next_request, ip, logger)
-                # release()
             elif node_type == NodeType.PredictorNode:
                 encoded_arr, img_width, img_height, client_id = args[0], args[1], args[2], args[3]
                 response = send_image_to_predictor(encoded_arr, img_width, img_height, client_id, next_request, ip, logger)
             elif node_type == NodeType.IntSenderNode:
                 name, client_id = args[0], args[1]
-                response = send_request_to_int_sender(name, client_id, next_request, ip)
+                response = send_request_to_int_sender(name, client_id, next_request, ip, logger)
             elif node_type == NodeType.ImageSenderNode:
                 name, img_width, img_height, client_id = args[0], args[1], args[2], args[3]
                 response = send_request_to_image_sender(name, img_width, img_height, client_id, next_request, ip, logger)
@@ -139,4 +115,4 @@ def handle_next_request(node_type, ip, next_request, args, logger=None):
             logger.info(f"Waiting for response from {node_type}")
         else:
             logger.info(f"Request sucessfully sent {ip}!")
-            return response
+        return response

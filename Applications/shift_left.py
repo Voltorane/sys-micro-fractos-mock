@@ -4,9 +4,10 @@ import grpc
 import sys
 import os
 from kazoo.client import KazooClient
+
 dir_path = os.path.dirname(__file__)
 
-sys.path.insert(1, os.path.join("../Services"))
+sys.path.insert(1, os.path.join(dir_path, "../Services"))
 import service_rpc_pb2
 import service_rpc_pb2_grpc
 import zookeeper_service
@@ -14,6 +15,11 @@ import zookeeper_service
 util_dir = os.path.join(dir_path, "../Services/utils")
 sys.path.insert(1, util_dir)
 import ip_connector
+
+# cnn_controller_ip = "127.0.0.1:2182"
+# storage_controller_ip = "127.0.0.1:2181"
+# application_controller_ip = "127.0.0.1:2183"
+# math_controller_ip = "127.0.0.1:2184"
 
 log_filemode = "a"
 log_format = "%(levelname)s %(asctime)s - %(message)s"
@@ -56,25 +62,26 @@ class ImagePredictionApplication(object):
                         break
         else:
             self.logger.info(f"Controller {self.name} is being run without zookeeper!")
+
     def run(self):
-        images = ["cat_image1.jpg", "cat_image2.jpg"]
-        # name = input("Please give image name: ")
-        # client_id = input("Please give your id: ")
+        # Application calculates result for (number*2^m)
+        power = input("Left shift amout: ")
+        client_id = input("Please give your id: ")
+        number_name = input("Please give file, where number is stored: ")
         with grpc.insecure_channel(application_controller_ip) as channel:       
             stub = service_rpc_pb2_grpc.ApplicationStarterStub(channel)
-            # name = "cat_image.jpg" if name == "" else name
-            client_id = "admin"
-            img_width = 128
-            img_height = 128
-            # output_name = name.replace(".jpg", "_")+"class.txt"
-            request = []
-            
-            for name in images:
-                output_name = name.replace(".jpg", "_")+"class.txt"
-                request += [f"IMAGE_SENDER,{storage_controller_ip},name:{name},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
-                            f"PREDICTOR,{cnn_controller_ip},img_width:{img_width},img_height:{img_height},client_id:{client_id}",
-                            f"STORAGE,{storage_controller_ip},name:{output_name},storage_id:{client_id}"]
-            
+            try:
+                power = int(power)
+            except ValueError:
+                power = 2
+            client_id = "admin" if client_id == "" else client_id
+            output_name = "output"
+            number_name = "number" if number_name == "" else number_name
+            request = [f"INT_SENDER,{storage_controller_ip},name:{number_name},client_id:{client_id}",
+                        f"MATH_COMPUTE,{math_controller_ip},client_id:{client_id}"]
+            for _ in range(power-1):
+                request += [f"MATH_COMPUTE,{math_controller_ip},client_id:{client_id}"]
+            request += [f"STORAGE,{storage_controller_ip},name:{output_name},storage_id:{client_id}"]
             response = stub.SendInitialRequest(service_rpc_pb2.ApplicationInitRequest(request=request))
             self.logger.info(response)
 

@@ -1,94 +1,42 @@
 #ALL PATHS MUST BE RELATIVE TO THIS FILE
-
 [DataCenter]
 # ip for internal communication between all controllers
 grpc_ip = 127.0.0.1
-
 # internal config folders (usually Services/config)
 service_config_paths = Services/config
-
 [Controllers]
 controller_names = cnn_controller, math_controller, application_controller, storage_controller
-
-[Applications]
-# in order to run applications wit zookeeper we need to provide a port for that
-application_zookeeper_port = 2186
-
 # ----------------------------------------------------------------------
-
 # create config with controller name for every controller you want to configure
 [cnn_controller]
 # you can give multiple comma-separated paths to the same controller, to make the best use of the zookeeper
 paths_to_controller = Services/ComputationalNodes/CNN/CNN_Controller/cnn_controller.py
-#, Services/ComputationalNodes/CNN2/CNN_Controller/cnn_controller.py
-
-
-# port for communication with controller
-controller_port = 2182
-
 # print output in the terminal
 verbose = True
-
 # run with zookeeper
 zookeeper = True
-
-# select zookeeper port for this controller
-zookeeper_port = 2187
-
 # ----------------------------------------------------------------------
-
 # create config with controller name for every controller you want to configure
 [math_controller]
-paths_to_controller = Services/ComputationalNodes/MathCompute/Math_Controller/math_controller.py, Services/ComputationalNodes/MathCompute1/Math_Controller/math_controller.py
-
-
-# port for communication with controller
-controller_port = 2184
-
+paths_to_controller = Services/ComputationalNodes/MathCompute/Math_Controller/math_controller.py
 # print output in the terminal
 verbose = True
-
 # run with zookeeper
 zookeeper = True
-
-# select zookeeper port for this controller
-zookeeper_port = 2188
-
 # ----------------------------------------------------------------------
-
 # create config with controller name for every controller you want to configure
 [application_controller]
 paths_to_controller = Applications/Application_Controller/application_controller.py
-
-
-# port for communication with controller
-controller_port = 2183
-
 # print output in the terminal
 verbose = True
-
 # run with zookeeper
 zookeeper = True
-
-# select zookeeper port for this controller
-zookeeper_port = 2189
-
 # ----------------------------------------------------------------------
-
 # create config with controller name for every controller you want to configure
 [storage_controller]
-paths_to_controller = Services/StorageNode/Storage_Controller/storage_controller.py, Services/StorageNode/Storage_Controller/storage_controller.py
-
+paths_to_controller = Services/StorageNode/Storage_Controller/storage_controller.py
 storage_path = Services/storage
-
-# port for communication with controller
-controller_port = 2181
-
 # print output in the terminal
 verbose = True
-
 # run with zookeeper
 zookeeper = True
-
-# select zookeeper port for this controller
-zookeeper_port = 2185
