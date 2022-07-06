@@ -11,10 +11,6 @@ Our implementation already contains a configuration file, that you may modify de
 
 ##### The implementation consists of around 2.5k LoC
 
-## Table of content
-- [Setup](#-setup)
-- [Demo](#-demo)
-- [Research paper](#-research-paper)
 ## Setup
 * ### Install python3 to your system
 [Installation & setup guide](https://realpython.com/installing-python/)
