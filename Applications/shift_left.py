@@ -4,8 +4,8 @@ import grpc
 import sys
 import os
 from kazoo.client import KazooClient
-
-dir_path = os.path.dirname(__file__)
+from pathlib import Path
+dir_path = Path(__file__).parent.absolute()
 
 sys.path.insert(1, os.path.join(dir_path, "../Services"))
 import service_rpc_pb2
