@@ -120,7 +120,8 @@ Our implementation already contains a configuration file, that you may modify de
   ```   
 
 ## Demo
-Here we will walk you through the workflow of this program, mainly how to run a convolutional neural network application in the proposed system.
+Here we will walk you through the workflow of our distributed system.
+https://www.youtube.com/watch?v=4znT4LrV2W8
 ## Research paper
 Our [research paper] describes the design of our mock system as well as the design of initial reference system - FractOS.
 
