@@ -1,4 +1,3 @@
-from asyncio import subprocess
 import os
 import shutil
 from configparser import ConfigParser
@@ -6,7 +5,6 @@ from pathlib import Path
 import getopt
 import sys
 import socket
-from tracemalloc import start
 
 dir_path = os.path.dirname(__file__)
 abs_path = Path(__file__).parent.absolute()
@@ -16,6 +14,11 @@ zookeeper_target_dir = os.path.join(dir_path, "zookeeper")
 
 config_parser = ConfigParser()   
 config_parser.read(config_path)
+
+def find_free_port():
+    sock = socket.socket()
+    sock.bind(('', 0))
+    return sock.getsockname()[1]
 
 def setup_zookeeper():
     print("Setting the zookeeper up!")
@@ -33,15 +36,9 @@ def setup_zookeeper():
     bin_paths = {}
     
     for i in range(nb_servers):
-        sock = socket.socket()
-        sock.bind(('', 0))
-        server_port1 = sock.getsockname()[1]
-        sock = socket.socket()
-        sock.bind(('', 0))
-        server_port2 = sock.getsockname()[1]
+        server_port1 = find_free_port()
+        server_port2 = find_free_port()
         s = f"server.{i}={ip}:{server_port1}:{server_port2}\n"
-        # server_port1 += 1
-        # server_port2 += 1
         servers += s
     
     for id, port in enumerate(ports):
@@ -155,9 +152,7 @@ def get_config_data():
     # {name: }
     controller_dict = {}
     controllers = config_parser.get('Controllers', 'controller_names').replace(" ", "").split(",")
-    sock = socket.socket()
-    sock.bind(('', 0))
-    application_zookeeper_port = sock.getsockname()[1]
+    application_zookeeper_port = find_free_port()
     # application_zookeeper_port = config_parser.get('Applications', 'application_zookeeper_port')
     zookeeper_ports = set()
     controller_port_dict, zookeeper_controller_port_dict = {}, {}
@@ -175,9 +170,7 @@ def get_config_data():
             continue
         # port on which the controller will run
         try:
-            sock = socket.socket()
-            sock.bind(('', 0))
-            controller_port = sock.getsockname()[1]
+            controller_port = find_free_port()
             controller_port_dict[controller] = controller_port
         except:
             # can't run controller without port
@@ -200,9 +193,7 @@ def get_config_data():
             pass
         # select zookeeper port for this controller
         try:
-            sock = socket.socket()
-            sock.bind(('', 0))
-            zookeeper_port = sock.getsockname()[1]
+            zookeeper_port = find_free_port()
             # zookeeper_port = config_parser.get(controller, "zookeeper_port")
             zookeeper_ports.add(zookeeper_port)
             zookeeper_controller_port_dict[controller] = zookeeper_port

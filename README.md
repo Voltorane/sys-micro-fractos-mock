@@ -50,44 +50,34 @@ Our implementation already contains a configuration file, that you may modify de
   The config is ready for the demonstration and you need to change it only if you want to add some new nodes. \
   The data_center_setup.cfg config has the following layout:
     ```
-    #for setup only, change if config directory is in different place
+    # this section is required for setting up the connection for gRPC and setup all configs
+    # change it only if you change the config paths
     [DataCenter]
     # ip for internal communication between all controllers
     grpc_ip = 127.0.0.1
-    # internal config folders (usually Services/config)
+    # internal config folders (usually Services/config but can be also in different places)
     service_config_paths = Services/config
-
-    # for controller setup, add the name of controller to be initialized in datacenter
+    # in this section you should give all names of the controllers, that you will use in the datacenter
     [Controllers]
     controller_names = cnn_controller, math_controller, application_controller, storage_controller
-
-    # if you want to connect your application to zookeeper
-    [Applications]
-    # in order to run applications wit zookeeper we need to provide a port for that
-    application_zookeeper_port = 2186
-
-    # for each controller you shall create similar config structure and call it the same, as it was called in [Controllers]
     # ----------------------------------------------------------------------
     # create config with controller name for every controller you want to configure
-    [math_controller]
-    #separate paths to your nodes with commas
-    paths_to_controller = Services/ComputationalNodes/MathCompute/Math_Controller/math_controller.py, Services/ComputationalNodes/MathCompute1/Math_Controller/math_controller.py
-    # port on which the controller will run
-    controller_port = 2184
+    [cnn_controller]
+    # you can give multiple comma-separated paths to the same controller, to make the best use of the zookeeper
+    paths_to_controller = Services/ComputationalNodes/CNN/CNN_Controller/cnn_controller.py
     # print output in the terminal
     verbose = True
     # run with zookeeper
     zookeeper = True
-    # select zookeeper port for this controller
-    zookeeper_port = 2188
     # ----------------------------------------------------------------------
     ...
     ```
+  All ports are dynamically selected, so you shall not worry about them anymore :)
 * ### Setup data center
   If you don't want to connect ZooKeeper to your data center, you can skip this step and directly run data center! \
   This step is needed to initialize all ZooKeeper directories and configs.
   ```
-  $ python3 run_datacenter.py --setup
+  $ python3 run_datacenter.py (-s|--setup)
   ```
 * ### Run ZooKeeper for each node
   After last step, the "zookeeper" folder should have appeared. In order to start each ZooKeeper, you should go to each ZooKeeper's bin folder (i.e. zookeeper/zookeeper0/bin, zookeeper/zookeeper1/bin, ...) and start it manually (We didn't find a way to automatize it :(... )
